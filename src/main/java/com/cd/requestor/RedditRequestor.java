@@ -29,35 +29,34 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.cd.util.RedditRequestInput;
+import com.cd.util.RedditRequestOutput;
 
 public class RedditRequestor {
 
 	private static final String REDDIT_BASE = "http://www.reddit.com";
 	
 	private Client aClientInstance 					= null;
-	private RedditRequestInput anInputObject		= null;
+	
+	private final RedditRequestInput anInputObject;
 	
 	public RedditRequestor(RedditRequestInput theInput){
 		anInputObject = theInput;
 	}
 
-	public Object executeGet(){
+	public RedditRequestOutput executeGet(){
 		initializeClient();
 		
 		final WebTarget redditTarget = buildTargetWithInput();
 		
-		Invocation.Builder invocationBuilder = redditTarget.request(MediaType.APPLICATION_JSON);
+		Invocation.Builder invocationBuilder = redditTarget.request(MediaType.APPLICATION_JSON_TYPE);
 		invocationBuilder.header("User-Agent", anInputObject.userAgent);
 		
 		Response response = invocationBuilder.get();
 		
-		System.out.println(response.getStatus());
-		System.out.println(response.readEntity(String.class));
-		
-		return null;
+		return new RedditRequestOutput(response.getStatus(), response.readEntity(String.class));
 	}
 	
-	public Object executePost(){
+	public RedditRequestOutput executePost(){
 		initializeClient();
 		
 		final WebTarget redditTarget = buildTargetWithInput();
@@ -68,10 +67,7 @@ public class RedditRequestor {
 		
 		Response response = invocationBuilder.post(Entity.entity(formToPost, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
 		
-		System.out.println(response.getStatus());
-		System.out.println(response.readEntity(String.class));
-		
-		return null;
+		return new RedditRequestOutput(response.getStatus(), response.readEntity(String.class));
 	}	
 
 	private void initializeClient(){
@@ -98,10 +94,10 @@ public class RedditRequestor {
 	}
 	
 	private Form buildFormWithInput() {
-		Form form = new Form();
-		
 		if(anInputObject.formParams == null)
 			return null;
+		
+		Form form = new Form();
 		
 		for(Map.Entry<String, String> entry : anInputObject.formParams.entrySet()){
 			form.param(entry.getKey(), entry.getValue());

@@ -22,22 +22,39 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.cd.util.RedditApiParameterConstants;
 import com.cd.util.RedditApiResourceConstants;
 import com.cd.util.RedditRequestInput;
+import com.cd.util.RedditRequestOutput;
 
 public class RedditRequestorTest {
 
+	private static final String nl = System.getProperty("line.separator");
+	
 	RedditRequestor testRequestor;
 	RedditRequestInput testInput;
 
 	//Throway account for proof-of-concept purposes
 	final String testUserAgent = "JavaJerseyTestBot/1.0 by Cory Dissinger";	
 	
+	@Before
+	public void waitForNextRequest(){
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@Test
 	public void loginTest(){
+		System.out.println(nl);		
+		System.out.println("Begin Method: loginTest");
+		System.out.println(nl);
+		
 		List<String> testSegments = new ArrayList<String>();
 		testSegments.add(RedditApiResourceConstants.API);
 		testSegments.add(RedditApiResourceConstants.LOGIN);
@@ -55,6 +72,26 @@ public class RedditRequestorTest {
 													 testBodyParams);
 		
 		RedditRequestor testRequestor = new RedditRequestor(testInput);
-		testRequestor.executePost();		
+		final RedditRequestOutput output = testRequestor.executePost();
+		System.out.println(output);
 	}
+	
+	@Test
+	public void subredditsTest(){
+		System.out.println(nl);		
+		System.out.println("Begin Method: subredditsTest");
+		System.out.println(nl);		
+		
+		List<String> testSegments = new ArrayList<String>();
+		testSegments.add(RedditApiResourceConstants.SUBREDDITS);
+		testSegments.add(RedditApiResourceConstants.NEW);
+		
+		RedditRequestInput testInput 
+							= new RedditRequestInput(testSegments, 
+													 testUserAgent);
+		
+		RedditRequestor testRequestor = new RedditRequestor(testInput);
+		final RedditRequestOutput output = testRequestor.executeGet();
+		System.out.println(output);
+	}	
 }

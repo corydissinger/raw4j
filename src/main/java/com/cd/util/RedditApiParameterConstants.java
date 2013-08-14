@@ -21,6 +21,16 @@ public class RedditApiParameterConstants {
 
 	//Misc constants
 	public static final String JSON	 				= "json";	
+
+	//Fullname helpers
+	public static final String COMMENT_TYPE			= "t1_";
+	public static final String ACCOUNT_TYPE			= "t2_";
+	public static final String LINK_TYPE			= "t3_";
+	public static final String MESSAGE_TYPE			= "t4_";
+	public static final String SUBREDDIT_TYPE		= "t5_";
+	public static final String AWARD_TYPE			= "t6_";
+	public static final String PROMO_CAMPAIGN_TYPE  = "t6_";	
+	
 	
 	//----------> SECTION: account	
 	public static final String API_TYPE				= "api_type";

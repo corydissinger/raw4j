@@ -22,7 +22,8 @@ public class RedditApiResourceConstants {
 	
 	public static final String API	 				= "api";
 	public static final String MESSAGE 				= "message";
-	public static final String MINE 				= "mine";	
+	public static final String MINE 				= "mine";
+	public static final String R	 				= "r";	
 	public static final String SUBREDDITS			= "subreddits";
 	public static final String USERS				= "users";	
 	
