@@ -44,8 +44,7 @@ public class RedditRequestorDriver {
 		testQueryParams.put(RedditApiParameterConstants.USER, "JavaJerseyTestBot");
 		
 		RedditRequestInput testInput = new RedditRequestInput(testSegments, testUserAgent, testQueryParams);
-		RedditRequestor testRequestor = new RedditRequestor(testInput);
-		testRequestor.executePost();
+		RedditRequestor.executePost(testInput);
 	}
 	
 }

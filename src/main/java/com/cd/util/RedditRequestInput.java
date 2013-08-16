@@ -22,10 +22,10 @@ import java.util.Map;
 
 public class RedditRequestInput {
 
-	public final List<String> pathSegments;
-	public final Map<String, String> queryParams;
-	public final Map<String, String> formParams;
-	public final String userAgent;
+	private final List<String> pathSegments;
+	private final Map<String, String> queryParams;
+	private final Map<String, String> formParams;
+	private final String userAgent;
 	
 	public RedditRequestInput(List<String> thePathSegments,
 							  String aUserAgent){
@@ -52,5 +52,21 @@ public class RedditRequestInput {
 		userAgent = aUserAgent;		
 		queryParams = theQueryParams;
 		formParams = theBodyParams;				
+	}
+
+	public List<String> getPathSegments() {
+		return pathSegments;
+	}
+
+	public Map<String, String> getQueryParams() {
+		return queryParams;
+	}
+
+	public Map<String, String> getFormParams() {
+		return formParams;
+	}
+
+	public String getUserAgent() {
+		return userAgent;
 	}	
 }

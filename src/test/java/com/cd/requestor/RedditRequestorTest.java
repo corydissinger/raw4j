@@ -71,8 +71,7 @@ public class RedditRequestorTest {
 													 null,
 													 testBodyParams);
 		
-		RedditRequestor testRequestor = new RedditRequestor(testInput);
-		final RedditRequestOutput output = testRequestor.executePost();
+		final RedditRequestOutput output = RedditRequestor.executePost(testInput);
 		System.out.println(output);
 	}
 	
@@ -90,8 +89,7 @@ public class RedditRequestorTest {
 							= new RedditRequestInput(testSegments, 
 													 testUserAgent);
 		
-		RedditRequestor testRequestor = new RedditRequestor(testInput);
-		final RedditRequestOutput output = testRequestor.executeGet();
+		final RedditRequestOutput output = RedditRequestor.executeGet(testInput);
 		System.out.println(output);
 	}	
 }

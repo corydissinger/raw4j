@@ -2,14 +2,22 @@ package com.cd.util;
 
 public class RedditRequestOutput {
 
-	public final int status;	
-	public final String body;
+	private final int status;	
+	private final String body;
 
 	public RedditRequestOutput(int theStatus, String theBody) {
 		status = theStatus;
 		body = theBody;
 	}
 	
+	public int getStatus() {
+		return status;
+	}
+
+	public String getBody() {
+		return body;
+	}
+
 	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();

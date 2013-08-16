@@ -19,7 +19,6 @@ package com.cd.requestor;
 
 import java.util.Map;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
@@ -34,72 +33,54 @@ import com.cd.util.RedditRequestOutput;
 public class RedditRequestor {
 
 	private static final String REDDIT_BASE = "http://www.reddit.com";
-	
-	private Client aClientInstance 					= null;
-	
-	private final RedditRequestInput anInputObject;
-	
-	public RedditRequestor(RedditRequestInput theInput){
-		anInputObject = theInput;
-	}
 
-	public RedditRequestOutput executeGet(){
-		initializeClient();
-		
-		final WebTarget redditTarget = buildTargetWithInput();
+	public static RedditRequestOutput executeGet(RedditRequestInput theInput){
+		final WebTarget redditTarget = buildTargetWithInput(theInput);
 		
 		Invocation.Builder invocationBuilder = redditTarget.request(MediaType.APPLICATION_JSON_TYPE);
-		invocationBuilder.header("User-Agent", anInputObject.userAgent);
+		invocationBuilder.header("User-Agent", theInput.getUserAgent());
 		
 		Response response = invocationBuilder.get();
 		
 		return new RedditRequestOutput(response.getStatus(), response.readEntity(String.class));
 	}
 	
-	public RedditRequestOutput executePost(){
-		initializeClient();
-		
-		final WebTarget redditTarget = buildTargetWithInput();
-		final Form formToPost  		 = buildFormWithInput();
+	public static RedditRequestOutput executePost(RedditRequestInput theInput){
+		final WebTarget redditTarget = buildTargetWithInput(theInput);
+		final Form formToPost  		 = buildFormWithInput(theInput);
 		
 		Invocation.Builder invocationBuilder = redditTarget.request(MediaType.APPLICATION_JSON_TYPE);
-		invocationBuilder.header("User-Agent", anInputObject.userAgent);
+		invocationBuilder.header("User-Agent", theInput.getUserAgent());
 		
 		Response response = invocationBuilder.post(Entity.entity(formToPost, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
 		
 		return new RedditRequestOutput(response.getStatus(), response.readEntity(String.class));
 	}	
 
-	private void initializeClient(){
-		if(aClientInstance == null){
-			aClientInstance = ClientBuilder.newClient();
-		}
-	}
-	
-	private WebTarget buildTargetWithInput(){
-		WebTarget redditTarget = aClientInstance.target(REDDIT_BASE);
+	private static WebTarget buildTargetWithInput(RedditRequestInput theInput){
+		WebTarget redditTarget = ClientBuilder.newClient().target(REDDIT_BASE);
 		
-		for(String segment : anInputObject.pathSegments){
+		for(String segment : theInput.getPathSegments()){
 			redditTarget = redditTarget.path(segment);
 		}
 		
-		if(anInputObject.queryParams == null)
+		if(theInput.getQueryParams() == null)
 			return redditTarget;
 		
-		for(Map.Entry<String, String> entry : anInputObject.queryParams.entrySet()){
+		for(Map.Entry<String, String> entry : theInput.getQueryParams().entrySet()){
 			redditTarget = redditTarget.queryParam(entry.getKey(), entry.getValue());
 		}
 		
 		return redditTarget;
 	}
 	
-	private Form buildFormWithInput() {
-		if(anInputObject.formParams == null)
+	private static Form buildFormWithInput(RedditRequestInput theInput) {
+		if(theInput.getFormParams() == null)
 			return null;
 		
 		Form form = new Form();
 		
-		for(Map.Entry<String, String> entry : anInputObject.formParams.entrySet()){
+		for(Map.Entry<String, String> entry : theInput.getFormParams().entrySet()){
 			form.param(entry.getKey(), entry.getValue());
 		}
 		
