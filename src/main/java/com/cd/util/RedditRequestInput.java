@@ -20,12 +20,15 @@ package com.cd.util;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 public class RedditRequestInput {
 
 	private final List<String> pathSegments;
 	private final Map<String, String> queryParams;
 	private final Map<String, String> formParams;
 	private final String userAgent;
+	private int hashCode;
 	
 	public RedditRequestInput(List<String> thePathSegments,
 							  String aUserAgent){
@@ -68,5 +71,56 @@ public class RedditRequestInput {
 
 	public String getUserAgent() {
 		return userAgent;
+	}
+
+	@Override
+	public String toString(){
+		StringBuilder builder = new StringBuilder();
+		String nl = System.getProperty("line.separator");
+		
+		builder.append("--- USER AGENT ---");
+		builder.append(nl);		
+		builder.append(userAgent);
+		builder.append(nl);
+		
+		builder.append("--- PATH SEGMENTS ---");
+		builder.append(nl);
+		for(String seg : pathSegments){
+			builder.append(seg);
+			builder.append(nl);			
+		}
+		builder.append(nl);
+		
+		builder.append("--- QUERY PARAMS ---");		
+		builder.append(nl);
+		for(Map.Entry<String, String> entry : queryParams.entrySet()){
+			builder.append(entry.getKey() + " = " + entry.getValue());
+			builder.append(nl);			
+		}		
+		builder.append(nl);
+		
+		builder.append("--- FORM PARAMS ---");		
+		builder.append(nl);
+		for(Map.Entry<String, String> entry : formParams.entrySet()){
+			builder.append(entry.getKey() + " = " + entry.getValue());
+			builder.append(nl);			
+		}		
+		builder.append(nl);		
+		
+		return builder.toString();
 	}	
+	
+	@Override
+	public int hashCode(){
+		if(hashCode == 0){
+			hashCode = new HashCodeBuilder(17, 41)
+				.append(userAgent)
+				.append(pathSegments)
+				.append(queryParams)
+				.append(queryParams)
+				.toHashCode();			
+		}
+		
+		return hashCode;
+	}
 }
