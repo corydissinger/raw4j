@@ -26,6 +26,7 @@ public class RedditApiResourceConstants {
 	public static final String R	 				= "r";	
 	public static final String SUBREDDITS			= "subreddits";
 	public static final String USERS				= "users";	
+	public static final String DOT_JSON				= ".json";
 	
 	//All constants should be organized by API sections found here: http://www.reddit.com/dev/api
 	

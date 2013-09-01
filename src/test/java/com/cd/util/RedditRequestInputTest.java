@@ -42,6 +42,20 @@ public class RedditRequestInputTest {
 	}
 	
 	@Test
+	public void testToString(){
+		System.out.println("Testing testToString");
+		System.out.println(nl);		
+		
+		List<String> testSegments1 = createTestSegments1();
+		Map<String, String> queryParams = createTestQueryParams1();
+		Map<String, String> formParams = createTestFormParams1();
+		String userAgent1 = "test1";
+		obj1 = new RedditRequestInput(testSegments1, userAgent1, queryParams, formParams);
+		
+		System.out.println(obj1);		
+	}
+	
+	@Test
 	public void testHashCodeTrue(){
 		System.out.println("Testing testHashCodeTrue");
 		System.out.println(nl);		

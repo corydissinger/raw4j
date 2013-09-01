@@ -17,6 +17,7 @@ along with reddit-jersey-client.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.cd.util;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -93,19 +94,25 @@ public class RedditRequestInput {
 		
 		builder.append("--- QUERY PARAMS ---");		
 		builder.append(nl);
-		for(Map.Entry<String, String> entry : queryParams.entrySet()){
-			builder.append(entry.getKey() + " = " + entry.getValue());
-			builder.append(nl);			
-		}		
-		builder.append(nl);
+		
+		if(queryParams != null){
+			for(Map.Entry<String, String> entry : queryParams.entrySet()){
+				builder.append(entry.getKey() + " = " + entry.getValue());
+				builder.append(nl);			
+			}		
+			builder.append(nl);
+		}
 		
 		builder.append("--- FORM PARAMS ---");		
 		builder.append(nl);
-		for(Map.Entry<String, String> entry : formParams.entrySet()){
-			builder.append(entry.getKey() + " = " + entry.getValue());
-			builder.append(nl);			
-		}		
-		builder.append(nl);		
+		
+		if(formParams != null){
+			for(Map.Entry<String, String> entry : formParams.entrySet()){
+				builder.append(entry.getKey() + " = " + entry.getValue());
+				builder.append(nl);			
+			}		
+			builder.append(nl);
+		}
 		
 		return builder.toString();
 	}	

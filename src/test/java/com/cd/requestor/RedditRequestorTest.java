@@ -17,6 +17,8 @@ along with reddit-jersey-client.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.cd.requestor;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,13 +51,13 @@ public class RedditRequestorTest {
 		}
 	}
 	
-	@Test
 	public void loginTest(){
 		System.out.println(nl);		
 		System.out.println("Begin Method: loginTest");
 		System.out.println(nl);
 		
 		List<String> testSegments = new ArrayList<String>();
+		
 		testSegments.add(RedditApiResourceConstants.API);
 		testSegments.add(RedditApiResourceConstants.LOGIN);
 
@@ -72,24 +74,115 @@ public class RedditRequestorTest {
 													 testBodyParams);
 		
 		final RedditRequestOutput output = RedditRequestor.executePost(testInput);
+		
+		assertEquals(output.getStatus(), 200);		
 		System.out.println(output);
 	}
-	
-	@Test
-	public void subredditsTest(){
+
+	public void subredditsNewTest(){
 		System.out.println(nl);		
-		System.out.println("Begin Method: subredditsTest");
+		System.out.println("Begin Method: subredditsNewTest");
 		System.out.println(nl);		
 		
 		List<String> testSegments = new ArrayList<String>();
+		
 		testSegments.add(RedditApiResourceConstants.SUBREDDITS);
-		testSegments.add(RedditApiResourceConstants.NEW);
+		testSegments.add(RedditApiResourceConstants.NEW + RedditApiResourceConstants.DOT_JSON);
 		
 		RedditRequestInput testInput 
 							= new RedditRequestInput(testSegments, 
 													 testUserAgent);
 		
 		final RedditRequestOutput output = RedditRequestor.executeGet(testInput);
+		
+		assertEquals(output.getStatus(), 200);		
+		System.out.println(output);
+	}
+
+	public void subredditsPopularTest(){
+		System.out.println(nl);		
+		System.out.println("Begin Method: subredditsPopularTest");
+		System.out.println(nl);		
+		
+		List<String> testSegments = new ArrayList<String>();
+		
+		testSegments.add(RedditApiResourceConstants.SUBREDDITS);
+		testSegments.add(RedditApiResourceConstants.POPULAR + RedditApiResourceConstants.DOT_JSON);
+		
+		RedditRequestInput testInput 
+							= new RedditRequestInput(testSegments, 
+													 testUserAgent);
+		
+		final RedditRequestOutput output = RedditRequestor.executeGet(testInput);
+		
+		assertEquals(output.getStatus(), 200);		
+		System.out.println(output);
+	}	
+
+	public void aboutSubreddit(){
+		System.out.println(nl);		
+		System.out.println("Begin Method: aboutSubreddit");
+		System.out.println(nl);		
+		
+		List<String> testSegments = new ArrayList<String>();
+		
+		testSegments.add(RedditApiResourceConstants.R);
+		testSegments.add("truerreddit");
+		testSegments.add(RedditApiResourceConstants.ABOUT);
+		
+		RedditRequestInput testInput 
+							= new RedditRequestInput(testSegments, 
+													 testUserAgent);
+		
+		final RedditRequestOutput output = RedditRequestor.executeGet(testInput);
+		
+		assertEquals(output.getStatus(), 200);		
+		System.out.println(output);
+	}	
+
+	public void controversialListings(){
+		System.out.println(nl);		
+		System.out.println("Begin Method: controversialListings");
+		System.out.println(nl);		
+		
+		List<String> testSegments = new ArrayList<String>();
+
+		testSegments.add(RedditApiResourceConstants.R);
+		testSegments.add("funny");		
+		testSegments.add(RedditApiResourceConstants.TOP + RedditApiResourceConstants.DOT_JSON);
+		
+		RedditRequestInput testInput 
+							= new RedditRequestInput(testSegments, 
+													 testUserAgent);
+		
+		final RedditRequestOutput output = RedditRequestor.executeGet(testInput);
+		
+		assertEquals(output.getStatus(), 200);		
+		System.out.println(output);
+	}
+	
+	@Test
+	public void listComments(){
+		System.out.println(nl);		
+		System.out.println("Begin Method: listComments");
+		System.out.println(nl);		
+		
+		List<String> testSegments = new ArrayList<String>();
+
+		testSegments.add(RedditApiResourceConstants.R);
+		testSegments.add("movies");		
+		testSegments.add(RedditApiResourceConstants.COMMENTS);
+		testSegments.add("1lihub");
+		testSegments.add("hayao_miyazaki_announces_retirement_from_feature");
+		testSegments.add(RedditApiResourceConstants.DOT_JSON);
+		
+		RedditRequestInput testInput 
+							= new RedditRequestInput(testSegments, 
+													 testUserAgent);
+		
+		final RedditRequestOutput output = RedditRequestor.executeGet(testInput);
+		
+		assertEquals(output.getStatus(), 200);
 		System.out.println(output);
 	}	
 }

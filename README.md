@@ -1,12 +1,25 @@
 reddit-jersey-client
 ====================
 
-
-Project Goals
+Usage
 --------------------
-PRAW currently resides as the premier option for Reddit API scraping. This makes sense as it allows for quicker time-to-market applications. However [performance differences between Java vs Python should be noted](http://old.nabble.com/C%2B%2B-vs-Java-vs-Python-vs-Ruby-%3A-a-first-impression-td6173984.html), and [a comparable Java API wrapper is nonexistent](https://github.com/reddit/reddit/wiki/API-Wrappers)
+Check out the src/test folder for the RedditRequestorTest to see how to make requests with the helper input/output objects.
 
 
-Open Questions
---------------------
-1) Should RedditRequestor itself maintain respect for the Reddit API with 'timed locks' or should it be expected of the end-users?
+License
+---------------------
+reddit-jersey-client is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+reddit-jersey-client is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with reddit-jersey-client.  If not, see <http://www.gnu.org/licenses/>.
+
+
+

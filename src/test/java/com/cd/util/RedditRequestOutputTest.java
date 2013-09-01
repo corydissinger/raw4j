@@ -37,6 +37,18 @@ public class RedditRequestOutputTest {
 	}
 	
 	@Test
+	public void testToString(){
+		System.out.println("Testing testToString");
+		System.out.println(nl);
+		
+		int testStatus1	 = 342;
+		String testBody1 = "mytest";
+		obj1 = new RedditRequestOutput(testStatus1, testBody1);
+		
+		System.out.println(obj1);
+	}
+	
+	@Test
 	public void testHashCodeTrue(){
 		System.out.println("Testing testHashCodeTrue");
 		System.out.println(nl);

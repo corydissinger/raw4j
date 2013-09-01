@@ -23,6 +23,7 @@ public class RedditApiParameterConstants {
 	public static final String JSON	 				= "json";	
 
 	//Fullname helpers
+	public static final String T					= "t";	
 	public static final String COMMENT_TYPE			= "t1_";
 	public static final String ACCOUNT_TYPE			= "t2_";
 	public static final String LINK_TYPE			= "t3_";
@@ -36,5 +37,16 @@ public class RedditApiParameterConstants {
 	public static final String API_TYPE				= "api_type";
 	public static final String PASSWD				= "passwd";
 	public static final String REM					= "rem";
-	public static final String USER					= "user";	
+	public static final String USER					= "user";
+	
+	//----------> SECTION: listing
+	public static final String AFTER				= "after";
+	public static final String BEFORE				= "before";	
+	
+	public static final String HOUR					= "hour";
+	public static final String DAY					= "day";
+	public static final String WEEK					= "week";
+	public static final String MONTH				= "month";
+	public static final String YEAR					= "year";
+	public static final String ALL					= "all";	
 }
