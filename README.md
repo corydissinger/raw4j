@@ -2,7 +2,7 @@
 ______________
 **Important Triple Bulleted List**
 
-- Java (Jersey API) based Reddit API client
+- Java (Jersey+Jackson APIs) based Reddit API client
 - Minimal memory footprint with fewest LoC
 - Easy to understand and implement
 
