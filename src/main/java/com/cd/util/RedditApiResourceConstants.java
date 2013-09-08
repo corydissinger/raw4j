@@ -129,7 +129,8 @@ public class RedditApiResourceConstants {
 	public static final String POPULAR				 	= "popular";
 	
 	//----------> SECTION: users
-	
+
+	public static final String USER					 	= "user";	
 	public static final String FRIEND				 	= "friend";
 	public static final String SETPERMISSIONS		 	= "setpermissions";
 	public static final String UNFRIEND				 	= "unfriend";

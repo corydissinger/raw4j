@@ -17,15 +17,18 @@ along with reddit-jersey-client.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.cd.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public class RedditRequestOutput {
+public class RedditRequestResponse {
 
 	private final int status;	
 	private final String body;
 	private int hashCode;
 	
-	public RedditRequestOutput(int theStatus, String theBody) {
+	public RedditRequestResponse(int theStatus, String theBody) {
 		status = theStatus;
 		body = theBody;
 	}
@@ -40,18 +43,20 @@ public class RedditRequestOutput {
 
 	@Override
 	public String toString(){
-		StringBuilder builder = new StringBuilder();
+		List<String> builder = new ArrayList<String>(10);
 		String nl = System.getProperty("line.separator");
 		
-		builder.append("--- RESPONSE CODE ---");
-		builder.append(nl);		
-		builder.append(status);
-		builder.append(nl);
+		builder.add("--- RESPONSE CODE ---");
+		builder.add(nl);		
+		builder.add(Integer.toString(status));
+		builder.add(nl);
+		builder.add(nl);		
 		
-		builder.append("--- RESPONSE BODY ---");
-		builder.append(nl);
-		builder.append(body);
-		builder.append(nl);
+		builder.add("--- RESPONSE BODY ---");
+		builder.add(nl);
+		builder.add(body);
+		builder.add(nl);
+		builder.add(nl);		
 		
 		return builder.toString();
 	}

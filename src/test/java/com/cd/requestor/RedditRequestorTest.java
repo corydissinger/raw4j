@@ -30,7 +30,7 @@ import org.junit.Test;
 import com.cd.util.RedditApiParameterConstants;
 import com.cd.util.RedditApiResourceConstants;
 import com.cd.util.RedditRequestInput;
-import com.cd.util.RedditRequestOutput;
+import com.cd.util.RedditRequestResponse;
 
 public class RedditRequestorTest {
 
@@ -73,7 +73,7 @@ public class RedditRequestorTest {
 													 null,
 													 testBodyParams);
 		
-		final RedditRequestOutput output = RedditRequestor.executePost(testInput);
+		final RedditRequestResponse output = RedditRequestor.executePost(testInput);
 		
 		assertEquals(output.getStatus(), 200);		
 		System.out.println(output);
@@ -93,7 +93,7 @@ public class RedditRequestorTest {
 							= new RedditRequestInput(testSegments, 
 													 testUserAgent);
 		
-		final RedditRequestOutput output = RedditRequestor.executeGet(testInput);
+		final RedditRequestResponse output = RedditRequestor.executeGet(testInput);
 		
 		assertEquals(output.getStatus(), 200);		
 		System.out.println(output);
@@ -113,7 +113,7 @@ public class RedditRequestorTest {
 							= new RedditRequestInput(testSegments, 
 													 testUserAgent);
 		
-		final RedditRequestOutput output = RedditRequestor.executeGet(testInput);
+		final RedditRequestResponse output = RedditRequestor.executeGet(testInput);
 		
 		assertEquals(output.getStatus(), 200);		
 		System.out.println(output);
@@ -134,7 +134,7 @@ public class RedditRequestorTest {
 							= new RedditRequestInput(testSegments, 
 													 testUserAgent);
 		
-		final RedditRequestOutput output = RedditRequestor.executeGet(testInput);
+		final RedditRequestResponse output = RedditRequestor.executeGet(testInput);
 		
 		assertEquals(output.getStatus(), 200);		
 		System.out.println(output);
@@ -155,13 +155,12 @@ public class RedditRequestorTest {
 							= new RedditRequestInput(testSegments, 
 													 testUserAgent);
 		
-		final RedditRequestOutput output = RedditRequestor.executeGet(testInput);
+		final RedditRequestResponse output = RedditRequestor.executeGet(testInput);
 		
 		assertEquals(output.getStatus(), 200);		
 		System.out.println(output);
 	}
 	
-	@Test
 	public void listComments(){
 		System.out.println(nl);		
 		System.out.println("Begin Method: listComments");
@@ -180,7 +179,29 @@ public class RedditRequestorTest {
 							= new RedditRequestInput(testSegments, 
 													 testUserAgent);
 		
-		final RedditRequestOutput output = RedditRequestor.executeGet(testInput);
+		final RedditRequestResponse output = RedditRequestor.executeGet(testInput);
+		
+		assertEquals(output.getStatus(), 200);
+		System.out.println(output);
+	}
+	
+	@Test
+	public void aboutUser(){
+		System.out.println(nl);		
+		System.out.println("Begin Method: listComments");
+		System.out.println(nl);		
+		
+		List<String> testSegments = new ArrayList<String>();
+
+		testSegments.add(RedditApiResourceConstants.USER);
+		testSegments.add("JavaJerseyTestBot");		
+		testSegments.add(RedditApiResourceConstants.ABOUT);
+		
+		RedditRequestInput testInput 
+							= new RedditRequestInput(testSegments, 
+													 testUserAgent);
+		
+		final RedditRequestResponse output = RedditRequestor.executeGet(testInput);
 		
 		assertEquals(output.getStatus(), 200);
 		System.out.println(output);

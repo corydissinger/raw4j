@@ -28,13 +28,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.cd.util.RedditRequestInput;
-import com.cd.util.RedditRequestOutput;
+import com.cd.util.RedditRequestResponse;
 
 public class RedditRequestor {
 
 	private static final String REDDIT_BASE = "http://www.reddit.com";
 
-	public static RedditRequestOutput executeGet(RedditRequestInput theInput){
+	public static RedditRequestResponse executeGet(RedditRequestInput theInput){
 		final WebTarget redditTarget = buildTargetWithInput(theInput);
 		
 		Invocation.Builder invocationBuilder = redditTarget.request(MediaType.APPLICATION_JSON_TYPE);
@@ -42,10 +42,10 @@ public class RedditRequestor {
 		
 		Response response = invocationBuilder.get();
 		
-		return new RedditRequestOutput(response.getStatus(), response.readEntity(String.class));
+		return new RedditRequestResponse(response.getStatus(), response.readEntity(String.class));
 	}
 	
-	public static RedditRequestOutput executePost(RedditRequestInput theInput){
+	public static RedditRequestResponse executePost(RedditRequestInput theInput){
 		final WebTarget redditTarget = buildTargetWithInput(theInput);
 		final Form formToPost  		 = buildFormWithInput(theInput);
 		
@@ -54,7 +54,7 @@ public class RedditRequestor {
 		
 		Response response = invocationBuilder.post(Entity.entity(formToPost, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
 		
-		return new RedditRequestOutput(response.getStatus(), response.readEntity(String.class));
+		return new RedditRequestResponse(response.getStatus(), response.readEntity(String.class));
 	}	
 
 	private static WebTarget buildTargetWithInput(RedditRequestInput theInput){

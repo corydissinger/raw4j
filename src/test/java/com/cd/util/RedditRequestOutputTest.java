@@ -27,8 +27,8 @@ public class RedditRequestOutputTest {
 	
 	private static final String nl = System.getProperty("line.separator");	
 	
-	RedditRequestOutput obj1;
-	RedditRequestOutput obj2;
+	RedditRequestResponse obj1;
+	RedditRequestResponse obj2;
 	
 	@Before
 	public void resetTestObjects(){
@@ -43,7 +43,7 @@ public class RedditRequestOutputTest {
 		
 		int testStatus1	 = 342;
 		String testBody1 = "mytest";
-		obj1 = new RedditRequestOutput(testStatus1, testBody1);
+		obj1 = new RedditRequestResponse(testStatus1, testBody1);
 		
 		System.out.println(obj1);
 	}
@@ -55,12 +55,12 @@ public class RedditRequestOutputTest {
 		
 		int testStatus1	 = 342;
 		String testBody1 = "mytest";
-		obj1 = new RedditRequestOutput(testStatus1, testBody1);
+		obj1 = new RedditRequestResponse(testStatus1, testBody1);
 		
 		
 		int testStatus2	 = 342;
 		String testBody2 = "mytest";
-		obj2 = new RedditRequestOutput(testStatus2, testBody2);
+		obj2 = new RedditRequestResponse(testStatus2, testBody2);
 		
 		assertEquals(obj1.hashCode(), obj2.hashCode());
 	}
@@ -72,12 +72,12 @@ public class RedditRequestOutputTest {
 		
 		int testStatus1	 = 342;
 		String testBody1 = "mytest";
-		obj1 = new RedditRequestOutput(testStatus1, testBody1);
+		obj1 = new RedditRequestResponse(testStatus1, testBody1);
 		
 		
 		int testStatus2	 = 345;
 		String testBody2 = "mytest!!";
-		obj2 = new RedditRequestOutput(testStatus2, testBody2);
+		obj2 = new RedditRequestResponse(testStatus2, testBody2);
 		
 		assertNotSame(obj1.hashCode(), obj2.hashCode());
 	}	
