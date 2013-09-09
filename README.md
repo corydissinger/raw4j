@@ -6,14 +6,14 @@ ______________
 - Minimal memory footprint with fewest LoC
 - Easy to understand and implement
 
-**reddit-jersey-client** provide a light-weight, injectable dependency that allows for an intuitive but not overly opinionated Java Reddit API client. 
+**reddit-api-wrapper** provide a light-weight, injectable dependency that allows for an intuitive but not overly opinionated Java Reddit API client. 
 
 As of 09/05/2013 no truly complete Java Reddit API clients really exist - [check here](https://github.com/reddit/reddit/wiki/API-Wrappers).
 
 
 # Usage
 ______________
-Most of this example was pulled directly from the ['Requestor'](https://github.com/corydissinger/reddit-jersey-client/blob/master/src/test/java/com/cd/requestor/RedditRequestorTest.java) JUnit test class.
+Most of this example was pulled directly from the ['Requestor'](https://github.com/corydissinger/reddit-api-wrapper/blob/master/src/test/java/com/cd/requestor/RedditRequestorTest.java) JUnit test class.
 
 Please note I have omitted the @Test annotation from many of the methods to prevent frivolous API calls.
 
@@ -61,18 +61,18 @@ final RedditRequestOutput output = RedditRequestor.executePost(testInput);
 
 # License
 ______________
-reddit-jersey-client is free software: you can redistribute it and/or modify
+reddit-api-wrapper is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-reddit-jersey-client is distributed in the hope that it will be useful,
+reddit-api-wrapper is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with reddit-jersey-client.  If not, see <http://www.gnu.org/licenses/>.
+along with reddit-api-wrapper.  If not, see <http://www.gnu.org/licenses/>.
 
 
 
