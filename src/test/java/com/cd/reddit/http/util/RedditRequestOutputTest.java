@@ -15,13 +15,15 @@ You should have received a copy of the GNU General Public License
 along with reddit-jersey-client.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.cd.util;
+package com.cd.reddit.http.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.cd.reddit.http.util.RedditRequestResponse;
 
 public class RedditRequestOutputTest {
 	

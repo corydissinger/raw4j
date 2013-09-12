@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License
 along with reddit-jersey-client.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.cd.requestor;
+package com.cd.reddit.http.requestor;
 
 import static org.junit.Assert.assertEquals;
 
@@ -27,10 +27,11 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.cd.util.RedditApiParameterConstants;
-import com.cd.util.RedditApiResourceConstants;
-import com.cd.util.RedditRequestInput;
-import com.cd.util.RedditRequestResponse;
+import com.cd.reddit.http.requestor.RedditRequestor;
+import com.cd.reddit.http.util.RedditApiParameterConstants;
+import com.cd.reddit.http.util.RedditApiResourceConstants;
+import com.cd.reddit.http.util.RedditRequestInput;
+import com.cd.reddit.http.util.RedditRequestResponse;
 
 public class RedditRequestorTest {
 
@@ -51,6 +52,7 @@ public class RedditRequestorTest {
 		}
 	}
 	
+	@Test
 	public void loginTest(){
 		System.out.println(nl);		
 		System.out.println("Begin Method: loginTest");
@@ -74,9 +76,10 @@ public class RedditRequestorTest {
 													 testBodyParams);
 		
 		final RedditRequestResponse output = RedditRequestor.executePost(testInput);
-		
-		assertEquals(output.getStatus(), 200);		
-		System.out.println(output);
+
+		System.out.println(testInput);
+		System.out.println(output);		
+		assertEquals(output.getStatus(), 200);
 	}
 
 	public void subredditsNewTest(){
@@ -94,9 +97,10 @@ public class RedditRequestorTest {
 													 testUserAgent);
 		
 		final RedditRequestResponse output = RedditRequestor.executeGet(testInput);
-		
-		assertEquals(output.getStatus(), 200);		
-		System.out.println(output);
+
+		System.out.println(testInput);		
+		System.out.println(output);		
+		assertEquals(output.getStatus(), 200);
 	}
 
 	public void subredditsPopularTest(){
@@ -114,9 +118,10 @@ public class RedditRequestorTest {
 													 testUserAgent);
 		
 		final RedditRequestResponse output = RedditRequestor.executeGet(testInput);
-		
-		assertEquals(output.getStatus(), 200);		
-		System.out.println(output);
+
+		System.out.println(testInput);		
+		System.out.println(output);		
+		assertEquals(output.getStatus(), 200);
 	}	
 
 	public void aboutSubreddit(){
@@ -135,9 +140,10 @@ public class RedditRequestorTest {
 													 testUserAgent);
 		
 		final RedditRequestResponse output = RedditRequestor.executeGet(testInput);
-		
-		assertEquals(output.getStatus(), 200);		
-		System.out.println(output);
+
+		System.out.println(testInput);		
+		System.out.println(output);		
+		assertEquals(output.getStatus(), 200);
 	}	
 
 	public void controversialListings(){
@@ -156,9 +162,10 @@ public class RedditRequestorTest {
 													 testUserAgent);
 		
 		final RedditRequestResponse output = RedditRequestor.executeGet(testInput);
-		
-		assertEquals(output.getStatus(), 200);		
-		System.out.println(output);
+
+		System.out.println(testInput);		
+		System.out.println(output);		
+		assertEquals(output.getStatus(), 200);
 	}
 	
 	public void listComments(){
@@ -180,12 +187,12 @@ public class RedditRequestorTest {
 													 testUserAgent);
 		
 		final RedditRequestResponse output = RedditRequestor.executeGet(testInput);
-		
+
+		System.out.println(testInput);		
+		System.out.println(output);		
 		assertEquals(output.getStatus(), 200);
-		System.out.println(output);
 	}
 	
-	@Test
 	public void aboutUser(){
 		System.out.println(nl);		
 		System.out.println("Begin Method: listComments");
@@ -202,8 +209,9 @@ public class RedditRequestorTest {
 													 testUserAgent);
 		
 		final RedditRequestResponse output = RedditRequestor.executeGet(testInput);
-		
+
+		System.out.println(testInput);		
+		System.out.println(output);		
 		assertEquals(output.getStatus(), 200);
-		System.out.println(output);
 	}	
 }

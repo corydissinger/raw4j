@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License
 along with reddit-jersey-client.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.cd.requestor;
+package com.cd.reddit.http.requestor;
 
 import java.util.Map;
 
@@ -27,8 +27,8 @@ import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.cd.util.RedditRequestInput;
-import com.cd.util.RedditRequestResponse;
+import com.cd.reddit.http.util.RedditRequestInput;
+import com.cd.reddit.http.util.RedditRequestResponse;
 
 public class RedditRequestor {
 

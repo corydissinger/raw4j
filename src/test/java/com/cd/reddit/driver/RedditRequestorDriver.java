@@ -15,36 +15,45 @@ You should have received a copy of the GNU General Public License
 along with reddit-jersey-client.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.cd.driver;
+package com.cd.reddit.driver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.cd.requestor.RedditRequestor;
-import com.cd.util.RedditApiParameterConstants;
-import com.cd.util.RedditApiResourceConstants;
-import com.cd.util.RedditRequestInput;
+import com.cd.reddit.http.requestor.RedditRequestor;
+import com.cd.reddit.http.util.RedditApiParameterConstants;
+import com.cd.reddit.http.util.RedditApiResourceConstants;
+import com.cd.reddit.http.util.RedditRequestInput;
+import com.cd.reddit.http.util.RedditRequestResponse;
+import com.cd.reddit.json.exception.RedditJsonException;
+import com.cd.reddit.json.parser.RedditJsonParser;
 
 public class RedditRequestorDriver {
 
 	public static void main(String[] args){
 		List<String> testSegments = new ArrayList<String>();
-		testSegments.add(RedditApiResourceConstants.API);
-		testSegments.add(RedditApiResourceConstants.LOGIN);
+		testSegments.add(RedditApiResourceConstants.R);		
+		testSegments.add("politics");
+		testSegments.add(RedditApiResourceConstants.NEW + RedditApiResourceConstants.DOT_JSON);
 
 		//Throway account for proof-of-concept purposes
 		final String testUserAgent = "JavaJerseyTestBot/1.0 by Cory Dissinger";
 		
-		Map<String, String> testQueryParams = new HashMap<String, String>();
+		RedditRequestInput testInput = new RedditRequestInput(testSegments, 
+															  testUserAgent); 
 		
-		testQueryParams.put(RedditApiParameterConstants.API_TYPE, RedditApiParameterConstants.JSON);
-		testQueryParams.put(RedditApiParameterConstants.PASSWD, "JavaJerseyTestBot");
-		testQueryParams.put(RedditApiParameterConstants.USER, "JavaJerseyTestBot");
+		RedditRequestResponse response =  RedditRequestor.executeGet(testInput);
+		RedditJsonParser parser = new RedditJsonParser(response.getBody());
 		
-		RedditRequestInput testInput = new RedditRequestInput(testSegments, testUserAgent, testQueryParams);
-		RedditRequestor.executePost(testInput);
+		try{
+			parser.parse();
+		}catch(RedditJsonException re) {
+			re.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
