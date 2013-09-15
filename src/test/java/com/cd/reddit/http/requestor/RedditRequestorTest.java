@@ -52,7 +52,6 @@ public class RedditRequestorTest {
 		}
 	}
 	
-	@Test
 	public void loginTest(){
 		System.out.println(nl);		
 		System.out.println("Begin Method: loginTest");
@@ -168,6 +167,7 @@ public class RedditRequestorTest {
 		assertEquals(output.getStatus(), 200);
 	}
 	
+	@Test
 	public void listComments(){
 		System.out.println(nl);		
 		System.out.println("Begin Method: listComments");
@@ -176,10 +176,10 @@ public class RedditRequestorTest {
 		List<String> testSegments = new ArrayList<String>();
 
 		testSegments.add(RedditApiResourceConstants.R);
-		testSegments.add("movies");		
+		testSegments.add("worldnews");		
 		testSegments.add(RedditApiResourceConstants.COMMENTS);
-		testSegments.add("1lihub");
-		testSegments.add("hayao_miyazaki_announces_retirement_from_feature");
+		testSegments.add("1mfj22");
+		testSegments.add("japan_shuts_down_last_nuclear_reactor_for_the");
 		testSegments.add(RedditApiResourceConstants.DOT_JSON);
 		
 		RedditRequestInput testInput 

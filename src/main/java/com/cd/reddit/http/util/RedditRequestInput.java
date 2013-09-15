@@ -17,7 +17,6 @@ along with raw4j.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.cd.reddit.http.util;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

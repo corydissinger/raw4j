@@ -18,16 +18,19 @@ along with raw4j.  If not, see <http://www.gnu.org/licenses/>.
 package com.cd.reddit.json.parser;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.cd.reddit.json.RedditJacksonManager;
 import com.cd.reddit.json.exception.RedditJsonException;
+import com.cd.reddit.json.mapping.RedditType;
 import com.cd.reddit.json.util.RedditJsonConstants;
-import com.cd.reddit.json.util.RedditType;
 
 public class RedditJsonParser {
 	
@@ -41,26 +44,45 @@ public class RedditJsonParser {
 		json = aJson;
 	}
 	
-	public List<RedditType> parse() throws RedditJsonException{
+	public List<RedditType> parse() throws RedditJsonException, JsonParseException, JsonMappingException, IOException{
 		init();
 		
-		final JsonNode theKind = rootNode.get(RedditJsonConstants.KIND);
-		
-		if(RedditJsonConstants.LISTING.equals(theKind)){
-			JsonNode childData = theKind.get(RedditJsonConstants.DATA).get(RedditJsonConstants.CHILDREN);
-			String kind = childData.get(RedditJsonConstants.KIND).asText();
-			return mapJsonArrayToList(childData, kind); 
+		if(rootNode.isArray()){
+			Iterator<JsonNode> theEles = rootNode.getElements();
+			return parseManyNodes(theEles);
+		}else{
+			return parseRedditTypes(rootNode);
 		}
-		
-		if(theKind == null){
-			throw new RedditJsonException();
-		}
-		
-		return null;
 	}
 	
-	private List<RedditType> mapJsonArrayToList(JsonNode jsonArray, String kind){
-		return null;
+	private List<RedditType> parseManyNodes(Iterator<JsonNode> theEles) throws JsonParseException, JsonMappingException, RedditJsonException, IOException {
+		final List<RedditType> theTypes = new ArrayList<RedditType>(20);
+		
+		while(theEles.hasNext()){
+			final JsonNode nextNode = theEles.next();
+			theTypes.addAll(parseRedditTypes(nextNode));
+		}
+		
+		return theTypes;
+	}
+
+	private List<RedditType> parseRedditTypes(JsonNode aNode) throws RedditJsonException, JsonParseException, JsonMappingException, IOException{
+		final JsonNode kindNode = aNode.get(RedditJsonConstants.KIND);
+		final String theKind;
+		
+		if(kindNode == null){
+			throw new RedditJsonException("No kind found for node: " + aNode.toString());
+		}else{
+			theKind = kindNode.asText();
+		}
+		
+		if(RedditJsonConstants.LISTING.equals(theKind)){
+			final JsonNode childData = aNode.get(RedditJsonConstants.DATA).get(RedditJsonConstants.CHILDREN);
+			return RedditJsonMappingFactory.mapJsonArrayToList(childData, mapper); 
+		}else{
+			final JsonNode childData = aNode.get(RedditJsonConstants.DATA);
+			return RedditJsonMappingFactory.mapJsonObjectToList(childData, theKind, mapper);			
+		} 
 	}
 	
 	private void init(){
