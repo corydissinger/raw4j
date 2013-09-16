@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/corydissinger/raw4j.png)](https://travis-ci.org/corydissinger/raw4j)
 # Goals/Philosophy
 ______________
 **Important Triple Bulleted List**
