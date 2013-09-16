@@ -25,7 +25,7 @@ import org.junit.Test;
 
 import com.cd.reddit.http.util.RedditRequestResponse;
 
-public class RedditRequestOutputTest {
+public class RedditRequestResponseTest {
 	
 	private static final String nl = System.getProperty("line.separator");	
 	

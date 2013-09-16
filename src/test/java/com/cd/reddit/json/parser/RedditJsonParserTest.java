@@ -31,6 +31,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.cd.reddit.json.exception.RedditJsonException;
+import com.cd.reddit.json.mapping.RedditAccount;
 import com.cd.reddit.json.mapping.RedditComment;
 import com.cd.reddit.json.mapping.RedditLink;
 import com.cd.reddit.json.mapping.RedditSubreddit;
@@ -141,6 +142,35 @@ public class RedditJsonParserTest {
 		
 		assertEquals(true, parsedTypes.get(0) instanceof RedditSubreddit);
 	}	
+
+	@Test
+	public void parseAccountJson(){
+		List<RedditType> parsedTypes = null;		
+		InputStream jsonStream = this.getClass().getResourceAsStream("/user.json");
+		String testJson = convertStreamToString(jsonStream);
+		testParser = new RedditJsonParser(testJson);
+		
+		try {
+			parsedTypes = testParser.parse();
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (RedditJsonException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		for(RedditType parsedType : parsedTypes){
+			System.out.println(parsedType);			
+		}		
+		
+		assertEquals(true, parsedTypes.get(0) instanceof RedditAccount);
+	}	
+	
+	//TODO
+	//Add message test json
 	
 	//Never do this in non-test code, Scanner is not closed!
 	private String convertStreamToString(InputStream is){

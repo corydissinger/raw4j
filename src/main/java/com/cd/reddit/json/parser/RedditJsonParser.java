@@ -60,7 +60,9 @@ public class RedditJsonParser {
 		
 		while(theEles.hasNext()){
 			final JsonNode nextNode = theEles.next();
-			theTypes.addAll(parseRedditTypes(nextNode));
+			List<RedditType> parsedTypes = parseRedditTypes(nextNode);
+			
+			theTypes.addAll(parsedTypes);
 		}
 		
 		return theTypes;

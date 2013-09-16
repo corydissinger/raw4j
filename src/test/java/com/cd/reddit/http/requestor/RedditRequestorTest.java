@@ -167,7 +167,6 @@ public class RedditRequestorTest {
 		assertEquals(output.getStatus(), 200);
 	}
 	
-	@Test
 	public void listComments(){
 		System.out.println(nl);		
 		System.out.println("Begin Method: listComments");
@@ -192,10 +191,11 @@ public class RedditRequestorTest {
 		System.out.println(output);		
 		assertEquals(output.getStatus(), 200);
 	}
-	
+
+	@Test	
 	public void aboutUser(){
 		System.out.println(nl);		
-		System.out.println("Begin Method: listComments");
+		System.out.println("Begin Method: aboutUser");
 		System.out.println(nl);		
 		
 		List<String> testSegments = new ArrayList<String>();

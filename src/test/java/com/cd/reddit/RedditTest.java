@@ -15,15 +15,35 @@ You should have received a copy of the GNU General Public License
 along with raw4j.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.cd.reddit.json.exception;
 
-import com.cd.reddit.exception.RedditException;
+package com.cd.reddit;
 
-public class RedditJsonException extends RedditException {
+import org.junit.Before;
+import org.junit.Test;
 
-	private static final long serialVersionUID = -4044463530518964835L;	
-	
-	public RedditJsonException(String message) {
-		super(message);
+public class RedditTest {
+
+	@Before
+	public void waitForNextRequest(){
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}	
+
+	@Test
+	public void testLogin(){
+		
 	}
+	
+	@Test
+	public void testSubreddits(){
+		
+	}
+	
+	@Test
+	public void testComments(){
+		
+	}	
 }
