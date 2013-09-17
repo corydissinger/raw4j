@@ -40,7 +40,7 @@ public class Reddit {
 		this.userAgent = userAgent;
 	}
 	
-	public RedditAccount login(String userName, String password) throws RedditException{
+	public void login(String userName, String password) throws RedditException{
 		List<String> pathSegments = new ArrayList<String>();
 		
 		pathSegments.add(RedditApiResourceConstants.API);
@@ -55,17 +55,6 @@ public class Reddit {
 		final RedditRequestInput requestInput 
 			= new RedditRequestInput(pathSegments, userAgent, null, bodyParams);
 		
-		final RedditRequestResponse response = RedditRequestor.executePost(requestInput);
-		
-		final RedditJsonParser parser = new RedditJsonParser(response.getBody());
-		List<RedditType> parsedResp;
-		
-		try {
-			parsedResp = parser.parse();
-		} catch (Exception e) {
-			throw new RedditException(e.getMessage());
-		}  
-		
-		return (RedditAccount) parsedResp.get(0);
+		RedditRequestor.executePost(requestInput);
 	}
 }

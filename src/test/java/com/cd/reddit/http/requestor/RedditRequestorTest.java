@@ -33,6 +33,7 @@ import com.cd.reddit.http.util.RedditApiResourceConstants;
 import com.cd.reddit.http.util.RedditRequestInput;
 import com.cd.reddit.http.util.RedditRequestResponse;
 
+//@Test notations have been removed to prevent frivolous API calls 
 public class RedditRequestorTest {
 
 	private static final String nl = System.getProperty("line.separator");
@@ -192,7 +193,6 @@ public class RedditRequestorTest {
 		assertEquals(output.getStatus(), 200);
 	}
 
-	@Test	
 	public void aboutUser(){
 		System.out.println(nl);		
 		System.out.println("Begin Method: aboutUser");

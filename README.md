@@ -23,35 +23,11 @@ The Input and Output objects have utility toString and hashCode methods overridd
 Here is an example with the current code of logging in with a user.
 
 ```java
-String userAgent = "SomeDudeGuyBot/1.0 by Cory Dissinger";
 
-//Create an Iterable sequence of strings that will be joined with fw slash
-List<String> testSegments = new ArrayList<String>();
+Reddit reddit = new Reddit("my-user-agent");
+reddit.login("myUsername", "myPassword");
 
-testSegments.add(RedditApiResourceConstants.API);
-testSegments.add(RedditApiResourceConstants.LOGIN);
-
-Map<String, String> testBodyParams = new HashMap<String, String>();
-
-testBodyParams.put(RedditApiParameterConstants.API_TYPE, RedditApiParameterConstants.JSON);
-testBodyParams.put(RedditApiParameterConstants.USER, "my-user");
-testBodyParams.put(RedditApiParameterConstants.PASSWD, "my-password");
-
-// Input object is constructor-only as follows
-// Arg 1: restful/resource/path
-// Arg 2: user agent
-// Arg 3: query ?params
-// Arg 4: additional form/body data
-// **Your mileage may vary with omitting arguments
-
-
-RedditRequestInput testInput 
-							= new RedditRequestInput(testSegments, 
-													 testUserAgent, 
-													 null,
-													 testBodyParams);
-
-final RedditRequestOutput output = RedditRequestor.executePost(testInput);
+//More to come...
 
 ```
 

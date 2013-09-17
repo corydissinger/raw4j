@@ -21,10 +21,20 @@ package com.cd.reddit;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.cd.reddit.exception.RedditException;
+import com.cd.reddit.json.mapping.RedditAccount;
+
 public class RedditTest {
 
+	Reddit testReddit;
+	
+	//Throway account for proof-of-concept purposes
+	final String testUserAgent = "JavaJerseyTestBot/1.0 by Cory Dissinger";		
+	
 	@Before
 	public void waitForNextRequest(){
+		testReddit = null;
+		
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
@@ -34,7 +44,15 @@ public class RedditTest {
 
 	@Test
 	public void testLogin(){
+		testReddit = new Reddit(testUserAgent);
+		RedditAccount account = null;
 		
+		try {
+			testReddit.login("JavaJerseyTestBot", "JavaJerseyTestBot");
+		//TODO: This exception fails to accurately pinpoint root cause in application!
+		} catch (RedditException e) {
+			e.printStackTrace();
+		} 
 	}
 	
 	@Test
