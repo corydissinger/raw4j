@@ -62,22 +62,17 @@ public class RedditJsonParserTest {
 		System.out.println("Amount of bytes used before/after=" + assumedSize);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Test
 	public void parseListingJson(){
-		List<RedditType> parsedTypes = null;
+		List<RedditLink> parsedTypes = null;
 		InputStream jsonStream = this.getClass().getResourceAsStream("/politicsnew.json");
 		String testJson = convertStreamToString(jsonStream);
 		testParser = new RedditJsonParser(testJson);
 		
 		try {
-			parsedTypes = testParser.parse();
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (RedditJsonException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+			parsedTypes = (List<RedditLink>)testParser.parse();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -88,22 +83,17 @@ public class RedditJsonParserTest {
 		assertEquals(true, parsedTypes.get(0) instanceof RedditLink);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Test
 	public void parseCommentsJson(){
-		List<RedditType> parsedTypes = null;		
+		List<RedditComment> parsedTypes = null;		
 		InputStream jsonStream = this.getClass().getResourceAsStream("/comments.json");
 		String testJson = convertStreamToString(jsonStream);
 		testParser = new RedditJsonParser(testJson);
 		
 		try {
-			parsedTypes = testParser.parse();
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (RedditJsonException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+			parsedTypes = (List<RedditComment>)testParser.parse();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -111,28 +101,21 @@ public class RedditJsonParserTest {
 			System.out.println(parsedType);			
 		}		
 		
-		//Assert that first RedditType is the original link
-		//Assert that all remaining elements are of comment type
-		assertEquals(true, parsedTypes.get(0) instanceof RedditLink);
+		//TODO: The first element will be of type RedditLink.... need to reconcile this.
 		assertEquals(true, parsedTypes.get(1) instanceof RedditComment);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Test
 	public void parseSubredditsJson(){
-		List<RedditType> parsedTypes = null;		
+		List<RedditSubreddit> parsedTypes = null;		
 		InputStream jsonStream = this.getClass().getResourceAsStream("/subreddits-popular.json");
 		String testJson = convertStreamToString(jsonStream);
 		testParser = new RedditJsonParser(testJson);
 		
 		try {
-			parsedTypes = testParser.parse();
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (RedditJsonException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+			parsedTypes = (List<RedditSubreddit>)testParser.parse();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -143,22 +126,17 @@ public class RedditJsonParserTest {
 		assertEquals(true, parsedTypes.get(0) instanceof RedditSubreddit);
 	}	
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void parseAccountJson(){
-		List<RedditType> parsedTypes = null;		
+		List<RedditAccount> parsedTypes = null;		
 		InputStream jsonStream = this.getClass().getResourceAsStream("/user.json");
 		String testJson = convertStreamToString(jsonStream);
 		testParser = new RedditJsonParser(testJson);
 		
 		try {
-			parsedTypes = testParser.parse();
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (RedditJsonException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+			parsedTypes = (List<RedditAccount>)testParser.parse();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		

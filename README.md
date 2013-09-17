@@ -27,6 +27,9 @@ Here is an example with the current code of logging in with a user.
 Reddit reddit = new Reddit("my-user-agent");
 reddit.login("myUsername", "myPassword");
 
+List<RedditSubreddit> popularSubreddits = reddit.subredditsPopular();
+List<RedditLink> topJavaLinks = reddit.listingFor("java", "top");
+
 //More to come...
 
 ```

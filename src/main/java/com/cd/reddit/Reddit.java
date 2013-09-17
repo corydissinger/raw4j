@@ -29,8 +29,9 @@ import com.cd.reddit.http.util.RedditApiParameterConstants;
 import com.cd.reddit.http.util.RedditApiResourceConstants;
 import com.cd.reddit.http.util.RedditRequestInput;
 import com.cd.reddit.http.util.RedditRequestResponse;
-import com.cd.reddit.json.mapping.RedditAccount;
-import com.cd.reddit.json.mapping.RedditType;
+import com.cd.reddit.json.mapping.RedditComment;
+import com.cd.reddit.json.mapping.RedditLink;
+import com.cd.reddit.json.mapping.RedditSubreddit;
 import com.cd.reddit.json.parser.RedditJsonParser;
 
 public class Reddit {
@@ -57,4 +58,56 @@ public class Reddit {
 		
 		RedditRequestor.executePost(requestInput);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<RedditSubreddit> subredditsNew() throws RedditException{
+		List<String> pathSegments = new ArrayList<String>();
+		
+		pathSegments.add(RedditApiResourceConstants.SUBREDDITS);
+		pathSegments.add(RedditApiResourceConstants.NEW + RedditApiResourceConstants.DOT_JSON);
+		
+		final RedditRequestInput requestInput 
+			= new RedditRequestInput(pathSegments, userAgent);
+		
+		final RedditRequestResponse response = RedditRequestor.executeGet(requestInput);
+		
+		RedditJsonParser parser = new RedditJsonParser(response.getBody());
+		
+		return (List<RedditSubreddit>) parser.parse();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<RedditSubreddit> subredditsPopular() throws RedditException{
+		List<String> pathSegments = new ArrayList<String>();
+		
+		pathSegments.add(RedditApiResourceConstants.SUBREDDITS);
+		pathSegments.add(RedditApiResourceConstants.POPULAR + RedditApiResourceConstants.DOT_JSON);
+		
+		final RedditRequestInput requestInput 
+			= new RedditRequestInput(pathSegments, userAgent);
+		
+		final RedditRequestResponse response = RedditRequestor.executeGet(requestInput);
+		
+		RedditJsonParser parser = new RedditJsonParser(response.getBody());
+		
+		return (List<RedditSubreddit>) parser.parse();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<RedditLink> listingFor(String subreddit, String listingType) throws RedditException{
+		List<String> pathSegments = new ArrayList<String>();
+
+		pathSegments.add(RedditApiResourceConstants.R);
+		pathSegments.add(subreddit);		
+		pathSegments.add(listingType + RedditApiResourceConstants.DOT_JSON);
+		
+		final RedditRequestInput requestInput 
+			= new RedditRequestInput(pathSegments, userAgent);
+		
+		final RedditRequestResponse response = RedditRequestor.executeGet(requestInput);
+		
+		RedditJsonParser parser = new RedditJsonParser(response.getBody());
+		
+		return (List<RedditLink>) parser.parse();
+	}	
 }

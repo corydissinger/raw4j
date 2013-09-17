@@ -18,11 +18,16 @@ along with raw4j.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.cd.reddit;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.cd.reddit.exception.RedditException;
-import com.cd.reddit.json.mapping.RedditAccount;
+import com.cd.reddit.json.mapping.RedditLink;
+import com.cd.reddit.json.mapping.RedditSubreddit;
 
 public class RedditTest {
 
@@ -45,7 +50,6 @@ public class RedditTest {
 	@Test
 	public void testLogin(){
 		testReddit = new Reddit(testUserAgent);
-		RedditAccount account = null;
 		
 		try {
 			testReddit.login("JavaJerseyTestBot", "JavaJerseyTestBot");
@@ -56,12 +60,50 @@ public class RedditTest {
 	}
 	
 	@Test
-	public void testSubreddits(){
+	public void testSubredditsNew(){
+		testReddit = new Reddit(testUserAgent);
 		
+		List<RedditSubreddit> subreddits = null;
+		
+		try {
+			subreddits = testReddit.subredditsNew();
+		//TODO: This exception fails to accurately pinpoint root cause in application!
+		} catch (RedditException e) {
+			e.printStackTrace();
+		}		
+		
+		assertEquals(false, subreddits.isEmpty());
 	}
 	
 	@Test
-	public void testComments(){
+	public void testSubredditsPopular(){
+		testReddit = new Reddit(testUserAgent);
 		
+		List<RedditSubreddit> subreddits = null;
+		
+		try {
+			subreddits = testReddit.subredditsPopular();
+		//TODO: This exception fails to accurately pinpoint root cause in application!
+		} catch (RedditException e) {
+			e.printStackTrace();
+		}		
+		
+		assertEquals(false, subreddits.isEmpty());
+	}
+	
+	@Test
+	public void testListingsFor(){
+		testReddit = new Reddit(testUserAgent);
+		
+		List<RedditLink> listing = null;
+		
+		try {
+			listing = testReddit.listingFor("java", "top");
+		//TODO: This exception fails to accurately pinpoint root cause in application!
+		} catch (RedditException e) {
+			e.printStackTrace();
+		}		
+		
+		assertEquals(false, listing.isEmpty());
 	}	
 }

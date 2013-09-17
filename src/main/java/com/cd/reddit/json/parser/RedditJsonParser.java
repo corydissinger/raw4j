@@ -27,8 +27,10 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.cd.reddit.exception.RedditException;
 import com.cd.reddit.json.RedditJacksonManager;
 import com.cd.reddit.json.exception.RedditJsonException;
+import com.cd.reddit.json.mapping.RedditSubreddit;
 import com.cd.reddit.json.mapping.RedditType;
 import com.cd.reddit.json.util.RedditJsonConstants;
 
@@ -44,14 +46,20 @@ public class RedditJsonParser {
 		json = aJson;
 	}
 	
-	public List<RedditType> parse() throws RedditJsonException, JsonParseException, JsonMappingException, IOException{
+	public List<? extends RedditType> parse() throws RedditException{
 		init();
 		
-		if(rootNode.isArray()){
-			Iterator<JsonNode> theEles = rootNode.getElements();
-			return parseManyNodes(theEles);
-		}else{
-			return parseRedditTypes(rootNode);
+		try {
+			
+			if(rootNode.isArray()){
+				Iterator<JsonNode> theEles = rootNode.getElements();
+				return parseManyNodes(theEles);
+			}else{
+				return parseRedditTypes(rootNode);
+			}
+			
+		} catch (Exception e) {
+			throw new RedditException(e.getMessage());
 		}
 	}
 	
