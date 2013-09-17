@@ -3,9 +3,9 @@
 ______________
 **Important Triple Bulleted List**
 
-- Java (Jersey+Jackson APIs) based Reddit API client
-- Minimal memory footprint with fewest LoC
 - Easy to understand and implement
+- High/Low level APIs
+- Java (Jersey+Jackson APIs) based Reddit API client
 
 **raw4j** provide a light-weight, injectable dependency that allows for an intuitive but not overly opinionated Java Reddit API client. 
 
@@ -14,11 +14,6 @@ As of 09/05/2013 no truly complete Java Reddit API clients really exist - [check
 
 # Usage
 ______________
-Most of this example was pulled directly from the ['Requestor'](https://github.com/corydissinger/raw4j/blob/master/src/test/java/com/cd/requestor/RedditRequestorTest.java) JUnit test class.
-
-Please note I have omitted the @Test annotation from many of the methods to prevent frivolous API calls.
-
-The Input and Output objects have utility toString and hashCode methods overridden for additional programmatic power.
 
 Here is an example with the current code of logging in with a user.
 
@@ -35,8 +30,9 @@ List<RedditLink> topJavaLinks = reddit.listingFor("java", "top");
 ```
 
 # To Dos
+- Reconcile the RedditType(s)
 - Easier Maven-based installation via something like Central
-- Convenience classes to abstract away the I/O objects?
+
 
 
 # License
