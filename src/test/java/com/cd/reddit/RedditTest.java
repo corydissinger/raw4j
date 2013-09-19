@@ -25,7 +25,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.cd.reddit.exception.RedditException;
 import com.cd.reddit.json.mapping.RedditLink;
 import com.cd.reddit.json.mapping.RedditSubreddit;
 

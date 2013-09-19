@@ -24,13 +24,10 @@ import java.util.List;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.cd.reddit.exception.RedditException;
+import com.cd.reddit.RedditException;
 import com.cd.reddit.json.RedditJacksonManager;
-import com.cd.reddit.json.exception.RedditJsonException;
-import com.cd.reddit.json.mapping.RedditSubreddit;
 import com.cd.reddit.json.mapping.RedditType;
 import com.cd.reddit.json.util.RedditJsonConstants;
 
@@ -63,7 +60,7 @@ public class RedditJsonParser {
 		}
 	}
 	
-	private List<RedditType> parseManyNodes(Iterator<JsonNode> theEles) throws JsonParseException, JsonMappingException, RedditJsonException, IOException {
+	private List<RedditType> parseManyNodes(Iterator<JsonNode> theEles) throws RedditException {
 		final List<RedditType> theTypes = new ArrayList<RedditType>(20);
 		
 		while(theEles.hasNext()){
@@ -76,12 +73,12 @@ public class RedditJsonParser {
 		return theTypes;
 	}
 
-	private List<RedditType> parseRedditTypes(JsonNode aNode) throws RedditJsonException, JsonParseException, JsonMappingException, IOException{
+	private List<RedditType> parseRedditTypes(JsonNode aNode) throws RedditException{
 		final JsonNode kindNode = aNode.get(RedditJsonConstants.KIND);
 		final String theKind;
 		
 		if(kindNode == null){
-			throw new RedditJsonException("No kind found for node: " + aNode.toString());
+			throw new RedditException("No kind found for node: " + aNode.toString());
 		}else{
 			theKind = kindNode.asText();
 		}
@@ -95,14 +92,14 @@ public class RedditJsonParser {
 		} 
 	}
 	
-	private void init(){
+	private void init() throws RedditException{
 		try {
 			mapper = RedditJacksonManager.INSTANCE.getObjectMapper();
 			rootNode = mapper.readTree(json);
 		} catch (JsonParseException e) {
-			e.printStackTrace();
+			throw new RedditException(e.getMessage());
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RedditException(e.getMessage());
 		}		
 	}
 }

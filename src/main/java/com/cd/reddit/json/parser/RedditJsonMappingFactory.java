@@ -17,16 +17,14 @@ along with raw4j.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.cd.reddit.json.parser;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.cd.reddit.RedditException;
 import com.cd.reddit.json.mapping.RedditAccount;
 import com.cd.reddit.json.mapping.RedditComment;
 import com.cd.reddit.json.mapping.RedditLink;
@@ -36,7 +34,7 @@ import com.cd.reddit.json.mapping.RedditType;
 import com.cd.reddit.json.util.RedditJsonConstants;
 
 public class RedditJsonMappingFactory {
-	public static List<RedditType> mapJsonArrayToList(JsonNode jsonArray, ObjectMapper mapper) throws JsonParseException, JsonMappingException, IOException{
+	public static List<RedditType> mapJsonArrayToList(JsonNode jsonArray, ObjectMapper mapper) throws RedditException{
 		final List<RedditType> theObjs = new ArrayList<RedditType>(10);
 		
 		final Iterator<JsonNode> nodeItr = jsonArray.getElements();
@@ -56,7 +54,7 @@ public class RedditJsonMappingFactory {
 		return theObjs;
 	}
 
-	public static List<RedditType> mapJsonObjectToList(JsonNode jsonObject, String kind, ObjectMapper mapper) throws JsonParseException, JsonMappingException, IOException{
+	public static List<RedditType> mapJsonObjectToList(JsonNode jsonObject, String kind, ObjectMapper mapper) throws RedditException{
 		final List<RedditType> theTypes;
 
 		if(RedditJsonConstants.LISTING.equals(kind)){
@@ -69,19 +67,23 @@ public class RedditJsonMappingFactory {
 		return theTypes;
 	}
 
-	public static RedditType mapJsonObjectToType(JsonNode jsonObject, String kind, ObjectMapper mapper) throws JsonParseException, JsonMappingException, IOException{
+	public static RedditType mapJsonObjectToType(JsonNode jsonObject, String kind, ObjectMapper mapper) throws RedditException{
 		RedditType theType = null;
 		
-		if(RedditJsonConstants.TYPE_ACCOUNT.equals(kind)){
-			theType = mapper.readValue(jsonObject, RedditAccount.class);
-		}else if(RedditJsonConstants.TYPE_COMMENT.equals(kind)){
-			theType = mapper.readValue(jsonObject, RedditComment.class);	
-		}else if(RedditJsonConstants.TYPE_LINK.equals(kind)){
-			theType = mapper.readValue(jsonObject, RedditLink.class);	
-		}else if(RedditJsonConstants.TYPE_MESSAGE.equals(kind)){
-			theType = mapper.readValue(jsonObject, RedditMessage.class);	
-		}else if(RedditJsonConstants.TYPE_SUBREDDIT.equals(kind)){
-			theType = mapper.readValue(jsonObject, RedditSubreddit.class);	
+		try{
+			if(RedditJsonConstants.TYPE_ACCOUNT.equals(kind)){
+				theType = mapper.readValue(jsonObject, RedditAccount.class);
+			}else if(RedditJsonConstants.TYPE_COMMENT.equals(kind)){
+				theType = mapper.readValue(jsonObject, RedditComment.class);	
+			}else if(RedditJsonConstants.TYPE_LINK.equals(kind)){
+				theType = mapper.readValue(jsonObject, RedditLink.class);	
+			}else if(RedditJsonConstants.TYPE_MESSAGE.equals(kind)){
+				theType = mapper.readValue(jsonObject, RedditMessage.class);	
+			}else if(RedditJsonConstants.TYPE_SUBREDDIT.equals(kind)){
+				theType = mapper.readValue(jsonObject, RedditSubreddit.class);	
+			}
+		}catch(Exception e){
+			throw new RedditException(e.getMessage());
 		}
 		
 		return theType;

@@ -19,18 +19,14 @@ package com.cd.reddit.json.parser;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Scanner;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.cd.reddit.json.exception.RedditJsonException;
 import com.cd.reddit.json.mapping.RedditAccount;
 import com.cd.reddit.json.mapping.RedditComment;
 import com.cd.reddit.json.mapping.RedditLink;
@@ -102,7 +98,8 @@ public class RedditJsonParserTest {
 		}		
 		
 		//TODO: The first element will be of type RedditLink.... need to reconcile this.
-		assertEquals(true, parsedTypes.get(1) instanceof RedditComment);
+		//TODO: 
+		assertEquals(true, parsedTypes.get(2) instanceof RedditComment);
 	}
 	
 	@SuppressWarnings("unchecked")

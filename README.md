@@ -1,4 +1,9 @@
 [![Build Status](https://travis-ci.org/corydissinger/raw4j.png)](https://travis-ci.org/corydissinger/raw4j)
+# Contributing
+______________
+**Please follow these rules before submitting pull requests...**
+
+
 # Goals/Philosophy
 ______________
 **Important Triple Bulleted List**
@@ -9,10 +14,8 @@ ______________
 
 **raw4j** provide a light-weight, injectable dependency that allows for an intuitive but not overly opinionated Java Reddit API client. 
 
-As of 09/05/2013 no truly complete Java Reddit API clients really exist - [check here](https://github.com/reddit/reddit/wiki/API-Wrappers).
 
-
-# Usage
+# Example Usage
 ______________
 
 Here is an example with the current code of logging in with a user.
