@@ -3,6 +3,9 @@
 ______________
 **Please follow these rules before submitting pull requests...**
 
+-No Java 1.7 specific features in master branch (yet)
+-master branch should provide an API compatible with the most platforms
+
 
 # Goals/Philosophy
 ______________
