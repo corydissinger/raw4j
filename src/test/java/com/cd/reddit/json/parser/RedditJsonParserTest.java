@@ -94,12 +94,12 @@ public class RedditJsonParserTest {
 		}
 		
 		for(RedditType parsedType : parsedTypes){
-			System.out.println(parsedType);			
+			System.out.println(parsedType.toString());			
 		}		
 		
 		//TODO: The first element will be of type RedditLink.... need to reconcile this.
 		//TODO: 
-		assertEquals(true, parsedTypes.get(2) instanceof RedditComment);
+		assertEquals(true, parsedTypes.get(1) instanceof RedditComment);
 	}
 	
 	@SuppressWarnings("unchecked")
