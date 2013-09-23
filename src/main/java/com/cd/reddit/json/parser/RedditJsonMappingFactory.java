@@ -35,7 +35,7 @@ import com.cd.reddit.json.mapping.RedditType;
 import com.cd.reddit.json.util.RedditJsonConstants;
 
 public class RedditJsonMappingFactory {
-	public static List<RedditType> mapJsonArrayToList(JsonNode jsonArray, ObjectMapper mapper) throws RedditException{
+	public static List<RedditType> mapJsonArrayToList(JsonNode jsonArray, ObjectMapper mapper, String specifiedType) throws RedditException{
 		final List<RedditType> theTypes = new ArrayList<RedditType>(10);
 		
 		final Iterator<JsonNode> nodeItr = jsonArray.getElements();
@@ -45,10 +45,10 @@ public class RedditJsonMappingFactory {
 			final String jsonKind 	= nextJson.get(RedditJsonConstants.KIND).asText();
 			
 			if(RedditJsonConstants.LISTING.equals(jsonKind)){
-				theTypes.addAll(mapJsonArrayToList(nextJson, mapper));
+				theTypes.addAll(mapJsonArrayToList(nextJson, mapper, specifiedType));
 			}else{
 				final JsonNode dataJson = nextJson.get(RedditJsonConstants.DATA);
-				theTypes.add(mapJsonObjectToType(dataJson, jsonKind, mapper));	
+				theTypes.add(mapJsonObjectToSpecifiedType(dataJson, jsonKind, mapper, specifiedType));	
 			}
 		}
 		
@@ -57,19 +57,14 @@ public class RedditJsonMappingFactory {
 		return theTypes;
 	}
 
-	public static List<RedditType> mapJsonObjectToList(JsonNode jsonObject, String kind, ObjectMapper mapper) throws RedditException{
-		final List<RedditType> theTypes;
-
-		if(RedditJsonConstants.LISTING.equals(kind)){
-			theTypes = mapJsonArrayToList(jsonObject, mapper);
-		}else{
-			theTypes = new ArrayList<RedditType>(1);
-			theTypes.add(mapJsonObjectToType(jsonObject, kind, mapper));
+	public static RedditType mapJsonObjectToSpecifiedType(JsonNode jsonObject, String kind, ObjectMapper mapper, String specifiedType) throws RedditException{
+		RedditType theType = null;
+		
+		if(specifiedType.equals(kind)){
+			theType = mapJsonObjectToType(jsonObject, specifiedType, mapper);				
 		}
 		
-		theTypes.removeAll(Collections.singleton(null));		
-		
-		return theTypes;
+		return theType;
 	}
 
 	public static RedditType mapJsonObjectToType(JsonNode jsonObject, String kind, ObjectMapper mapper) throws RedditException{

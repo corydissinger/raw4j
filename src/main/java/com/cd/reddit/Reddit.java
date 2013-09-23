@@ -58,7 +58,6 @@ public class Reddit {
 		RedditRequestor.executePost(requestInput);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<RedditSubreddit> subredditsNew() throws RedditException{
 		List<String> pathSegments = new ArrayList<String>();
 		
@@ -72,10 +71,9 @@ public class Reddit {
 		
 		RedditJsonParser parser = new RedditJsonParser(response.getBody());
 		
-		return (List<RedditSubreddit>) parser.parse();
+		return parser.parseSubreddits();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<RedditSubreddit> subredditsPopular() throws RedditException{
 		List<String> pathSegments = new ArrayList<String>();
 		
@@ -89,10 +87,9 @@ public class Reddit {
 		
 		RedditJsonParser parser = new RedditJsonParser(response.getBody());
 		
-		return (List<RedditSubreddit>) parser.parse();
+		return parser.parseSubreddits();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<RedditLink> listingFor(String subreddit, String listingType) throws RedditException{
 		List<String> pathSegments = new ArrayList<String>();
 
@@ -107,6 +104,6 @@ public class Reddit {
 		
 		RedditJsonParser parser = new RedditJsonParser(response.getBody());
 		
-		return (List<RedditLink>) parser.parse();
+		return parser.parseLinks();
 	}	
 }

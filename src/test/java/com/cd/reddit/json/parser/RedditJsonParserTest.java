@@ -58,7 +58,6 @@ public class RedditJsonParserTest {
 		System.out.println("Amount of bytes used before/after=" + assumedSize);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Test
 	public void parseListingJson(){
 		List<RedditLink> parsedTypes = null;
@@ -67,7 +66,7 @@ public class RedditJsonParserTest {
 		testParser = new RedditJsonParser(testJson);
 		
 		try {
-			parsedTypes = (List<RedditLink>)testParser.parse();
+			parsedTypes = testParser.parseLinks();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -79,7 +78,6 @@ public class RedditJsonParserTest {
 		assertEquals(true, parsedTypes.get(0) instanceof RedditLink);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Test
 	public void parseCommentsJson(){
 		List<RedditComment> parsedTypes = null;		
@@ -88,7 +86,7 @@ public class RedditJsonParserTest {
 		testParser = new RedditJsonParser(testJson);
 		
 		try {
-			parsedTypes = (List<RedditComment>)testParser.parse();
+			parsedTypes = testParser.parseComments();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -97,12 +95,9 @@ public class RedditJsonParserTest {
 			System.out.println(parsedType.toString());			
 		}		
 		
-		//TODO: The first element will be of type RedditLink.... need to reconcile this.
-		//TODO: 
-		assertEquals(true, parsedTypes.get(1) instanceof RedditComment);
+		assertEquals(true, parsedTypes.get(0) instanceof RedditComment);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Test
 	public void parseSubredditsJson(){
 		List<RedditSubreddit> parsedTypes = null;		
@@ -111,7 +106,7 @@ public class RedditJsonParserTest {
 		testParser = new RedditJsonParser(testJson);
 		
 		try {
-			parsedTypes = (List<RedditSubreddit>)testParser.parse();
+			parsedTypes = testParser.parseSubreddits();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -123,7 +118,6 @@ public class RedditJsonParserTest {
 		assertEquals(true, parsedTypes.get(0) instanceof RedditSubreddit);
 	}	
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void parseAccountJson(){
 		List<RedditAccount> parsedTypes = null;		
@@ -132,7 +126,7 @@ public class RedditJsonParserTest {
 		testParser = new RedditJsonParser(testJson);
 		
 		try {
-			parsedTypes = (List<RedditAccount>)testParser.parse();
+			parsedTypes = testParser.parseAccounts();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

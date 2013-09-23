@@ -28,6 +28,11 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import com.cd.reddit.RedditException;
 import com.cd.reddit.json.RedditJacksonManager;
+import com.cd.reddit.json.mapping.RedditAccount;
+import com.cd.reddit.json.mapping.RedditComment;
+import com.cd.reddit.json.mapping.RedditLink;
+import com.cd.reddit.json.mapping.RedditMessage;
+import com.cd.reddit.json.mapping.RedditSubreddit;
 import com.cd.reddit.json.mapping.RedditType;
 import com.cd.reddit.json.util.RedditJsonConstants;
 
@@ -43,29 +48,61 @@ public class RedditJsonParser {
 		json = aJson;
 	}
 	
-	public List<? extends RedditType> parse() throws RedditException{
+	@SuppressWarnings("unchecked")
+	public List<RedditAccount> parseAccounts() throws RedditException{
 		init();
 		
+		return (List<RedditAccount>) parseSpecificType(RedditJsonConstants.TYPE_ACCOUNT);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<RedditComment> parseComments() throws RedditException{
+		init();
+		
+		return (List<RedditComment>) parseSpecificType(RedditJsonConstants.TYPE_COMMENT);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<RedditLink> parseLinks() throws RedditException{
+		init();
+		
+		return (List<RedditLink>) parseSpecificType(RedditJsonConstants.TYPE_LINK);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<RedditMessage> parseMessages() throws RedditException{
+		init();
+		
+		return (List<RedditMessage>) parseSpecificType(RedditJsonConstants.TYPE_MESSAGE);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<RedditSubreddit> parseSubreddits() throws RedditException{
+		init();
+		
+		return (List<RedditSubreddit>) parseSpecificType(RedditJsonConstants.TYPE_SUBREDDIT);
+	}	
+
+	private List<? extends RedditType> parseSpecificType(String specifiedType) throws RedditException{
 		try {
-			
 			if(rootNode.isArray()){
 				Iterator<JsonNode> theEles = rootNode.getElements();
-				return parseManyNodes(theEles);
+				return parseManyNodes(theEles, specifiedType);
 			}else{
-				return parseRedditTypes(rootNode);
+				return parseRedditTypes(rootNode, specifiedType);
 			}
 			
 		} catch (Exception e) {
 			throw new RedditException(e.getMessage());
-		}
+		}		
 	}
 	
-	private List<RedditType> parseManyNodes(Iterator<JsonNode> theEles) throws RedditException {
+	private List<RedditType> parseManyNodes(Iterator<JsonNode> theEles, String specifiedType) throws RedditException {
 		final List<RedditType> theTypes = new ArrayList<RedditType>(20);
 		
 		while(theEles.hasNext()){
 			final JsonNode nextNode = theEles.next();
-			List<RedditType> parsedTypes = parseRedditTypes(nextNode);
+			List<RedditType> parsedTypes = parseRedditTypes(nextNode, specifiedType);
 			
 			theTypes.addAll(parsedTypes);
 		}
@@ -73,7 +110,7 @@ public class RedditJsonParser {
 		return theTypes;
 	}
 
-	private List<RedditType> parseRedditTypes(JsonNode aNode) throws RedditException{
+	private List<RedditType> parseRedditTypes(JsonNode aNode, String specifiedType) throws RedditException{
 		final JsonNode kindNode = aNode.get(RedditJsonConstants.KIND);
 		final String theKind;
 		
@@ -85,10 +122,12 @@ public class RedditJsonParser {
 		
 		if(RedditJsonConstants.LISTING.equals(theKind)){
 			final JsonNode childData = aNode.get(RedditJsonConstants.DATA).get(RedditJsonConstants.CHILDREN);
-			return RedditJsonMappingFactory.mapJsonArrayToList(childData, mapper); 
+			return RedditJsonMappingFactory.mapJsonArrayToList(childData, mapper, specifiedType); 
 		}else{
 			final JsonNode childData = aNode.get(RedditJsonConstants.DATA);
-			return RedditJsonMappingFactory.mapJsonObjectToList(childData, theKind, mapper);			
+			final List<RedditType> singleType = new ArrayList<RedditType>(1);
+			singleType.add(RedditJsonMappingFactory.mapJsonObjectToSpecifiedType(childData, theKind, mapper, specifiedType));
+			return singleType;			
 		} 
 	}
 	

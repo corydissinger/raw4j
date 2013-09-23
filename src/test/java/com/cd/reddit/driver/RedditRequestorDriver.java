@@ -43,14 +43,6 @@ public class RedditRequestorDriver {
 		
 		RedditRequestResponse response =  RedditRequestor.executeGet(testInput);
 		RedditJsonParser parser = new RedditJsonParser(response.getBody());
-		
-		try{
-			parser.parse();
-		}catch(RedditException re) {
-			re.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 }
