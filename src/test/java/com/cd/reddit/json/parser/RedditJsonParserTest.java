@@ -117,7 +117,7 @@ public class RedditJsonParserTest {
 		}
 		
 		for(RedditType parsedType : parsedTypes){
-			System.out.println(parsedType);			
+			System.out.println(parsedType.toString());			
 		}		
 		
 		assertEquals(true, parsedTypes.get(0) instanceof RedditSubreddit);
@@ -138,7 +138,7 @@ public class RedditJsonParserTest {
 		}
 		
 		for(RedditType parsedType : parsedTypes){
-			System.out.println(parsedType);			
+			System.out.println(parsedType.toString());			
 		}		
 		
 		assertEquals(true, parsedTypes.get(0) instanceof RedditAccount);
