@@ -35,7 +35,7 @@ import com.cd.reddit.json.util.RedditJsonConstants;
 
 public class RedditJsonMappingFactory {
 	public static List<RedditType> mapJsonArrayToList(JsonNode jsonArray, ObjectMapper mapper) throws RedditException{
-		final List<RedditType> theObjs = new ArrayList<RedditType>(10);
+		final List<RedditType> theTypes = new ArrayList<RedditType>(10);
 		
 		final Iterator<JsonNode> nodeItr = jsonArray.getElements();
 		
@@ -44,14 +44,16 @@ public class RedditJsonMappingFactory {
 			final String jsonKind 	= nextJson.get(RedditJsonConstants.KIND).asText();
 			
 			if(RedditJsonConstants.LISTING.equals(jsonKind)){
-				theObjs.addAll(mapJsonArrayToList(nextJson, mapper));
+				theTypes.addAll(mapJsonArrayToList(nextJson, mapper));
 			}else{
 				final JsonNode dataJson = nextJson.get(RedditJsonConstants.DATA);
-				theObjs.add(mapJsonObjectToType(dataJson, jsonKind, mapper));	
+				theTypes.add(mapJsonObjectToType(dataJson, jsonKind, mapper));	
 			}
 		}
 		
-		return theObjs;
+		theTypes.removeAll(Collections.singleton(null));		
+		
+		return theTypes;
 	}
 
 	public static List<RedditType> mapJsonObjectToList(JsonNode jsonObject, String kind, ObjectMapper mapper) throws RedditException{
@@ -63,6 +65,8 @@ public class RedditJsonMappingFactory {
 			theTypes = new ArrayList<RedditType>(1);
 			theTypes.add(mapJsonObjectToType(jsonObject, kind, mapper));
 		}
+		
+		theTypes.removeAll(Collections.singleton(null));		
 		
 		return theTypes;
 	}
