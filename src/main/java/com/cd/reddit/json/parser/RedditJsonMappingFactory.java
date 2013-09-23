@@ -18,6 +18,7 @@ along with raw4j.  If not, see <http://www.gnu.org/licenses/>.
 package com.cd.reddit.json.parser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
