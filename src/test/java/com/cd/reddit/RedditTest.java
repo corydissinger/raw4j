@@ -25,19 +25,20 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.cd.reddit.json.mapping.RedditLink;
 import com.cd.reddit.json.mapping.RedditSubreddit;
 
 public class RedditTest {
 
-	Reddit testReddit;
+	Reddit testReddit = null;
 	
 	//Throway account for proof-of-concept purposes
 	final String testUserAgent = "JavaJerseyTestBot/1.0 by Cory Dissinger";		
 	
 	@Before
 	public void waitForNextRequest(){
-		testReddit = null;
+		if(testReddit == null){
+			testReddit = new Reddit(testUserAgent);
+		}
 		
 		try {
 			Thread.sleep(2000);
@@ -48,10 +49,10 @@ public class RedditTest {
 
 	@Test
 	public void testLogin(){
-		testReddit = new Reddit(testUserAgent);
+		String dummyResp;
 		
 		try {
-			testReddit.login("JavaJerseyTestBot", "JavaJerseyTestBot");
+			dummyResp = testReddit.login("JavaJerseyTestBot", "JavaJerseyTestBot");
 		//TODO: This exception fails to accurately pinpoint root cause in application!
 		} catch (RedditException e) {
 			e.printStackTrace();
@@ -61,12 +62,10 @@ public class RedditTest {
 	@Test
 	public void testSubredditsNew(){
 		testReddit = new Reddit(testUserAgent);
-		
 		List<RedditSubreddit> subreddits = null;
 		
 		try {
 			subreddits = testReddit.subredditsNew();
-		//TODO: This exception fails to accurately pinpoint root cause in application!
 		} catch (RedditException e) {
 			e.printStackTrace();
 		}		
@@ -74,6 +73,7 @@ public class RedditTest {
 		assertEquals(false, subreddits.isEmpty());
 	}
 	
+	/*
 	@Test
 	public void testSubredditsPopular(){
 		testReddit = new Reddit(testUserAgent);
@@ -105,4 +105,5 @@ public class RedditTest {
 		
 		assertEquals(false, listing.isEmpty());
 	}	
+	*/
 }

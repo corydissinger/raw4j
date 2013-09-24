@@ -15,65 +15,54 @@ You should have received a copy of the GNU General Public License
 along with raw4j.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 package com.cd.reddit;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.cd.reddit.http.requestor.RedditRequestor;
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreProtocolPNames;
+
+import retrofit.RestAdapter;
+import retrofit.client.ApacheClient;
+
+import com.cd.reddit.http.retrofit.converter.RedditJacksonConverter;
+import com.cd.reddit.http.retrofit.service.RedditAccountService;
+import com.cd.reddit.http.retrofit.service.RedditSubredditsService;
 import com.cd.reddit.http.util.RedditApiParameterConstants;
-import com.cd.reddit.http.util.RedditApiResourceConstants;
-import com.cd.reddit.http.util.RedditRequestInput;
-import com.cd.reddit.http.util.RedditRequestResponse;
-import com.cd.reddit.json.mapping.RedditComment;
-import com.cd.reddit.json.mapping.RedditLink;
 import com.cd.reddit.json.mapping.RedditSubreddit;
-import com.cd.reddit.json.parser.RedditJsonParser;
 
 public class Reddit {
-	private final String userAgent;
+	private final RestAdapter retrofitRest;
 	
 	public Reddit(String userAgent){
-		this.userAgent = userAgent;
+		HttpClient client = new DefaultHttpClient();
+		client.getParams().setParameter(CoreProtocolPNames.USER_AGENT, userAgent);
+		retrofitRest = new RestAdapter.Builder()
+							.setClient(new ApacheClient(client))
+							.setConverter(new RedditJacksonConverter())
+							.setServer("http://www.reddit.com")
+							.setLogLevel(RestAdapter.LogLevel.FULL)
+							.build();
 	}
 	
-	public void login(String userName, String password) throws RedditException{
-		List<String> pathSegments = new ArrayList<String>();
+	//TODO: This should not return a simple String. Rather, it should return a success/fail message Object.
+	public String login(String userName, String password) throws RedditException{
+		RedditAccountService service = retrofitRest.create(RedditAccountService.class);
 		
-		pathSegments.add(RedditApiResourceConstants.API);
-		pathSegments.add(RedditApiResourceConstants.LOGIN);		
-		
-		Map<String, String> bodyParams = new HashMap<String, String>();
-		
-		bodyParams.put(RedditApiParameterConstants.API_TYPE, RedditApiParameterConstants.JSON);
-		bodyParams.put(RedditApiParameterConstants.USER, userName);
-		bodyParams.put(RedditApiParameterConstants.PASSWD, password);		
-		
-		final RedditRequestInput requestInput 
-			= new RedditRequestInput(pathSegments, userAgent, null, bodyParams);
-		
-		RedditRequestor.executePost(requestInput);
+		return service.login(RedditApiParameterConstants.JSON, userName, password);
 	}
-	
+
 	public List<RedditSubreddit> subredditsNew() throws RedditException{
-		List<String> pathSegments = new ArrayList<String>();
-		
-		pathSegments.add(RedditApiResourceConstants.SUBREDDITS);
-		pathSegments.add(RedditApiResourceConstants.NEW + RedditApiResourceConstants.DOT_JSON);
-		
-		final RedditRequestInput requestInput 
-			= new RedditRequestInput(pathSegments, userAgent);
-		
-		final RedditRequestResponse response = RedditRequestor.executeGet(requestInput);
-		
-		RedditJsonParser parser = new RedditJsonParser(response.getBody());
-		
-		return parser.parseSubreddits();
+		RedditSubredditsService service = retrofitRest.create(RedditSubredditsService.class);
+
+		return service.subreddits("new");
 	}
-	
+
+	/*	
 	public List<RedditSubreddit> subredditsPopular() throws RedditException{
 		List<String> pathSegments = new ArrayList<String>();
 		
@@ -105,5 +94,6 @@ public class Reddit {
 		RedditJsonParser parser = new RedditJsonParser(response.getBody());
 		
 		return parser.parseLinks();
-	}	
+	}
+	*/	
 }

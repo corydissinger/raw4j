@@ -18,6 +18,7 @@ along with raw4j.  If not, see <http://www.gnu.org/licenses/>.
 package com.cd.reddit.json.parser;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -38,14 +39,14 @@ import com.cd.reddit.json.util.RedditJsonConstants;
 
 public class RedditJsonParser {
 	
-	private final String json;
+	private final InputStream json;
 
 	private ObjectMapper mapper;	
 	private JsonNode rootNode;
 
 	
-	public RedditJsonParser(String aJson){
-		json = aJson;
+	public RedditJsonParser(InputStream inJson){
+		json = inJson;
 	}
 	
 	@SuppressWarnings("unchecked")

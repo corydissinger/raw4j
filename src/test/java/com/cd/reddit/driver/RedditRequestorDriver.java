@@ -20,12 +20,8 @@ package com.cd.reddit.driver;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cd.reddit.RedditException;
-import com.cd.reddit.http.requestor.RedditRequestor;
 import com.cd.reddit.http.util.RedditApiResourceConstants;
 import com.cd.reddit.http.util.RedditRequestInput;
-import com.cd.reddit.http.util.RedditRequestResponse;
-import com.cd.reddit.json.parser.RedditJsonParser;
 
 public class RedditRequestorDriver {
 
@@ -41,8 +37,6 @@ public class RedditRequestorDriver {
 		RedditRequestInput testInput = new RedditRequestInput(testSegments, 
 															  testUserAgent); 
 		
-		RedditRequestResponse response =  RedditRequestor.executeGet(testInput);
-		RedditJsonParser parser = new RedditJsonParser(response.getBody());
 	}
 	
 }

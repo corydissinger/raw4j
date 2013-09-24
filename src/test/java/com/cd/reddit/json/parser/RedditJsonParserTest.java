@@ -21,7 +21,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.InputStream;
 import java.util.List;
-import java.util.Scanner;
 
 import org.junit.After;
 import org.junit.Before;
@@ -62,8 +61,7 @@ public class RedditJsonParserTest {
 	public void parseListingJson(){
 		List<RedditLink> parsedTypes = null;
 		InputStream jsonStream = this.getClass().getResourceAsStream("/politicsnew.json");
-		String testJson = convertStreamToString(jsonStream);
-		testParser = new RedditJsonParser(testJson);
+		testParser = new RedditJsonParser(jsonStream);
 		
 		try {
 			parsedTypes = testParser.parseLinks();
@@ -82,8 +80,7 @@ public class RedditJsonParserTest {
 	public void parseCommentsJson(){
 		List<RedditComment> parsedTypes = null;		
 		InputStream jsonStream = this.getClass().getResourceAsStream("/comments.json");
-		String testJson = convertStreamToString(jsonStream);
-		testParser = new RedditJsonParser(testJson);
+		testParser = new RedditJsonParser(jsonStream);
 		
 		try {
 			parsedTypes = testParser.parseComments();
@@ -102,8 +99,7 @@ public class RedditJsonParserTest {
 	public void parseSubredditsJson(){
 		List<RedditSubreddit> parsedTypes = null;		
 		InputStream jsonStream = this.getClass().getResourceAsStream("/subreddits-popular.json");
-		String testJson = convertStreamToString(jsonStream);
-		testParser = new RedditJsonParser(testJson);
+		testParser = new RedditJsonParser(jsonStream);
 		
 		try {
 			parsedTypes = testParser.parseSubreddits();
@@ -122,8 +118,7 @@ public class RedditJsonParserTest {
 	public void parseAccountJson(){
 		List<RedditAccount> parsedTypes = null;		
 		InputStream jsonStream = this.getClass().getResourceAsStream("/user.json");
-		String testJson = convertStreamToString(jsonStream);
-		testParser = new RedditJsonParser(testJson);
+		testParser = new RedditJsonParser(jsonStream);
 		
 		try {
 			parsedTypes = testParser.parseAccounts();
@@ -140,10 +135,4 @@ public class RedditJsonParserTest {
 	
 	//TODO
 	//Add message test json
-	
-	//Never do this in non-test code, Scanner is not closed!
-	private String convertStreamToString(InputStream is){
-		Scanner sc = new Scanner(is).useDelimiter("\\A");
-		return sc.hasNext() ? sc.next() : "";
-	}
 }
