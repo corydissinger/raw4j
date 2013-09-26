@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License
 along with raw4j.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.cd.reddit.json.parser;
+package com.cd.reddit.json.jackson;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -51,8 +51,7 @@ public class RedditRequestInputTest {
 		List<String> testSegments1 = createTestSegments1();
 		Map<String, String> queryParams = createTestQueryParams1();
 		Map<String, String> formParams = createTestFormParams1();
-		String userAgent1 = "test1";
-		obj1 = new RedditRequestInput(testSegments1, userAgent1, queryParams, formParams);
+		obj1 = new RedditRequestInput(testSegments1, queryParams, formParams);
 		
 		System.out.println(obj1);		
 	}
@@ -65,14 +64,12 @@ public class RedditRequestInputTest {
 		List<String> testSegments1 = createTestSegments1();
 		Map<String, String> queryParams = createTestQueryParams1();
 		Map<String, String> formParams = createTestFormParams1();
-		String userAgent1 = "test1";
-		obj1 = new RedditRequestInput(testSegments1, userAgent1, queryParams, formParams);
+		obj1 = new RedditRequestInput(testSegments1, queryParams, formParams);
 		
 		List<String> testSegments2 = createTestSegments1();
 		Map<String, String> queryParams2 = createTestQueryParams1();
 		Map<String, String> formParams2 = createTestFormParams1();
-		String userAgent2 = "test1";
-		obj2 = new RedditRequestInput(testSegments2, userAgent2, queryParams2, formParams2);
+		obj2 = new RedditRequestInput(testSegments2, queryParams2, formParams2);
 		
 		assertEquals(obj1.hashCode(), obj2.hashCode());
 	}
@@ -85,14 +82,12 @@ public class RedditRequestInputTest {
 		List<String> testSegments1 = createTestSegments1();
 		Map<String, String> queryParams = createTestQueryParams1();
 		Map<String, String> formParams = createTestFormParams1();
-		String userAgent1 = "test1";
-		obj1 = new RedditRequestInput(testSegments1, userAgent1, queryParams, formParams);
+		obj1 = new RedditRequestInput(testSegments1, queryParams, formParams);
 		
 		List<String> testSegments2 = createTestSegments2();
 		Map<String, String> queryParams2 = createTestQueryParams2();
 		Map<String, String> formParams2 = createTestFormParams2();
-		String userAgent2 = "mytests";
-		obj2 = new RedditRequestInput(testSegments2, userAgent2, queryParams2, formParams2);
+		obj2 = new RedditRequestInput(testSegments2, queryParams2, formParams2);
 		
 		assertNotSame(obj1.hashCode(), obj2.hashCode());
 	}

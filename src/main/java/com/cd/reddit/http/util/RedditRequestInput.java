@@ -27,32 +27,25 @@ public class RedditRequestInput {
 	private final List<String> pathSegments;
 	private final Map<String, String> queryParams;
 	private final Map<String, String> formParams;
-	private final String userAgent;
 	private int hashCode;
 	
-	public RedditRequestInput(List<String> thePathSegments,
-							  String aUserAgent){
+	public RedditRequestInput(List<String> thePathSegments){
 		pathSegments = thePathSegments;
-		userAgent = aUserAgent;
 		queryParams = null;
 		formParams = null;
 	}
 	
 	public RedditRequestInput(List<String> thePathSegments,
-							  String aUserAgent,
 							  Map<String, String> theQueryParams){
 		pathSegments = thePathSegments;
-		userAgent = aUserAgent;		
 		queryParams = theQueryParams;
 		formParams = null;		
 	}
 
 	public RedditRequestInput(List<String> thePathSegments,
-			  				  String aUserAgent,			
 							  Map<String, String> theQueryParams,
 							  Map<String, String> theBodyParams){
 		pathSegments = thePathSegments;
-		userAgent = aUserAgent;		
 		queryParams = theQueryParams;
 		formParams = theBodyParams;				
 	}
@@ -69,19 +62,10 @@ public class RedditRequestInput {
 		return formParams;
 	}
 
-	public String getUserAgent() {
-		return userAgent;
-	}
-
 	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
 		String nl = System.getProperty("line.separator");
-		
-		builder.append("--- USER AGENT ---");
-		builder.append(nl);		
-		builder.append(userAgent);
-		builder.append(nl);
 		
 		builder.append("--- PATH SEGMENTS ---");
 		builder.append(nl);
@@ -120,7 +104,6 @@ public class RedditRequestInput {
 	public int hashCode(){
 		if(hashCode == 0){
 			hashCode = new HashCodeBuilder(17, 41)
-				.append(userAgent)
 				.append(pathSegments)
 				.append(queryParams)
 				.append(queryParams)

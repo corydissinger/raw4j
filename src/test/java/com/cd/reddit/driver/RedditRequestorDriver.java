@@ -34,9 +34,7 @@ public class RedditRequestorDriver {
 		//Throway account for proof-of-concept purposes
 		final String testUserAgent = "JavaJerseyTestBot/1.0 by Cory Dissinger";
 		
-		RedditRequestInput testInput = new RedditRequestInput(testSegments, 
-															  testUserAgent); 
-		
+		RedditRequestInput testInput = new RedditRequestInput(testSegments); 
 	}
 	
 }

@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License
 along with raw4j.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.cd.reddit.json.parser;
+package com.cd.reddit.json.jackson;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +28,6 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.cd.reddit.RedditException;
-import com.cd.reddit.json.RedditJacksonManager;
 import com.cd.reddit.json.mapping.RedditAccount;
 import com.cd.reddit.json.mapping.RedditComment;
 import com.cd.reddit.json.mapping.RedditLink;
@@ -39,14 +38,14 @@ import com.cd.reddit.json.util.RedditJsonConstants;
 
 public class RedditJsonParser {
 	
-	private final InputStream json;
+	private final String json;
 
 	private ObjectMapper mapper;	
 	private JsonNode rootNode;
 
 	
-	public RedditJsonParser(InputStream inJson){
-		json = inJson;
+	public RedditJsonParser(String string){
+		json = string;
 	}
 	
 	@SuppressWarnings("unchecked")

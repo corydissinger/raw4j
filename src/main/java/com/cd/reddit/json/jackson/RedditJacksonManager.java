@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License
 along with raw4j.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.cd.reddit.json;
+package com.cd.reddit.json.jackson;
 
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.map.ObjectMapper;

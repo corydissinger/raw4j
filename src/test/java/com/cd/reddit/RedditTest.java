@@ -25,6 +25,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.cd.reddit.json.mapping.RedditLink;
 import com.cd.reddit.json.mapping.RedditSubreddit;
 
 public class RedditTest {
@@ -49,10 +50,8 @@ public class RedditTest {
 
 	@Test
 	public void testLogin(){
-		String dummyResp;
-		
 		try {
-			dummyResp = testReddit.login("JavaJerseyTestBot", "JavaJerseyTestBot");
+			testReddit.login("JavaJerseyTestBot", "JavaJerseyTestBot");
 		//TODO: This exception fails to accurately pinpoint root cause in application!
 		} catch (RedditException e) {
 			e.printStackTrace();
@@ -69,11 +68,14 @@ public class RedditTest {
 		} catch (RedditException e) {
 			e.printStackTrace();
 		}		
+
+		for(RedditSubreddit subreddit : subreddits){
+			System.out.println(subreddit);
+		}		
 		
 		assertEquals(false, subreddits.isEmpty());
 	}
 	
-	/*
 	@Test
 	public void testSubredditsPopular(){
 		testReddit = new Reddit(testUserAgent);
@@ -82,10 +84,13 @@ public class RedditTest {
 		
 		try {
 			subreddits = testReddit.subredditsPopular();
-		//TODO: This exception fails to accurately pinpoint root cause in application!
 		} catch (RedditException e) {
 			e.printStackTrace();
 		}		
+		
+		for(RedditSubreddit subreddit : subreddits){
+			System.out.println(subreddit);
+		}
 		
 		assertEquals(false, subreddits.isEmpty());
 	}
@@ -98,12 +103,15 @@ public class RedditTest {
 		
 		try {
 			listing = testReddit.listingFor("java", "top");
-		//TODO: This exception fails to accurately pinpoint root cause in application!
 		} catch (RedditException e) {
 			e.printStackTrace();
 		}		
+
+		for(RedditLink link : listing){
+			System.out.println(link);
+		}		
 		
 		assertEquals(false, listing.isEmpty());
-	}	
-	*/
+	}
+	
 }
