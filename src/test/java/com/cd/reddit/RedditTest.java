@@ -23,6 +23,7 @@ import org.junit.Test;
 
 import com.cd.reddit.json.mapping.RedditLink;
 import com.cd.reddit.json.mapping.RedditSubreddit;
+import com.cd.reddit.json.util.RedditJsonConstants;
 
 public class RedditTest {
 
@@ -48,7 +49,6 @@ public class RedditTest {
 	public void testLogin(){
 		try {
 			testReddit.login("JavaJerseyTestBot", "JavaJerseyTestBot");
-		//TODO: This exception fails to accurately pinpoint root cause in application!
 		} catch (RedditException e) {
 			e.printStackTrace();
 		} 
@@ -110,4 +110,22 @@ public class RedditTest {
 		assertEquals(false, listing.isEmpty());
 	}
 	
+	@Test
+	public void testInfoFor(){
+		testReddit = new Reddit(testUserAgent);
+		
+		List<RedditLink> listing = null;
+		
+		try {
+			listing = testReddit.infoForId("t3_1n6uck");
+		} catch (RedditException e) {
+			e.printStackTrace();
+		}		
+
+		for(RedditLink link : listing){
+			System.out.println(link);
+		}		
+		
+		assertEquals(false, listing.isEmpty());
+	}	
 }

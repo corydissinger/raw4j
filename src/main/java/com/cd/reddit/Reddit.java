@@ -36,8 +36,8 @@ public class Reddit {
 	}
 	
 	public void login(final String userName, final String password) throws RedditException{
-		final List<String> path = new ArrayList<String>();
-		final Map<String, String> form = new HashMap<String, String>();
+		final List<String> path = new ArrayList<String>(2);
+		final Map<String, String> form = new HashMap<String, String>(2);
 		
 		path.add(RedditApiResourceConstants.API);
 		path.add(RedditApiResourceConstants.LOGIN);
@@ -46,11 +46,11 @@ public class Reddit {
 		form.put(RedditApiParameterConstants.PASSWD, password);
 		
 		final RedditRequestInput requestInput = new RedditRequestInput(path, null, form);
-		final RedditRequestResponse response = requestor.executePost(requestInput);
+		requestor.executePost(requestInput);
 	}
 
 	public List<RedditSubreddit> subredditsNew() throws RedditException{
-		final List<String> path = new ArrayList<String>();
+		final List<String> path = new ArrayList<String>(2);
 		
 		path.add(RedditApiResourceConstants.SUBREDDITS);
 		path.add(RedditApiResourceConstants.NEW + RedditApiResourceConstants.DOT_JSON);
@@ -63,7 +63,7 @@ public class Reddit {
 	}
 
 	public List<RedditSubreddit> subredditsPopular() throws RedditException{
-		List<String> pathSegments = new ArrayList<String>();
+		List<String> pathSegments = new ArrayList<String>(2);
 		
 		pathSegments.add(RedditApiResourceConstants.SUBREDDITS);
 		pathSegments.add(RedditApiResourceConstants.POPULAR + RedditApiResourceConstants.DOT_JSON);
@@ -79,7 +79,7 @@ public class Reddit {
 	}
 	
 	public List<RedditLink> listingFor(final String subreddit, final String listingType) throws RedditException{
-		final List<String> pathSegments = new ArrayList<String>();
+		final List<String> pathSegments = new ArrayList<String>(3);
 
 		pathSegments.add(RedditApiResourceConstants.R);
 		pathSegments.add(subreddit);		
@@ -94,5 +94,23 @@ public class Reddit {
 		
 		return parser.parseLinks();
 	}
-	
+
+	public List<RedditLink> infoForId(final String id) throws RedditException{
+		final List<String> pathSegments = new ArrayList<String>(2);
+		final Map<String, String> queryParams = new HashMap<String, String>(1);
+		
+		pathSegments.add(RedditApiResourceConstants.API);
+		pathSegments.add(RedditApiResourceConstants.INFO + RedditApiResourceConstants.DOT_JSON);		
+		
+		queryParams.put(RedditApiParameterConstants.ID, id);
+		
+		final RedditRequestInput requestInput 
+			= new RedditRequestInput(pathSegments, queryParams);
+		
+		final RedditRequestResponse response = requestor.executeGet(requestInput);
+		
+		final RedditJsonParser parser = new RedditJsonParser(response.getBody());
+		
+		return parser.parseLinks();
+	}	
 }

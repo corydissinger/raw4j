@@ -79,7 +79,7 @@ public class RedditJsonMappingFactory {
 				theType = mapper.readValue(jsonObject, RedditSubreddit.class);	
 			}
 		}catch(Exception e){
-			throw new RedditException(e.getMessage());
+			throw new RedditException(e.getMessage(), e.getCause());
 		}
 		
 		return theType;

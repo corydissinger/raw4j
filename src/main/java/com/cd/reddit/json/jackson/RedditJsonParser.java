@@ -88,7 +88,7 @@ public class RedditJsonParser {
 			}
 			
 		} catch (Exception e) {
-			throw new RedditException(e.getMessage());
+			throw new RedditException(e.getMessage(), e.getCause());
 		}		
 	}
 	
@@ -110,7 +110,7 @@ public class RedditJsonParser {
 		final String theKind;
 		
 		if(kindNode == null){
-			throw new RedditException("No kind found for node: " + aNode.toString());
+			throw new RedditException("No kind found for node: " + aNode.toString(), null);
 		}else{
 			theKind = kindNode.asText();
 		}
@@ -131,9 +131,9 @@ public class RedditJsonParser {
 			mapper = RedditJacksonManager.INSTANCE.getObjectMapper();
 			rootNode = mapper.readTree(json);
 		} catch (JsonParseException e) {
-			throw new RedditException(e.getMessage());
+			throw new RedditException(e.getMessage(), e.getCause());
 		} catch (IOException e) {
-			throw new RedditException(e.getMessage());
+			throw new RedditException(e.getMessage(), e.getCause());
 		}		
 	}
 }
