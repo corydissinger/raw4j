@@ -47,5 +47,6 @@ public class RedditApiParameterConstants {
 	public static final String ALL					= "all";
 
 	//----------> SECTION: links & comments	
-	public static final String ID 					= "id";	
+	public static final String ID 					= "id";
+	public static final String THING_ID 			= "thing_id";	
 }

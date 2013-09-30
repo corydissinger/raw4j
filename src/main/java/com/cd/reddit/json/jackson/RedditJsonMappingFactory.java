@@ -24,6 +24,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.cd.reddit.RedditException;
 import com.cd.reddit.json.mapping.RedditAccount;
 import com.cd.reddit.json.mapping.RedditComment;
+import com.cd.reddit.json.mapping.RedditJsonMessage;
 import com.cd.reddit.json.mapping.RedditLink;
 import com.cd.reddit.json.mapping.RedditMessage;
 import com.cd.reddit.json.mapping.RedditSubreddit;
@@ -31,6 +32,27 @@ import com.cd.reddit.json.mapping.RedditType;
 import com.cd.reddit.json.util.RedditJsonConstants;
 
 public class RedditJsonMappingFactory {
+	
+	//Feels like an ugly hack
+	public static RedditJsonMessage mapJsonMessage(JsonNode jsonMessage, ObjectMapper mapper) throws RedditException{
+		RedditJsonMessage parsedMessage = new RedditJsonMessage();
+		final List<String> errors = new ArrayList<String>(1);
+		final Iterator<JsonNode> nodeItr = jsonMessage.get(RedditJsonConstants.ERRORS).getElements();
+		
+		while(nodeItr.hasNext()){
+			final String error = nodeItr.next().asText();
+			errors.add(error);
+		}
+		
+		final JsonNode data = jsonMessage.get(RedditJsonConstants.DATA);
+		
+		parsedMessage.setErrors(errors);
+		parsedMessage.setCookie(data.get(RedditJsonConstants.COOKIE).asText());
+		parsedMessage.setModhash(data.get(RedditJsonConstants.MODHASH).asText());		
+		
+		return parsedMessage;
+	}
+	
 	public static List<RedditType> mapJsonArrayToList(JsonNode jsonArray, ObjectMapper mapper, String specifiedType) throws RedditException{
 		final List<RedditType> theTypes = new ArrayList<RedditType>(10);
 		

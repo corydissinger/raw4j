@@ -25,6 +25,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.cd.reddit.RedditException;
 import com.cd.reddit.json.mapping.RedditAccount;
 import com.cd.reddit.json.mapping.RedditComment;
+import com.cd.reddit.json.mapping.RedditJsonMessage;
 import com.cd.reddit.json.mapping.RedditLink;
 import com.cd.reddit.json.mapping.RedditMessage;
 import com.cd.reddit.json.mapping.RedditSubreddit;
@@ -41,6 +42,12 @@ public class RedditJsonParser {
 	
 	public RedditJsonParser(String string){
 		json = string;
+	}
+	
+	public RedditJsonMessage parseJsonMessage() throws RedditException{
+		init();
+		
+		return RedditJsonMappingFactory.mapJsonMessage(rootNode.get("json"), mapper);
 	}
 	
 	@SuppressWarnings("unchecked")
