@@ -101,7 +101,7 @@ public class RedditJsonMappingFactory {
 				theType = mapper.readValue(jsonObject, RedditSubreddit.class);	
 			}
 		}catch(Exception e){
-			throw new RedditException(e.getMessage(), e.getCause());
+			throw new RedditException(e);
 		}
 		
 		return theType;

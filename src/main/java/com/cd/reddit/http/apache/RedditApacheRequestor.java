@@ -71,7 +71,7 @@ public class RedditApacheRequestor {
 				final String responseBody = EntityUtils.toString(httpEnt);
 				
 				if(statusCode != 200){
-					throw new RedditException(generateErrorString(statusCode, input, responseBody), null);
+					throw new RedditException(generateErrorString(statusCode, input, responseBody));
 				}
 				
 				response = new RedditRequestResponse(statusCode, responseBody);
@@ -80,12 +80,12 @@ public class RedditApacheRequestor {
 			}
 			
 		} catch (Exception e) {
-			throw new RedditException(e.getMessage(), e.getCause());
+			throw new RedditException(e);
 		}finally{
 			try {
 				httpclient.close();
 			} catch (IOException e) {
-				throw new RedditException(e.getMessage(), e.getCause());
+				throw new RedditException(e);
 			}
 		}
 		
@@ -116,7 +116,7 @@ public class RedditApacheRequestor {
 				final String responseBody = EntityUtils.toString(httpEnt);
 				
 				if(statusCode != 200){
-					throw new RedditException(generateErrorString(statusCode, input, responseBody), null);
+					throw new RedditException(generateErrorString(statusCode, input, responseBody));
 				}
 				
 				response = new RedditRequestResponse(statusCode, responseBody);
@@ -125,12 +125,12 @@ public class RedditApacheRequestor {
 			}
 			
 		} catch (Exception e) {
-			throw new RedditException(e.getMessage(), e.getCause());
+			throw new RedditException(e);
 		}finally{
 			try {
 				httpclient.close();
 			} catch (IOException e) {
-				throw new RedditException(e.getMessage(), e.getCause());
+				throw new RedditException(e);
 			}
 		}
 		

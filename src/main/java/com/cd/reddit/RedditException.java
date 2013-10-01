@@ -20,7 +20,7 @@ public class RedditException extends Exception{
 		super(message);
 	}	
 	
-	public RedditException(String message, Throwable cause) {
-		super(message, cause);
+	public RedditException(Throwable cause) {
+		super(cause.getMessage(), cause);
 	}
 }
