@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 
 package com.cd.reddit.json.mapping;
 
+import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -35,6 +36,8 @@ public class RedditComment extends RedditType{
 	//Comment
 	private String author;
 	private String body;
+	
+	private JsonNode replies;
 	
 	public String getId() {
 		return id;
@@ -90,6 +93,15 @@ public class RedditComment extends RedditType{
 	public void setBody(String body) {
 		this.body = body;
 	}
+
+	public JsonNode getReplies() {
+		return replies;
+	}
+	
+	public void setReplies(JsonNode replies) {
+		this.replies = replies;
+	}	
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -111,8 +123,9 @@ public class RedditComment extends RedditType{
 		builder.append(author);
 		builder.append(", body=");
 		builder.append(body);
+		builder.append(", replies=");
+		builder.append(replies);		
 		builder.append("]");
 		return builder.toString();
 	}
-	
 }

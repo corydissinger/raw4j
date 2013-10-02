@@ -25,10 +25,10 @@ import com.cd.reddit.http.util.RedditApiResourceConstants;
 import com.cd.reddit.http.util.RedditRequestInput;
 import com.cd.reddit.http.util.RedditRequestResponse;
 import com.cd.reddit.json.jackson.RedditJsonParser;
-import com.cd.reddit.json.mapping.RedditComment;
 import com.cd.reddit.json.mapping.RedditJsonMessage;
 import com.cd.reddit.json.mapping.RedditLink;
 import com.cd.reddit.json.mapping.RedditSubreddit;
+import com.cd.reddit.json.util.RedditComments;
 
 public class Reddit {
 	private final RedditApacheRequestor requestor;
@@ -107,7 +107,11 @@ public class Reddit {
 		return parser.parseLinks();
 	}
 
-	public List<RedditComment> commentsFor(final String subreddit, final String linkId) throws RedditException{
+	public RedditComments moreChildrenFor(final RedditComments theComments) throws RedditException{
+		return null;
+	}	
+
+	public RedditComments commentsFor(final String subreddit, final String linkId) throws RedditException{
 		final List<String> pathSegments 		= new ArrayList<String>(2);
 		
 		pathSegments.add(RedditApiResourceConstants.R);

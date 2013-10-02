@@ -21,12 +21,10 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.cd.reddit.http.util.RedditApiParameterConstants;
-import com.cd.reddit.http.util.RedditApiResourceConstants;
 import com.cd.reddit.json.mapping.RedditComment;
 import com.cd.reddit.json.mapping.RedditLink;
 import com.cd.reddit.json.mapping.RedditSubreddit;
-import com.cd.reddit.json.util.RedditJsonConstants;
+import com.cd.reddit.json.util.RedditComments;
 
 public class RedditTest {
 
@@ -59,7 +57,7 @@ public class RedditTest {
 	
 	@Test
 	public void testCommentsForAndMore(){
-		List<RedditComment> comments = null;
+		RedditComments comments = null;
 		
 		try {
 			comments = testReddit.commentsFor("videos", "1nfrqm");
@@ -67,11 +65,13 @@ public class RedditTest {
 			e.printStackTrace();
 		}		
 
-		for(RedditComment comment : comments){
+		for(RedditComment comment : comments.getComments()){
 			System.out.println(comment);
 		}		
-		
-		assertEquals(false, comments.isEmpty());
+
+		assertEquals(true, comments.getParentLink() != null);		
+		assertEquals(false, comments.getComments().isEmpty());
+		assertEquals(true, comments.getMore() != null);
 		//Also test the 'more' and show an intuitive way of using..
 		//final String childComment = comments.get(1).getId();
 	}	

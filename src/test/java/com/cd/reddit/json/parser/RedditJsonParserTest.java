@@ -29,6 +29,7 @@ import com.cd.reddit.json.mapping.RedditComment;
 import com.cd.reddit.json.mapping.RedditLink;
 import com.cd.reddit.json.mapping.RedditSubreddit;
 import com.cd.reddit.json.mapping.RedditType;
+import com.cd.reddit.json.util.RedditComments;
 
 public class RedditJsonParserTest {
 
@@ -76,21 +77,21 @@ public class RedditJsonParserTest {
 	
 	@Test
 	public void parseCommentsJson(){
-		List<RedditComment> parsedTypes = null;		
+		RedditComments parsedComments = null;		
 		InputStream jsonStream = this.getClass().getResourceAsStream("/comments.json");
 		testParser = new RedditJsonParser(convertStreamToString(jsonStream));
 		
 		try {
-			parsedTypes = testParser.parseComments();
+			parsedComments = testParser.parseComments();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		for(RedditType parsedType : parsedTypes){
+		for(RedditType parsedType : parsedComments.getComments()){
 			System.out.println(parsedType.toString());			
 		}		
 		
-		assertEquals(true, parsedTypes.get(0) instanceof RedditComment);
+		assertEquals(true, parsedComments.getComments().get(0) instanceof RedditComment);
 	}
 	
 	@Test
