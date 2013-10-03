@@ -28,7 +28,7 @@ import org.apache.commons.io.IOUtils;
 
 public class RedditRequestor {
 	
-	private static final String HOST = "www.reddit.com/";
+	private static final String HOST = "www.reddit.com";
 	
 	private final String userAgent;
 	
@@ -113,7 +113,7 @@ public class RedditRequestor {
         String query = "";
 		
 		if(pathSegments != null){
-			StringBuilder pathBuilder = new StringBuilder();
+			StringBuilder pathBuilder = new StringBuilder("/");
 			Iterator<String> itr = pathSegments.iterator();
 			
 			while(itr.hasNext()){
@@ -133,7 +133,7 @@ public class RedditRequestor {
 				builder.addParameter(entry.getKey(), entry.getValue());
 			}
 
-            query = builder.build();
+            query = "?" + builder.build();
 		}
 		
 		return new URL("http", HOST, path+query);
