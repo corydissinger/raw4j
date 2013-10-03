@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.cd.reddit.http.apache.RedditApacheRequestor;
+import com.cd.reddit.http.RedditRequestor;
 import com.cd.reddit.http.util.RedditApiParameterConstants;
 import com.cd.reddit.http.util.RedditApiResourceConstants;
 import com.cd.reddit.http.util.RedditRequestInput;
@@ -31,10 +31,10 @@ import com.cd.reddit.json.mapping.RedditSubreddit;
 import com.cd.reddit.json.util.RedditComments;
 
 public class Reddit {
-	private final RedditApacheRequestor requestor;
+	private final RedditRequestor requestor;
 	
 	public Reddit(String userAgent){
-		requestor = new RedditApacheRequestor(userAgent);
+		requestor = new RedditRequestor(userAgent);
 	}
 	
 	public RedditJsonMessage login(final String userName, final String password) throws RedditException{
