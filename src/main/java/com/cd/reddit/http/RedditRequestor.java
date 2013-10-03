@@ -11,96 +11,83 @@ Unless required by applicable law or agreed to in writing, software distributed 
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
 
-package com.cd.reddit.http.apache;
+package com.cd.reddit.http;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.io.InputStream;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.http.Consts;
-import org.apache.http.HttpEntity;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-
 import com.cd.reddit.RedditException;
 import com.cd.reddit.http.util.RedditRequestInput;
 import com.cd.reddit.http.util.RedditRequestResponse;
+import org.apache.commons.io.IOUtils;
 
-public class RedditApacheRequestor {
+public class RedditRequestor {
 	
 	private static final String HOST = "www.reddit.com/";
 	
 	private final String userAgent;
 	
-	public RedditApacheRequestor(String userAgent){
+	public RedditRequestor(String userAgent){
 		this.userAgent = userAgent;
 	}
-	
-	public RedditRequestResponse executeGet(final RedditRequestInput input) throws RedditException{
-		final CloseableHttpClient httpclient = HttpClientBuilder.create().setUserAgent(userAgent).build();
-		final RedditRequestResponse response;
-		
-		try {
-			final URI uri;
 
-			uri = generateURI(input.getPathSegments(), 
-							  input.getQueryParams());
-		
-			final HttpGet httpGet = new HttpGet(uri);
-			httpGet.addHeader("accept", "application/json");		
-			
-			final CloseableHttpResponse closeableResp;
-			
-			closeableResp = httpclient.execute(httpGet);
-			
-			try{
-				final int statusCode = closeableResp.getStatusLine().getStatusCode();
-				final HttpEntity httpEnt = closeableResp.getEntity();
-				final String responseBody = EntityUtils.toString(httpEnt);
-				
-				if(statusCode != 200){
-					throw new RedditException(generateErrorString(statusCode, input, responseBody));
-				}
-				
-				response = new RedditRequestResponse(statusCode, responseBody);
-			}finally{
-				closeableResp.close();
-			}
-			
-		} catch (Exception e) {
-			throw new RedditException(e);
-		}finally{
-			try {
-				httpclient.close();
-			} catch (IOException e) {
-				throw new RedditException(e);
-			}
-		}
-		
-		return response;
+    private HttpURLConnection getConnection(RedditRequestInput input) throws RedditException{
+        try{
+
+            HttpURLConnection connection = (HttpURLConnection) generateURI(input.getPathSegments(), input.getQueryParams())
+                    .toURL().openConnection();
+
+            connection.setRequestProperty("accept", "application/json");
+            connection.setRequestProperty("User-Agent", userAgent);
+
+            return connection;
+        } catch (Exception e) {
+        throw new RedditException(e);
+        }
+    }
+	
+	public RedditRequestResponse executeGet(RedditRequestInput input) throws RedditException{
+        HttpURLConnection connection = getConnection(input);
+
+        InputStream stream = null;
+
+        try {
+            // Connection will be made here
+            stream = connection.getInputStream();
+
+            // Buffers internally
+            String responseBody = IOUtils.toString(stream, "UTF-8");
+            int statusCode = connection.getResponseCode();
+
+            if(statusCode != 200){
+                throw new RedditException(generateErrorString(statusCode, input, responseBody));
+            }
+
+            return new RedditRequestResponse(statusCode, responseBody);
+
+        } catch (IOException e1) {
+            throw new RedditException(e1);
+        } finally {
+            // Internally checks for null
+            IOUtils.closeQuietly(stream);
+        }
 	}
+
+
 	
 	public RedditRequestResponse executePost(final RedditRequestInput input) throws RedditException{
-		final CloseableHttpClient httpclient = HttpClientBuilder.create().setUserAgent(userAgent).build();
 		final RedditRequestResponse response;
-		
-		try {
-			final URI uri;
 
-			uri = generateURI(input.getPathSegments(), 
-							  input.getQueryParams());
+        HttpURLConnection connection
+
+		try {
+
+			connection = (HttpURLConnection) generateURI(input.getPathSegments(), input.getQueryParams()).toURL().openConnection();
 		
 			final HttpPost httpPost = new HttpPost(uri);
 			httpPost.addHeader("accept", "application/json");		
