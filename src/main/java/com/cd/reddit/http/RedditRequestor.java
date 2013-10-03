@@ -15,8 +15,8 @@ package com.cd.reddit.http;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.*;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -38,22 +38,41 @@ public class RedditRequestor {
 
     private HttpURLConnection getConnection(RedditRequestInput input) throws RedditException{
         try{
-
-            HttpURLConnection connection = (HttpURLConnection) generateURI(input.getPathSegments(), input.getQueryParams())
-                    .toURL().openConnection();
+            HttpURLConnection connection = (HttpURLConnection) generateURL(input.getPathSegments(), input.getQueryParams())
+                    .openConnection();
 
             connection.setRequestProperty("accept", "application/json");
             connection.setRequestProperty("User-Agent", userAgent);
 
             return connection;
         } catch (Exception e) {
-        throw new RedditException(e);
+            throw new RedditException(e);
         }
     }
 	
 	public RedditRequestResponse executeGet(RedditRequestInput input) throws RedditException{
+        return readResponse(getConnection(input), input);
+	}
+	
+	public RedditRequestResponse executePost(RedditRequestInput input) throws RedditException{
         HttpURLConnection connection = getConnection(input);
+        // Implicitly sets method to POST
+        connection.setDoOutput(true);
 
+        OutputStream outputStream = null;
+		try {
+            outputStream = connection.getOutputStream();
+            IOUtils.write(generateUrlEncodedForm(input.getFormParams()), outputStream, "UTF-8");
+        } catch (IOException e) {
+            throw new RedditException(e);
+        } finally {
+            IOUtils.closeQuietly(outputStream);
+        }
+
+        return readResponse(connection, input);
+	}
+
+    private RedditRequestResponse readResponse(HttpURLConnection connection, RedditRequestInput input) throws RedditException {
         InputStream stream = null;
 
         try {
@@ -76,70 +95,22 @@ public class RedditRequestor {
             // Internally checks for null
             IOUtils.closeQuietly(stream);
         }
-	}
+    }
 
-
-	
-	public RedditRequestResponse executePost(final RedditRequestInput input) throws RedditException{
-		final RedditRequestResponse response;
-
-        HttpURLConnection connection
-
-		try {
-
-			connection = (HttpURLConnection) generateURI(input.getPathSegments(), input.getQueryParams()).toURL().openConnection();
+	private String generateUrlEncodedForm(Map<String, String> formParams){
+		QueryBuilder builder = new QueryBuilder();
 		
-			final HttpPost httpPost = new HttpPost(uri);
-			httpPost.addHeader("accept", "application/json");		
-			httpPost.setEntity(generateUrlEncodedForm(input.getFormParams()));
-			
-			final CloseableHttpResponse closeableResp;
-			
-			closeableResp = httpclient.execute(httpPost);
-			
-			try{
-				final int statusCode = closeableResp.getStatusLine().getStatusCode();
-				final HttpEntity httpEnt = closeableResp.getEntity();
-				final String responseBody = EntityUtils.toString(httpEnt);
-				
-				if(statusCode != 200){
-					throw new RedditException(generateErrorString(statusCode, input, responseBody));
-				}
-				
-				response = new RedditRequestResponse(statusCode, responseBody);
-			}finally{
-				closeableResp.close();
-			}
-			
-		} catch (Exception e) {
-			throw new RedditException(e);
-		}finally{
-			try {
-				httpclient.close();
-			} catch (IOException e) {
-				throw new RedditException(e);
-			}
-		}
+		for(Map.Entry<String, String> entry : formParams.entrySet())
+            builder.addParameter(entry.getKey(), entry.getValue());
 		
-		return response;
+		return builder.build();
 	}
 	
-	private UrlEncodedFormEntity generateUrlEncodedForm(Map<String, String> formParams){
-		final List<NameValuePair> nvps = new ArrayList<NameValuePair>(formParams.size());
-		
-		for(Map.Entry<String, String> entry : formParams.entrySet()){
-			nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
-		}
-		
-		return new UrlEncodedFormEntity(nvps, Consts.UTF_8);
-	}
-	
-	private URI generateURI(final List<String> pathSegments, 
-								 final Map<String, String> queryParams) throws URISyntaxException{
-		URIBuilder builder = new URIBuilder();
+	private URL generateURL(List<String> pathSegments,
+								 Map<String, String> queryParams) throws MalformedURLException {
 
-		builder.setScheme("http");		
-		builder.setHost(HOST);		
+        String path = "";
+        String query = "";
 		
 		if(pathSegments != null){
 			StringBuilder pathBuilder = new StringBuilder();
@@ -152,16 +123,20 @@ public class RedditRequestor {
 					pathBuilder.append("/");				
 			}
 			
-			builder.setPath(pathBuilder.toString());
+			path = pathBuilder.toString();
 		}
 		
 		if(queryParams != null){
+            QueryBuilder builder = new QueryBuilder();
+
 			for(Map.Entry<String, String> entry : queryParams.entrySet()){
 				builder.addParameter(entry.getKey(), entry.getValue());
 			}
+
+            query = builder.build();
 		}
 		
-		return builder.build();
+		return new URL("http", HOST, path+query);
 	}
 	
 	private String generateErrorString(final int statusCode, 
