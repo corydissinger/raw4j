@@ -18,5 +18,9 @@ public class RedditException extends Exception{
 
 	public RedditException(String message) {
 		super(message);
+	}	
+	
+	public RedditException(Throwable cause) {
+		super(cause.getMessage(), cause);
 	}
 }

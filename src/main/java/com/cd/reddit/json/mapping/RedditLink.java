@@ -38,11 +38,14 @@ public class RedditLink extends RedditType{
 	private String domain;
 	private int numComments;
 	private boolean over18;
+	private boolean is_self;
 	private String permalink;
 	private String subreddit;
 	private String subredditId;
 	private String title;
-	
+	private String url;
+	private String selftext;
+
 	@JsonValue
 	public String getId() {
 		return id;
@@ -113,6 +116,12 @@ public class RedditLink extends RedditType{
 	public void setOver18(boolean over18) {
 		this.over18 = over18;
 	}
+	public boolean isSelf() {
+		return is_self;
+	}
+	public void setIs_self(boolean self) {
+		this.is_self = self;
+	}
 	public String getPermalink() {
 		return permalink;
 	}
@@ -136,6 +145,18 @@ public class RedditLink extends RedditType{
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	public String getSelftext() {
+		return selftext;
+	}
+	public void setSelftext(String selftext) {
+		this.selftext = selftext;
 	}
 
 	@Override
@@ -163,6 +184,8 @@ public class RedditLink extends RedditType{
 		builder.append(numComments);
 		builder.append(", over18=");
 		builder.append(over18);
+		builder.append(", is_self=");
+		builder.append(is_self);
 		builder.append(", permalink=");
 		builder.append(permalink);
 		builder.append(", subreddit=");
@@ -171,6 +194,8 @@ public class RedditLink extends RedditType{
 		builder.append(subredditId);
 		builder.append(", title=");
 		builder.append(title);
+		builder.append(", url=");
+		builder.append(url);
 		builder.append("]");
 		return builder.toString();
 	}

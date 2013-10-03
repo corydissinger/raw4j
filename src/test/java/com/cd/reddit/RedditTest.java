@@ -21,8 +21,10 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.cd.reddit.json.mapping.RedditComment;
 import com.cd.reddit.json.mapping.RedditLink;
 import com.cd.reddit.json.mapping.RedditSubreddit;
+import com.cd.reddit.json.util.RedditComments;
 
 public class RedditTest {
 
@@ -44,15 +46,35 @@ public class RedditTest {
 		}
 	}	
 
-	@Test
+	@Test	
 	public void testLogin(){
 		try {
 			testReddit.login("JavaJerseyTestBot", "JavaJerseyTestBot");
-		//TODO: This exception fails to accurately pinpoint root cause in application!
 		} catch (RedditException e) {
 			e.printStackTrace();
 		} 
-	}
+	}	
+	
+	@Test
+	public void testCommentsForAndMore(){
+		RedditComments comments = null;
+		
+		try {
+			comments = testReddit.commentsFor("videos", "1nfrqm");
+		} catch (RedditException e) {
+			e.printStackTrace();
+		}		
+
+		for(RedditComment comment : comments.getComments()){
+			System.out.println(comment);
+		}		
+
+		assertEquals(true, comments.getParentLink() != null);		
+		assertEquals(false, comments.getComments().isEmpty());
+		assertEquals(true, comments.getMore() != null);
+		//Also test the 'more' and show an intuitive way of using..
+		//final String childComment = comments.get(1).getId();
+	}	
 	
 	@Test
 	public void testSubredditsNew(){
@@ -74,8 +96,6 @@ public class RedditTest {
 	
 	@Test
 	public void testSubredditsPopular(){
-		testReddit = new Reddit(testUserAgent);
-		
 		List<RedditSubreddit> subreddits = null;
 		
 		try {
@@ -93,8 +113,6 @@ public class RedditTest {
 	
 	@Test
 	public void testListingsFor(){
-		testReddit = new Reddit(testUserAgent);
-		
 		List<RedditLink> listing = null;
 		
 		try {
@@ -110,4 +128,20 @@ public class RedditTest {
 		assertEquals(false, listing.isEmpty());
 	}
 	
+	@Test
+	public void testInfoFor(){
+		List<RedditLink> listing = null;
+		
+		try {
+			listing = testReddit.infoForId("t3_1n6uck");
+		} catch (RedditException e) {
+			e.printStackTrace();
+		}		
+
+		for(RedditLink link : listing){
+			System.out.println(link);
+		}		
+		
+		assertEquals(false, listing.isEmpty());
+	}	
 }

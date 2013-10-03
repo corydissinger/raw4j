@@ -44,5 +44,9 @@ public class RedditApiParameterConstants {
 	public static final String WEEK					= "week";
 	public static final String MONTH				= "month";
 	public static final String YEAR					= "year";
-	public static final String ALL					= "all";	
+	public static final String ALL					= "all";
+
+	//----------> SECTION: links & comments	
+	public static final String ID 					= "id";
+	public static final String THING_ID 			= "thing_id";	
 }
