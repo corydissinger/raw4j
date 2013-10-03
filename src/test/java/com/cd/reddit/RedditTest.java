@@ -65,13 +65,26 @@ public class RedditTest {
 			e.printStackTrace();
 		}		
 
-		for(RedditComment comment : comments.getComments()){
-			System.out.println(comment);
-		}		
-
+		System.out.println(comments.toString());
+		
 		assertEquals(true, comments.getParentLink() != null);		
 		assertEquals(false, comments.getComments().isEmpty());
 		assertEquals(true, comments.getMore() != null);
+		
+		RedditComments moreComments = null;
+		
+		try {
+			moreComments = testReddit.moreChildrenFor(comments, "top");
+		} catch (RedditException e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println(moreComments.toString());		
+
+		assertEquals(true, moreComments.getParentLink() != null);		
+		assertEquals(false, moreComments.getComments().isEmpty());
+		assertEquals(true, moreComments.getMore() != null);		
+		
 		//Also test the 'more' and show an intuitive way of using..
 		//final String childComment = comments.get(1).getId();
 	}	

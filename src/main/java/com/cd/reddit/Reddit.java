@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.cd.reddit.http.apache.RedditApacheRequestor;
 import com.cd.reddit.http.util.RedditApiParameterConstants;
 import com.cd.reddit.http.util.RedditApiResourceConstants;
@@ -107,7 +109,24 @@ public class Reddit {
 		return parser.parseLinks();
 	}
 
-	public RedditComments moreChildrenFor(final RedditComments theComments) throws RedditException{
+	public RedditComments moreChildrenFor(RedditComments theComments, String desiredSort) throws RedditException{
+		final List<String> pathSegments = new ArrayList<String>(2);
+		final Map<String, String> form = new HashMap<String, String>(2);
+		
+		pathSegments.add(RedditApiResourceConstants.API);
+		pathSegments.add(RedditApiResourceConstants.MORECHILDREN);
+
+		final List<String> childrenList = theComments.getMore().getChildren();
+		final String linkId 			= theComments.getParentLink().getName();
+		
+		form.put(RedditApiParameterConstants.API_TYPE, RedditApiParameterConstants.JSON);		
+		form.put(RedditApiParameterConstants.CHILDREN, StringUtils.join(childrenList.iterator(), ","));
+		form.put(RedditApiParameterConstants.LINK_ID, linkId);
+
+		final RedditRequestInput requestInput = new RedditRequestInput(pathSegments, null, form);
+		
+		final RedditRequestResponse response = requestor.executePost(requestInput);		
+		System.out.println(response.getBody());
 		return null;
 	}	
 

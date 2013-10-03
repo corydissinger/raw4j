@@ -30,4 +30,17 @@ public class RedditComments {
 	public RedditMore getMore() {
 		return more;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("RedditComments [parentLink=");
+		builder.append(parentLink);
+		builder.append(", comments=");
+		builder.append(comments);
+		builder.append(", more=");
+		builder.append(more);
+		builder.append("]");
+		return builder.toString();
+	}
 }

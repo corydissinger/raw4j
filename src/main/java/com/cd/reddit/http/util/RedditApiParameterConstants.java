@@ -16,7 +16,8 @@ package com.cd.reddit.http.util;
 public class RedditApiParameterConstants {
 
 	//Misc constants
-	public static final String JSON	 				= "json";	
+	public static final String JSON	 				= "json";
+	public static final String SORT	 				= "sort";	
 
 	//Fullname helpers
 	public static final String T					= "t";	
@@ -48,5 +49,7 @@ public class RedditApiParameterConstants {
 
 	//----------> SECTION: links & comments	
 	public static final String ID 					= "id";
-	public static final String THING_ID 			= "thing_id";	
+	public static final String LINK_ID 				= "link_id";	
+	public static final String THING_ID 			= "thing_id";
+	public static final String CHILDREN 			= "children";	
 }
