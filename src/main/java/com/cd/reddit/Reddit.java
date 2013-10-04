@@ -27,16 +27,40 @@ import com.cd.reddit.http.util.RedditRequestResponse;
 import com.cd.reddit.json.jackson.RedditJsonParser;
 import com.cd.reddit.json.mapping.RedditJsonMessage;
 import com.cd.reddit.json.mapping.RedditLink;
+import com.cd.reddit.json.mapping.RedditMessage;
 import com.cd.reddit.json.mapping.RedditSubreddit;
 import com.cd.reddit.json.util.RedditComments;
 
 public class Reddit {
+        
 	private final RedditRequestor requestor;
 	
 	public Reddit(String userAgent){
 		requestor = new RedditRequestor(userAgent);
 	}
+        
+        /**
+         * 
+         * @param userAgent The user agent to set
+         * @param session The reddit session id to pass to the <code>RedditRequestor</code>
+         */
+        public Reddit(String userAgent, String session) {
+            requestor = new RedditRequestor(userAgent);
+            requestor.setSession(session);
+        }
 	
+        public String getSession() {
+            return requestor.getSession();
+        }
+        
+        /**
+         * Once this method is called the cookie returned is set as the session and will be added to all future calls
+         * 
+         * @param userName Username of the reddit account
+         * @param password Password of the reddit acount
+         * @return A <code>RedditJsonMessage</code>
+         * @throws RedditException 
+         */
 	public RedditJsonMessage login(final String userName, final String password) throws RedditException{
 		final List<String> path = new ArrayList<String>(2);
 		final Map<String, String> form = new HashMap<String, String>(2);
@@ -58,6 +82,8 @@ public class Reddit {
 			throw new RedditException("Got errors while logging in!");
 		}
 		
+                requestor.setSession(message.getCookie());
+                
 		return message;
 	}
 
@@ -146,5 +172,20 @@ public class Reddit {
 		final RedditJsonParser parser = new RedditJsonParser(response.getBody());
 		
 		return parser.parseLinks();
-	}	
+	}
+        
+        public List<RedditMessage> messages(String inboxType) throws RedditException {
+            final List<String> pathSegments = new ArrayList<String>(2);
+            
+            pathSegments.add(RedditApiResourceConstants.MESSAGE);
+            pathSegments.add(inboxType + RedditApiResourceConstants.DOT_JSON);
+            
+            final RedditRequestInput requestInput
+                    = new RedditRequestInput(pathSegments);
+            
+            final RedditRequestResponse response = requestor.executeGet(requestInput);
+            final RedditJsonParser parser = new RedditJsonParser(response.getBody());
+            
+            return parser.parseMessages();
+        }
 }

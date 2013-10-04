@@ -14,6 +14,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 
 package com.cd.reddit;
 
+import com.cd.reddit.http.util.RedditApiResourceConstants;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
@@ -23,6 +24,7 @@ import org.junit.Test;
 
 import com.cd.reddit.json.mapping.RedditComment;
 import com.cd.reddit.json.mapping.RedditLink;
+import com.cd.reddit.json.mapping.RedditMessage;
 import com.cd.reddit.json.mapping.RedditSubreddit;
 import com.cd.reddit.json.util.RedditComments;
 
@@ -89,8 +91,7 @@ public class RedditTest {
 
 		for(RedditSubreddit subreddit : subreddits){
 			System.out.println(subreddit);
-		}		
-		
+		}	
 		assertEquals(false, subreddits.isEmpty());
 	}
 	
@@ -144,4 +145,22 @@ public class RedditTest {
 		
 		assertEquals(false, listing.isEmpty());
 	}	
+        
+        @Test
+        public void testInbox() {
+            System.out.println("----------- TESTING INBOX -----------");
+            List<RedditMessage> messages = null;
+            try {
+                testReddit.login("JavaJerseyTestBot", "JavaJerseyTestBot"); // Ensure login
+                messages = testReddit.messages(RedditApiResourceConstants.INBOX);
+            } catch (RedditException e) {
+                e.printStackTrace();
+            }
+            
+            for (RedditMessage message : messages) {
+                System.out.println(message.getBody());
+            }
+            
+            assertEquals(false, messages.isEmpty());
+        }
 }
