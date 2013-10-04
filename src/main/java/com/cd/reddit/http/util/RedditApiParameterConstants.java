@@ -18,7 +18,9 @@ public class RedditApiParameterConstants {
 	//Misc constants
 	public static final String JSON	 				= "json";
 	public static final String SORT	 				= "sort";	
-
+	public static final String TEXT		 			= "text";
+	public static final String UH		 			= "uh";	
+	
 	//Fullname helpers
 	public static final String T					= "t";	
 	public static final String COMMENT_TYPE			= "t1_";

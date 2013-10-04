@@ -132,8 +132,7 @@ public class RedditJsonParserTest {
 		assertEquals(true, parsedTypes.get(0) instanceof RedditAccount);
 	}	
 	
-	//TODO
-	//Add message test json
+	//TODO: Add message test json. This means put a test resource in the appropriate src/test/resources/ directory
 	
 	//Never do this in non-test code, Scanner is not closed!
 	private String convertStreamToString(InputStream is){

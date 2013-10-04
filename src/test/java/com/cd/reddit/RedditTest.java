@@ -22,6 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.cd.reddit.json.mapping.RedditComment;
+import com.cd.reddit.json.mapping.RedditJsonMessage;
 import com.cd.reddit.json.mapping.RedditLink;
 import com.cd.reddit.json.mapping.RedditSubreddit;
 import com.cd.reddit.json.util.RedditComments;
@@ -37,6 +38,8 @@ public class RedditTest {
 	public void waitForNextRequest(){
 		if(testReddit == null){
 			testReddit = new Reddit(testUserAgent);
+			
+			testLogin();
 		}
 		
 		try {
@@ -46,13 +49,41 @@ public class RedditTest {
 		}
 	}	
 
-	@Test	
-	public void testLogin(){
+	private void testLogin(){
+		RedditJsonMessage respMessage = null;
+		
 		try {
-			testReddit.login("JavaJerseyTestBot", "JavaJerseyTestBot");
+			respMessage = testReddit.login("JavaJerseyTestBot", "JavaJerseyTestBot");
 		} catch (RedditException e) {
 			e.printStackTrace();
 		} 
+		
+		System.out.println(respMessage);
+	}
+
+	@Test	
+	public void testMeJson(){
+		RedditJsonMessage respMessage = null;
+		
+		try {
+			respMessage = testReddit.meJson();
+		} catch (RedditException e) {
+			e.printStackTrace();
+		} 
+		
+		System.out.println(respMessage);
+	}	
+
+	@Test
+	public void testComment(){
+		String testComment = "I hope you don't mind my <h1>TEST</h1> at all!";
+		String parentThing = "t3_1no4gl";
+		
+		try {
+			testReddit.comment(testComment, parentThing);
+		} catch (RedditException e) {
+			e.printStackTrace();
+		}		
 	}	
 	
 	@Test
@@ -95,7 +126,7 @@ public class RedditTest {
 		List<RedditSubreddit> subreddits = null;
 		
 		try {
-			subreddits = testReddit.subredditsNew();
+			subreddits = testReddit.subreddits("new");
 		} catch (RedditException e) {
 			e.printStackTrace();
 		}		
@@ -103,23 +134,6 @@ public class RedditTest {
 		for(RedditSubreddit subreddit : subreddits){
 			System.out.println(subreddit);
 		}		
-		
-		assertEquals(false, subreddits.isEmpty());
-	}
-	
-	@Test
-	public void testSubredditsPopular(){
-		List<RedditSubreddit> subreddits = null;
-		
-		try {
-			subreddits = testReddit.subredditsPopular();
-		} catch (RedditException e) {
-			e.printStackTrace();
-		}		
-		
-		for(RedditSubreddit subreddit : subreddits){
-			System.out.println(subreddit);
-		}
 		
 		assertEquals(false, subreddits.isEmpty());
 	}
@@ -156,5 +170,5 @@ public class RedditTest {
 		}		
 		
 		assertEquals(false, listing.isEmpty());
-	}	
+	}
 }
