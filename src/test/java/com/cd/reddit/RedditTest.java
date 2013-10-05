@@ -18,38 +18,48 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.*;
 
+import com.cd.reddit.http.util.RedditApiResourceConstants;
+import com.cd.reddit.json.jackson.RedditJsonParser;
+import com.cd.reddit.json.mapping.RedditAccount;
 import com.cd.reddit.json.mapping.RedditComment;
 import com.cd.reddit.json.mapping.RedditJsonMessage;
 import com.cd.reddit.json.mapping.RedditLink;
+import com.cd.reddit.json.mapping.RedditMessage;
 import com.cd.reddit.json.mapping.RedditSubreddit;
 import com.cd.reddit.json.util.RedditComments;
 
 public class RedditTest {
 
-	Reddit testReddit = null;
+	static Reddit testReddit = null;
+	static final String nl = System.getProperty("line.separator");
 	
 	//Throway account for proof-of-concept purposes
 	final String testUserAgent = "JavaJerseyTestBot/1.0 by Cory Dissinger";		
-	
-	@Before
-	public void waitForNextRequest(){
+
+	@BeforeSuite
+	public void init(){
 		if(testReddit == null){
 			testReddit = new Reddit(testUserAgent);
-			
-			testLogin();
-		}
-		
+		}		
+	}
+	
+	@BeforeMethod
+	public void waitForNextRequest(){
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(4000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}	
 
+	@Test(groups = { "login" })
 	private void testLogin(){
+        System.out.println(nl);    	
+        System.out.println("----------- TESTING LOGIN -----------");
+        System.out.println(nl);		
+		
 		RedditJsonMessage respMessage = null;
 		
 		try {
@@ -61,33 +71,74 @@ public class RedditTest {
 		System.out.println(respMessage);
 	}
 
-	@Test	
+	@Test(dependsOnGroups = { "login"} )	
 	public void testMeJson(){
-		RedditJsonMessage respMessage = null;
+        System.out.println(nl);    	
+        System.out.println("----------- TESTING ME.JSON -----------");
+        System.out.println(nl);		
+		
+		RedditAccount account = null;
 		
 		try {
-			respMessage = testReddit.meJson();
+			account = testReddit.meJson();
 		} catch (RedditException e) {
 			e.printStackTrace();
 		} 
 		
-		System.out.println(respMessage);
+		System.out.println(account);
+		assertEquals(true, account.getModhash() != null);		
 	}	
 
-	@Test
-	public void testComment(){
+	@Test(dependsOnGroups = { "login"} )
+	public void testCommentAndDelete(){
+        System.out.println(nl);    	
+        System.out.println("----------- TESTING COMMENT AND DELETE -----------");
+        System.out.println(nl);		
+		
 		String testComment = "I hope you don't mind my <h1>TEST</h1> at all!";
-		String parentThing = "t3_1no4gl";
+		String parentThing = "t3_1nsakt";
+		RedditJsonMessage message = null;
 		
 		try {
-			testReddit.comment(testComment, parentThing);
+			message = testReddit.comment(testComment, parentThing);
 		} catch (RedditException e) {
 			e.printStackTrace();
 		}		
+		
+		System.out.println(message.toString());
+		assertEquals(true, message.getErrors().isEmpty());
+		
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}		
+		
+		//TODO: Provide better mechanism for users to extract underlying data from a JsonMessage 
+		//TODO: Prove comments can be deleted
+		/*
+		RedditJsonParser parser = new RedditJsonParser(message.getData().get("things").asText());
+		RedditComment theComment = null;		
+		
+		try {
+			theComment = parser.parseCommentsList().get(0);
+		} catch (RedditException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			message = testReddit.delete(theComment.getName());
+		} catch (RedditException e) {
+			e.printStackTrace();
+		}*/		
 	}	
 	
-	@Test
+	@Test(dependsOnGroups = { "login"} )
 	public void testCommentsForAndMore(){
+        System.out.println(nl);    	
+        System.out.println("----------- TESTING COMMENTS FOR AND MORE -----------");
+        System.out.println(nl);		
+		
 		RedditComments comments = null;
 		
 		try {
@@ -102,7 +153,7 @@ public class RedditTest {
 		assertEquals(false, comments.getComments().isEmpty());
 		assertEquals(true, comments.getMore() != null);
 		
-		RedditComments moreComments = null;
+		List<RedditComment> moreComments = null;
 		
 		try {
 			moreComments = testReddit.moreChildrenFor(comments, "top");
@@ -112,16 +163,18 @@ public class RedditTest {
 		
 		System.out.println(moreComments.toString());		
 
-		assertEquals(true, moreComments.getParentLink() != null);		
-		assertEquals(false, moreComments.getComments().isEmpty());
-		assertEquals(true, moreComments.getMore() != null);		
+		assertEquals(false, moreComments.isEmpty());		
 		
 		//Also test the 'more' and show an intuitive way of using..
 		//final String childComment = comments.get(1).getId();
 	}	
 	
-	@Test
+	@Test(dependsOnGroups = { "login"} )
 	public void testSubredditsNew(){
+        System.out.println(nl);    	
+        System.out.println("----------- TESTING SUBREDDITS NEW -----------");
+        System.out.println(nl);		
+		
 		testReddit = new Reddit(testUserAgent);
 		List<RedditSubreddit> subreddits = null;
 		
@@ -133,13 +186,17 @@ public class RedditTest {
 
 		for(RedditSubreddit subreddit : subreddits){
 			System.out.println(subreddit);
-		}		
+		}
 		
 		assertEquals(false, subreddits.isEmpty());
 	}
 	
-	@Test
+	@Test(dependsOnGroups = { "login"} )
 	public void testListingsFor(){
+        System.out.println(nl);    	
+        System.out.println("----------- TESTING LISTING FOR -----------");
+        System.out.println(nl);		
+		
 		List<RedditLink> listing = null;
 		
 		try {
@@ -155,8 +212,12 @@ public class RedditTest {
 		assertEquals(false, listing.isEmpty());
 	}
 	
-	@Test
+	@Test(dependsOnGroups = { "login"} )
 	public void testInfoFor(){
+        System.out.println(nl);    	
+        System.out.println("----------- TESTING INFO FOR -----------");
+        System.out.println(nl);		
+		
 		List<RedditLink> listing = null;
 		
 		try {
@@ -170,5 +231,25 @@ public class RedditTest {
 		}		
 		
 		assertEquals(false, listing.isEmpty());
-	}
+	}	
+        
+	@Test(dependsOnGroups = { "login"} )
+    public void testInbox() {
+        System.out.println(nl);    	
+        System.out.println("----------- TESTING INBOX -----------");
+        System.out.println(nl);
+        
+        List<RedditMessage> messages = null;
+        try {
+            messages = testReddit.messages(RedditApiResourceConstants.INBOX);
+        } catch (RedditException e) {
+            e.printStackTrace();
+        }
+        
+        for (RedditMessage message : messages) {
+            System.out.println(message.toString());
+        }
+        
+        assertEquals(false, messages.isEmpty());
+    }
 }

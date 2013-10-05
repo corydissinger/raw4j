@@ -1,16 +1,15 @@
 /*
-Copyright 2013 Cory Dissinger
+ Copyright 2013 Cory Dissinger
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at 
 
-http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
-
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ */
 package com.cd.reddit.http;
 
 import java.io.IOException;
@@ -24,50 +23,59 @@ import java.util.Map;
 import com.cd.reddit.RedditException;
 import com.cd.reddit.http.util.RedditRequestInput;
 import com.cd.reddit.http.util.RedditRequestResponse;
+
 import org.apache.commons.io.IOUtils;
 
 public class RedditRequestor {
-	
 	//TODO: Add ability to connect to ssl.reddit.com because credentials should not be in plain-text!
 	private static final String HOST = "www.reddit.com";
 	
 	private final String userAgent;
 	
 	private String modhash = null;
-	
-	public RedditRequestor(String userAgent){
-		this.userAgent = userAgent;
-	}
+    private String session = null;
 
-    private HttpURLConnection getConnection(RedditRequestInput input) throws RedditException{
-        try{
+    public RedditRequestor(String userAgent) {
+        this.userAgent = userAgent;
+    }
+    
+    private HttpURLConnection getConnection(RedditRequestInput input) throws RedditException {
+        try {
             HttpURLConnection connection = (HttpURLConnection) generateURL(input.getPathSegments(), input.getQueryParams())
                     .openConnection();
+            
+            connection.setRequestProperty("User-Agent", userAgent);
+            
+            if(session != null)
+            	connection.setRequestProperty("Cookie", "reddit_session=" + session);
 
-            connection.addRequestProperty("accept", "application/json");
-            connection.addRequestProperty("User-Agent", userAgent);
-
-            if(modhash != null){
-                connection.addRequestProperty("X-Modhash", modhash);
-            }
+            if(modhash != null)
+                connection.setRequestProperty("X-Modhash", modhash);
             
             return connection;
         } catch (Exception e) {
             throw new RedditException(e);
         }
     }
-	
-	public RedditRequestResponse executeGet(RedditRequestInput input) throws RedditException{
+
+    public RedditRequestResponse executeGet(RedditRequestInput input) throws RedditException {
         return readResponse(getConnection(input), input);
-	}
-	
-	public RedditRequestResponse executePost(RedditRequestInput input) throws RedditException{
+    }
+
+    public RedditRequestResponse executePost(RedditRequestInput input) throws RedditException {
         HttpURLConnection connection = getConnection(input);
-        // Implicitly sets method to POST
+        
         connection.setDoOutput(true);
+        
+        try {
+			connection.setRequestMethod("POST");
+		} catch (ProtocolException e) {
+			throw new RedditException(e);
+		}
 
         OutputStream outputStream = null;
-		try {
+        
+        try {
             outputStream = connection.getOutputStream();
             IOUtils.write(generateUrlEncodedForm(input.getFormParams()), outputStream, "UTF-8");
         } catch (IOException e) {
@@ -77,7 +85,7 @@ public class RedditRequestor {
         }
 
         return readResponse(connection, input);
-	}
+    }
 
     private RedditRequestResponse readResponse(HttpURLConnection connection, RedditRequestInput input) throws RedditException {
         InputStream stream = null;
@@ -90,7 +98,7 @@ public class RedditRequestor {
             String responseBody = IOUtils.toString(stream, "UTF-8");
             int statusCode = connection.getResponseCode();
 
-            if(statusCode != 200){
+            if (statusCode != HttpURLConnection.HTTP_OK) {
                 throw new RedditException(generateErrorString(statusCode, input, responseBody));
             }
 
@@ -104,71 +112,78 @@ public class RedditRequestor {
         }
     }
 
-	private String generateUrlEncodedForm(Map<String, String> formParams){
-		QueryBuilder builder = new QueryBuilder();
-		
-		for(Map.Entry<String, String> entry : formParams.entrySet())
+    private String generateUrlEncodedForm(Map<String, String> formParams) {
+        QueryBuilder builder = new QueryBuilder();
+
+        for (Map.Entry<String, String> entry : formParams.entrySet()) {
             builder.addParameter(entry.getKey(), entry.getValue());
-		
-		return builder.build();
-	}
-	
-	private URL generateURL(List<String> pathSegments,
-								 Map<String, String> queryParams) throws MalformedURLException {
+        }
+
+        return builder.build();
+    }
+
+    private URL generateURL(List<String> pathSegments,
+            Map<String, String> queryParams) throws MalformedURLException {
 
         String path = "";
         String query = "";
-		
-		if(pathSegments != null){
-			StringBuilder pathBuilder = new StringBuilder("/");
-			Iterator<String> itr = pathSegments.iterator();
-			
-			while(itr.hasNext()){
-				pathBuilder.append(itr.next());
-				
-				if(itr.hasNext())
-					pathBuilder.append("/");				
-			}
-			
-			path = pathBuilder.toString();
-		}
-		
-		if(queryParams != null){
+
+        if (pathSegments != null) {
+            StringBuilder pathBuilder = new StringBuilder("/");
+            Iterator<String> itr = pathSegments.iterator();
+
+            while (itr.hasNext()) {
+                pathBuilder.append(itr.next());
+
+                if (itr.hasNext()) {
+                    pathBuilder.append("/");
+                }
+            }
+
+            path = pathBuilder.toString();
+        }
+
+        if (queryParams != null) {
             QueryBuilder builder = new QueryBuilder();
 
-			for(Map.Entry<String, String> entry : queryParams.entrySet()){
-				builder.addParameter(entry.getKey(), entry.getValue());
-			}
+            for (Map.Entry<String, String> entry : queryParams.entrySet()) {
+                builder.addParameter(entry.getKey(), entry.getValue());
+            }
 
             query = "?" + builder.build();
 		}
 		
 		return new URL("http", HOST, path+query);
 	}
-	
-	private String generateErrorString(final int statusCode, 
-									   final RedditRequestInput input, 
-									   final String responseBody){
-		String nl = System.getProperty("line.separator");
-		StringBuilder builder = new StringBuilder();
-		
-		builder.append("--- STATUS CODE ---");
-		builder.append(nl);		
-		builder.append(statusCode);
-		builder.append(nl);
-		builder.append("--- REQUEST INPUT---");
-		builder.append(nl);		
-		builder.append(input.toString());
-		builder.append(nl);
-		builder.append("--- RESPONSE BODY---");
-		builder.append(nl);		
-		builder.append(responseBody);
-		builder.append(nl);
-		
-		return builder.toString();
-	}
 
 	public void setModhashHeader(String modhash) {
 		this.modhash = modhash;
 	}
+	
+    public void setSession(String session) {
+        this.session = session;
+    }
+
+    private String generateErrorString(final int statusCode,
+            						   final RedditRequestInput input,
+            						   final String responseBody) {
+    	
+        String nl = System.getProperty("line.separator");
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("--- STATUS CODE ---");
+        builder.append(nl);
+        builder.append(statusCode);
+        builder.append(nl);
+        builder.append("--- REQUEST INPUT---");
+        builder.append(nl);
+        builder.append(input.toString());
+        builder.append(nl);
+        builder.append("--- RESPONSE BODY---");
+        builder.append(nl);
+        builder.append(responseBody);
+        builder.append(nl);
+
+        return builder.toString();
+    }
 }

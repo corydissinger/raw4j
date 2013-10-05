@@ -24,6 +24,7 @@ public class RedditAccount extends RedditType{
 	private String hasModMail;
 	private String id;
 	private int linkKarma;
+	private String modhash;	
 	private String name;
 	private boolean over18;
 	
@@ -68,6 +69,12 @@ public class RedditAccount extends RedditType{
 	}
 	public void setLinkKarma(int linkKarma) {
 		this.linkKarma = linkKarma;
+	}
+	public String getModhash() {
+		return modhash;
+	}
+	public void setModhash(String modhash) {
+		this.modhash = modhash;
 	}
 	public String getName() {
 		return name;

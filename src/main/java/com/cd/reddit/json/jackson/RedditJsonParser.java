@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 
@@ -48,6 +49,14 @@ public class RedditJsonParser {
 		json = string;
 	}
 	
+	/**
+	 * This may not work for all Reddit API JSON response 'messages'
+	 * Sometimes the message is nested within a "json" key, as is the case for /api/login and /api/comment.
+	 * Do not assume this will work in all cases. YMMV.
+	 * 
+	 * @return RedditJsonMessage The parsed JSON message
+	 * @throws RedditException
+	 */
 	public RedditJsonMessage parseJsonMessage() throws RedditException{
 		init();
 		
@@ -66,6 +75,36 @@ public class RedditJsonParser {
 		
 		return mapJsonComments();
 	}
+
+	public List<RedditComment> parseMoreChildren() throws RedditException{
+		init();
+		
+		final List<RedditComment> parsedComments = new ArrayList<RedditComment>(10);
+		final JsonNode thingsArray = rootNode.get(RedditJsonConstants.JSON).get(RedditJsonConstants.DATA).get(RedditJsonConstants.THINGS);
+		final Iterator<JsonNode> thingsItr = thingsArray.getElements();
+		
+		while(thingsItr.hasNext()){
+			final JsonNode commentThing = thingsItr.next();
+			RedditComment theComment;
+			
+			try {
+				theComment = mapper.readValue(commentThing.get(RedditJsonConstants.DATA), RedditComment.class);
+			} catch (final Exception e) {
+				throw new RedditException(e);
+			}
+			
+			parsedComments.add(theComment);
+		}
+		
+		return parsedComments;
+	}	
+	
+	@SuppressWarnings("unchecked")	
+	public List<RedditComment> parseCommentsList() throws RedditException{
+		init();
+		
+		return (List<RedditComment>) parseSpecificType(rootNode, RedditJsonConstants.TYPE_COMMENT);
+	}	
 	
 	@SuppressWarnings("unchecked")
 	public List<RedditLink> parseLinks() throws RedditException{
@@ -96,6 +135,9 @@ public class RedditJsonParser {
 		try {
 			mapper = RedditJacksonManager.INSTANCE.getObjectMapper();
 			rootNode = mapper.readTree(json);
+			
+			if(rootNode.size() == 0)
+				throw new RedditException("JSON object to be parsed should not be empty!");
 		} catch (JsonParseException e) {
 			throw new RedditException(e);
 		} catch (IOException e) {
@@ -174,6 +216,7 @@ public class RedditJsonParser {
 		return new RedditComments(theParentLink.get(0), topLevelComments, theMore);
 	}
 	
+	//TODO: These messages are prevalent throughout the possible JSON responses from the API. There has to be a better parsing strategy than this one.
 	private RedditJsonMessage mapJsonMessage(JsonNode jsonMessage) throws RedditException{
 		RedditJsonMessage parsedMessage = new RedditJsonMessage();
 		final List<String> errors = new ArrayList<String>(1);
@@ -184,11 +227,17 @@ public class RedditJsonParser {
 			errors.add(error);
 		}
 		
-		final JsonNode data = jsonMessage.get(RedditJsonConstants.DATA);
+		final JsonNode data 			= jsonMessage.get(RedditJsonConstants.DATA);
+		final JsonNode cookieNode 		= data.get(RedditJsonConstants.COOKIE);
+		final JsonNode modhashNode 		= data.get(RedditJsonConstants.MODHASH);		
 		
 		parsedMessage.setErrors(errors);
-		parsedMessage.setCookie(data.get(RedditJsonConstants.COOKIE).asText());
-		parsedMessage.setModhash(data.get(RedditJsonConstants.MODHASH).asText());		
+		
+		if(cookieNode != null)
+			parsedMessage.setCookie(cookieNode.asText());
+		
+		if(modhashNode != null)
+			parsedMessage.setModhash(modhashNode.asText());		
 		
 		return parsedMessage;
 	}

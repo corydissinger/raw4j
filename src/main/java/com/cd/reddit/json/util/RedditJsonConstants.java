@@ -18,6 +18,8 @@ public class RedditJsonConstants {
 	public static final String NAME		 		= "name";	
 	public static final String KIND 			= "kind";
 	public static final String DATA		 		= "data";
+	public static final String JSON 			= "json";
+	public static final String THINGS 			= "things";	
 	
 	public static final String LISTING 			= "Listing";
 	public static final String CHILDREN	 		= "children";
@@ -30,5 +32,5 @@ public class RedditJsonConstants {
 	public static final String TYPE_LINK			= "t3";
 	public static final String TYPE_MESSAGE			= "t4";
 	public static final String TYPE_SUBREDDIT		= "t5";
-	public static final String TYPE_AWARD			= "t6";	
+	public static final String TYPE_AWARD			= "t6";
 }
