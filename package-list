@@ -1,0 +1,6 @@
+com.cd.reddit
+com.cd.reddit.http
+com.cd.reddit.http.util
+com.cd.reddit.json.jackson
+com.cd.reddit.json.mapping
+com.cd.reddit.json.util
