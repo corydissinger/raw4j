@@ -2,6 +2,12 @@ package com.cd.reddit.json.mapping;
 
 import java.util.List;
 
+/**
+ * Implements the Java bean version of the JSON found <a href="https://github.com/reddit/reddit/wiki/JSON#more">here</a>.
+ * 
+ * @author <a href="https://github.com/reddit/reddit/wiki/JSON#message-implements-created">Cory Dissinger</a>
+ */
+
 public class RedditMore {
 	private int count;
 	private String parent_id;

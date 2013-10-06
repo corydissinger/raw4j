@@ -30,6 +30,13 @@ import com.cd.reddit.json.mapping.RedditMessage;
 import com.cd.reddit.json.mapping.RedditSubreddit;
 import com.cd.reddit.json.util.RedditComments;
 
+/**
+ * @author Cory
+ *
+ * Uses TestNG because JUnit is not designed for state-based tests.
+ *
+ * @see <a href="http://testng.org/doc/documentation-main.html">Full TestNG Docs</a>
+ */
 public class RedditTest {
 
 	static Reddit testReddit = null;

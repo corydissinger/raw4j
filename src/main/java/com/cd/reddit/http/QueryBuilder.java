@@ -17,11 +17,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Austin
- * Date: 10/3/13
- * Time: 7:11 AM
- * To change this template use File | Settings | File Templates.
+ * @author <a href="https://github.com/cybergeek94">Austin Bonander</a>
  */
 public class QueryBuilder {
 

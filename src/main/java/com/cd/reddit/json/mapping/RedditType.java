@@ -14,6 +14,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 package com.cd.reddit.json.mapping;
 
 
+/**
+ * Evil base class for recklessly casting objects around...
+ * 
+ * @author <a href="https://github.com/reddit/reddit/wiki/JSON#subreddit">Cory Dissinger</a>
+ */
+
+//TODO: Is using this piece of junk to ease JSON parsing useful?
 public abstract class RedditType {
 	
 }

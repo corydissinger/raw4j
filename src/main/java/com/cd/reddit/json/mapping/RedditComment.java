@@ -16,6 +16,11 @@ package com.cd.reddit.json.mapping;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+/**
+ * Implements the Java bean version of the JSON found <a href="https://github.com/reddit/reddit/wiki/JSON#comment-implements-votable--created">here</a>.
+ * 
+ * @author <a href="https://github.com/corydissinger">Cory Dissinger</a>
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RedditComment extends RedditType{
 

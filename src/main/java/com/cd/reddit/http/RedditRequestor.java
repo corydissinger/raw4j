@@ -26,6 +26,15 @@ import com.cd.reddit.http.util.RedditRequestResponse;
 
 import org.apache.commons.io.IOUtils;
 
+/**
+ * Necessary implementation of HttpURLConnection and friends.
+ * <br/> 
+ * <br/>
+ * Needs to have SSL/HTTPS support as well as further analysis of other needs.
+ * 
+ * @author <a href="https://github.com/corydissinger">Cory Dissinger</a>
+ * @author <a href="https://github.com/cybergeek94">Austin Bonander</a>
+ */
 public class RedditRequestor {
 	//TODO: Add ability to connect to ssl.reddit.com because credentials should not be in plain-text!
 	private static final String HOST = "www.reddit.com";

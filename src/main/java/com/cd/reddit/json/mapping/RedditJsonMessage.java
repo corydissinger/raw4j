@@ -5,12 +5,13 @@ import java.util.List;
 import org.codehaus.jackson.JsonNode;
 
 /**
- * @author Cory
- *
+ * This class is part of the current smelly code. Further investigation into the structure of the JSON and which API calls return them needs to be done. 
+ * 
  * Used for the following API calls:
  * 		- /api/login
  * 		- /api/comment
  *
+ * @author <a href="https://github.com/corydissinger">Cory Dissinger</a>
  */
 public class RedditJsonMessage {
 	private List<String> errors;

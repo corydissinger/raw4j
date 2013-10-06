@@ -16,6 +16,12 @@ package com.cd.reddit.json.jackson;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 
+/**
+ * As far as I know using enums are one of the easiest and most reliable ways to guarentee true Singleton (one reference) in the JVM Heap at run time. 
+ * 
+ * @author <a href="https://github.com/corydissinger">Cory Dissinger</a>
+ *
+ */
 public enum RedditJacksonManager {
 	INSTANCE;
 	

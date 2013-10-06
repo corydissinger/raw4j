@@ -35,6 +35,20 @@ import com.cd.reddit.json.mapping.RedditMessage;
 import com.cd.reddit.json.mapping.RedditSubreddit;
 import com.cd.reddit.json.util.RedditComments;
 
+/**
+ * Highest level API wrapper class. Primary goal should be to provide most intuitive, powerful methods to easily get de-serialized JSON
+ * from the Reddit API.
+ * <br/>
+ * <br/>
+ *  Please see the <a href="https://github.com/corydissinger/raw4j/blob/master/IMPLEMENTED_CALLS.md">Github Markdown</a> for full code examples.
+ * <br/> 
+ * <br/>
+ * 
+ * @see <a href="http://www.reddit.com/dev/api">Reddit's Full, Live Built-In Documentation</a>
+ * 
+ * @author <a href="https://github.com/corydissinger">Cory Dissinger</a>
+ *
+ */
 public class Reddit {
 	private final RedditRequestor requestor;
 	

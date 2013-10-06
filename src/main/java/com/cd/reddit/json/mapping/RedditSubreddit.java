@@ -15,6 +15,12 @@ package com.cd.reddit.json.mapping;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+/**
+ * Implements the Java bean version of the JSON found <a href="https://github.com/reddit/reddit/wiki/JSON#more">here</a>.
+ * 
+ * @author <a href="https://github.com/reddit/reddit/wiki/JSON#subreddit">Cory Dissinger</a>
+ */
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RedditSubreddit extends RedditType{
 	private int accountsActive;

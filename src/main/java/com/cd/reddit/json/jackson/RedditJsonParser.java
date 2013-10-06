@@ -37,14 +37,33 @@ import com.cd.reddit.json.mapping.RedditType;
 import com.cd.reddit.json.util.RedditComments;
 import com.cd.reddit.json.util.RedditJsonConstants;
 
+/**
+ *
+ * Uses a combination of <a href="http://wiki.fasterxml.com/JacksonInFiveMinutes#JSON_Three_Ways">Jacksons Tree Model and Data Binding</a> APIs
+ * to parse Reddit API JSON.
+ * <br/>
+ * <br/>
+ * Future implementations can and should use <a href="http://wiki.fasterxml.com/JacksonStreamingApi">the Streaming API</a> for great justice.
+ * <br/>
+ * <br/>
+ * 
+ * @see <a href="http://www.reddit.com/dev/api">Reddit's Full, Live Built-In Documentation</a>
+ * @see <a href="https://github.com/reddit/reddit/wiki/JSON">Reddit JSON Structure Reference</a>
+ * 
+ * @author <a href="https://github.com/corydissinger">Cory Dissinger</a>
+ */
 public class RedditJsonParser {
 	
 	private final String json;
 
 	private ObjectMapper mapper;	
 	private JsonNode rootNode;
-
 	
+	/**
+	 * It would probably be smarter to use refernces to Stream objects rather than Strings. Strings are the bane of JVM performance.
+	 * 
+	 * @param string The entire JSON object
+	 */
 	public RedditJsonParser(String string){
 		json = string;
 	}
@@ -63,19 +82,26 @@ public class RedditJsonParser {
 		return mapJsonMessage(rootNode.get("json"));
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<RedditAccount> parseAccounts() throws RedditException{
-		init();
-		
-		return (List<RedditAccount>) parseSpecificType(rootNode, RedditJsonConstants.TYPE_ACCOUNT);
-	}
-	
+	/**
+	 * Comments are a strange beast. Currently this method only parses correctly for JSON retrieved by 
+	 * {@link com.cd.reddit.Reddit#commentsFor(String, String) commentsFor} method.
+	 * 
+	 * @return RedditComments Comments object.
+	 * @throws RedditException
+	 */
 	public RedditComments parseComments() throws RedditException{
 		init();
 		
 		return mapJsonComments();
 	}
 
+	/**
+	 * Parses JSON from a <a href="http://www.reddit.com/dev/api#POST_api_morechildren">Reddit API morechildren</a> call. 
+	 * The structure of this JSON is very bizarre, please see src/test/resources/example-morechildren.json.
+	 * 
+	 * @return List<RedditComment> All of the Comment type things found in the morechildren JSON
+	 * @throws RedditException
+	 */
 	public List<RedditComment> parseMoreChildren() throws RedditException{
 		init();
 		
@@ -99,20 +125,48 @@ public class RedditJsonParser {
 		return parsedComments;
 	}	
 	
-	@SuppressWarnings("unchecked")	
-	public List<RedditComment> parseCommentsList() throws RedditException{
-		init();
-		
-		return (List<RedditComment>) parseSpecificType(rootNode, RedditJsonConstants.TYPE_COMMENT);
-	}	
-	
+	/**
+	 * Parses JSON containing any number of Link type Things.
+	 * <br/>
+	 * Useful with:
+	 * <br/>
+	 * 
+	 * @return List<RedditLink> All of the Link type things found in the JSON object
+	 * @throws RedditException
+	 */
 	@SuppressWarnings("unchecked")
 	public List<RedditLink> parseLinks() throws RedditException{
 		init();
 		
 		return (List<RedditLink>) parseSpecificType(rootNode, RedditJsonConstants.TYPE_LINK);
 	}
+
+	/**
+	 * Parses all Account type Things from a given JSON object.
+	 * 
+	 * <br/>
+	 * Useful with:
+	 * <br/>
+	 * 
+	 * @return A list of the Account type Things found within the current JSON object
+	 * @throws RedditException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<RedditAccount> parseAccounts() throws RedditException{
+		init();
+		
+		return (List<RedditAccount>) parseSpecificType(rootNode, RedditJsonConstants.TYPE_ACCOUNT);
+	}	
 	
+	/**
+	 * Parses JSON containing any number of Message type Things.
+	 * <br/>
+	 * Useful with:
+	 * <br/>
+	 * 
+	 * @return List<RedditMessage>
+	 * @throws RedditException
+	 */
 	@SuppressWarnings("unchecked")
 	public List<RedditMessage> parseMessages() throws RedditException{
 		init();
@@ -120,6 +174,15 @@ public class RedditJsonParser {
 		return (List<RedditMessage>) parseSpecificType(rootNode, RedditJsonConstants.TYPE_MESSAGE);
 	}
 	
+	/**
+	 * Parses JSON containing any number of Subreddit type Things.
+	 * <br/>
+	 * Useful with:
+	 * <br/>
+	 * 
+	 * @return List<RedditSubreddit>
+	 * @throws RedditException
+	 */
 	@SuppressWarnings("unchecked")
 	public List<RedditSubreddit> parseSubreddits() throws RedditException{
 		init();
@@ -131,6 +194,12 @@ public class RedditJsonParser {
 	//			Begin private methods, mostly for mapping
 	//****************************************************************
 	
+	/**
+	 * Gets a reference to the should-be singleton org.codehaus.jackson.map {@link org.codehaus.jackson.map.ObjectMapper# ObjectMapper}.
+	 * Uses Jacksons 
+	 * 
+	 * @throws RedditException
+	 */
 	private void init() throws RedditException{
 		try {
 			mapper = RedditJacksonManager.INSTANCE.getObjectMapper();
