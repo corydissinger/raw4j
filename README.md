@@ -1,13 +1,5 @@
-[![Build Status](https://travis-ci.org/corydissinger/raw4j.png)](https://travis-ci.org/corydissinger/raw4j)
-# Contributing
-______________
-**Please follow these rules before submitting pull requests...**
-
-- No Java 1.7 specific features in master branch (yet)
-- 'mvn clean install' should build successfully on your machine
-
-
-# Goals/Philosophy
+**Travis CI Build:** [![Build Status](https://travis-ci.org/corydissinger/raw4j.png)](https://travis-ci.org/corydissinger/raw4j)
+# raw4j Goals/Philosophy
 ______________
 **Important Triple Bulleted List**
 
@@ -17,28 +9,13 @@ ______________
 
 **raw4j** provide a light-weight, injectable dependency that allows for an intuitive but not overly opinionated Java Reddit API client. HTTP communication is accomplished using the [Apache Http Components](http://hc.apache.org/) API. JSON parsing is handled using the [Jackson](https://github.com/FasterXML/jackson) API.
 
+# [Contribution Rules](https://github.com/corydissinger/raw4j/blob/master/CONTRIBUTION_RULES.md)
 
-# Example Usage
-______________
+*Hint: The above text is just a BIG link. :)*
 
-Here is an example with the current code of logging in with a user.
+# [Example Usage](https://github.com/corydissinger/raw4j/blob/master/IMPLEMENTED_CALLS.md)
 
-```java
-
-Reddit reddit = new Reddit("my-user-agent");
-
-try{
-  reddit.login("myUsername", "myPassword");
-  List<RedditSubreddit> popularSubreddits = reddit.subredditsPopular();
-  List<RedditLink> topJavaLinks = reddit.listingFor("java", "top");
-  //More to come...  
-  
-}catch(RedditException re){
-  e.printStackTrace();
-}
-
-
-```
+The IMPLEMENTED_CALLS.md should be the go-to page for how to use implemented calls as well as which ones should be implemented.
 
 # To Dos
 - Implement all API calls (so many more...)
