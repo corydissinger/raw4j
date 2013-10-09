@@ -18,7 +18,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.testng.annotations.*;
+import org.codehaus.jackson.JsonNode;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Test;
 
 import com.cd.reddit.http.util.RedditApiResourceConstants;
 import com.cd.reddit.json.jackson.RedditJsonParser;
@@ -102,8 +105,9 @@ public class RedditTest {
         System.out.println("----------- TESTING COMMENT AND DELETE -----------");
         System.out.println(nl);		
 		
-		String testComment = "I hope you don't mind my <h1>TEST</h1> at all!";
-		String parentThing = "t3_1nsakt";
+		String testComment = "I hope you don't mind my TEST at all! Sorry Reddit, just integration testing...";
+		//TODO: Stop harassing the same link with this bot's spammy comments
+		String parentThing = "t3_1o2shx";
 		RedditJsonMessage message = null;
 		
 		try {
@@ -111,8 +115,10 @@ public class RedditTest {
 		} catch (RedditException e) {
 			e.printStackTrace();
 		}		
-		
+
 		System.out.println(message.toString());
+        System.out.println(nl);
+        
 		assertEquals(true, message.getErrors().isEmpty());
 		
 		try {
@@ -121,23 +127,30 @@ public class RedditTest {
 			e.printStackTrace();
 		}		
 		
-		//TODO: Provide better mechanism for users to extract underlying data from a JsonMessage 
-		//TODO: Prove comments can be deleted
-		/*
-		RedditJsonParser parser = new RedditJsonParser(message.getData().get("things").asText());
-		RedditComment theComment = null;		
+		final JsonNode thingsNode = message.getData().get("things");
+		
+		//Annoying that we have to keep instantiating new Parsers...
+		RedditJsonParser parser 			= new RedditJsonParser(thingsNode);
+		List<RedditComment> theOneComment 	= null;
 		
 		try {
-			theComment = parser.parseCommentsList().get(0);
+			theOneComment = parser.parseCommentsOnly();
 		} catch (RedditException e) {
 			e.printStackTrace();
 		}
-		
+        
+        //The first and only Comment type Thing should be the one we just made.
+        RedditComment theComment = theOneComment.get(0);
+
+        System.out.println(theComment);        
+        System.out.println(nl);        
+        
 		try {
-			message = testReddit.delete(theComment.getName());
+			//It seems that the /api/delete method returns HTTP 200 ok and an empty JSON object response... don't try to parse it (yet)
+			testReddit.delete(theComment.getId());
 		} catch (RedditException e) {
 			e.printStackTrace();
-		}*/		
+		}
 	}	
 	
 	@Test(dependsOnGroups = { "login"} )

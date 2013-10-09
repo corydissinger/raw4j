@@ -26,6 +26,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 
 import com.cd.reddit.RedditException;
+import com.cd.reddit.exception.RedditRateLimitException;
 import com.cd.reddit.json.mapping.RedditAccount;
 import com.cd.reddit.json.mapping.RedditComment;
 import com.cd.reddit.json.mapping.RedditJsonMessage;
@@ -55,9 +56,10 @@ import com.cd.reddit.json.util.RedditJsonConstants;
 public class RedditJsonParser {
 	
 	private final String json;
-
-	private ObjectMapper mapper;	
 	private JsonNode rootNode;
+	
+	private ObjectMapper mapper;	
+
 	
 	/**
 	 * It would probably be smarter to use refernces to Stream objects rather than Strings. Strings are the bane of JVM performance.
@@ -65,8 +67,19 @@ public class RedditJsonParser {
 	 * @param string The entire JSON object
 	 */
 	public RedditJsonParser(String string){
-		json = string;
+		json 		= string;
+		rootNode 	= null;
 	}
+
+	/**
+	 * It would probably be smarter to use refernces to Stream objects rather than Strings. Strings are the bane of JVM performance.
+	 * 
+	 * @param string The entire JSON object
+	 */
+	public RedditJsonParser(JsonNode startNode){
+		rootNode 	= startNode;
+		json 		= null;
+	}	
 	
 	/**
 	 * This may not work for all Reddit API JSON response 'messages'
@@ -84,7 +97,9 @@ public class RedditJsonParser {
 	
 	/**
 	 * Comments are a strange beast. Currently this method only parses correctly for JSON retrieved by 
-	 * {@link com.cd.reddit.Reddit#commentsFor(String, String) commentsFor} method.
+	 * {@link com.cd.reddit.Reddit#commentsFor(String, String) commentsFor} method. The structure of the json always
+	 * has a parent Link, array of comments, and a 'more' object. This explains the need for a new POJO to encapsulate
+	 * the data, as seen by {@link com.cd.reddit.json.util.RedditComments }
 	 * 
 	 * @return RedditComments Comments object.
 	 * @throws RedditException
@@ -94,6 +109,20 @@ public class RedditJsonParser {
 		
 		return mapJsonComments();
 	}
+	
+	/**
+	 * Occassionally we will ONLY want to extract the Comment-type Things from a JSON string. 
+	 * In those cases, use this method.
+	 * 
+	 * @return List<RedditComment> List of parsed comments
+	 * @throws RedditException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<RedditComment> parseCommentsOnly() throws RedditException{
+		init();
+		
+		return (List<RedditComment>) parseSpecificType(rootNode, RedditJsonConstants.TYPE_COMMENT);
+	}	
 
 	/**
 	 * Parses JSON from a <a href="http://www.reddit.com/dev/api#POST_api_morechildren">Reddit API morechildren</a> call. 
@@ -203,16 +232,39 @@ public class RedditJsonParser {
 	private void init() throws RedditException{
 		try {
 			mapper = RedditJacksonManager.INSTANCE.getObjectMapper();
+
+			//Allow the constructor option to parse String or JsonNode
+			if(rootNode != null)
+				return;
+			
 			rootNode = mapper.readTree(json);
 			
 			if(rootNode.size() == 0)
 				throw new RedditException("JSON object to be parsed should not be empty!");
+			
+			identifyJsonExceptions();
+			
 		} catch (JsonParseException e) {
 			throw new RedditException(e);
 		} catch (IOException e) {
 			throw new RedditException(e);
-		}		
+		} catch (RedditException e)		 {
+			throw new RedditException(e);
+		}
 	}	
+	
+	/**
+	 * Please put any and all Reddit JSON exceptions found here in order to allow better handling of errors for caller.
+	 * 
+	 * @throws RedditException
+	 */
+	private void identifyJsonExceptions() throws RedditException{
+		final JsonNode rateLimit = rootNode.get("ratelimit");
+		
+		if(rateLimit != null){
+			throw new RedditRateLimitException(rootNode.asText());
+		}
+	}
 	
 	private List<? extends RedditType> parseSpecificType(JsonNode theNode, String specifiedType) throws RedditException{
 		try {
@@ -295,12 +347,19 @@ public class RedditJsonParser {
 			final String error = nodeItr.next().asText();
 			errors.add(error);
 		}
+
+		parsedMessage.setErrors(errors);		
 		
 		final JsonNode data 			= jsonMessage.get(RedditJsonConstants.DATA);
+		
+		if(data == null)
+			throw new RedditException("The following strange JSON was recieved:" + jsonMessage.asText());
+			
+		
 		final JsonNode cookieNode 		= data.get(RedditJsonConstants.COOKIE);
 		final JsonNode modhashNode 		= data.get(RedditJsonConstants.MODHASH);		
 		
-		parsedMessage.setErrors(errors);
+		parsedMessage.setData(data);
 		
 		if(cookieNode != null)
 			parsedMessage.setCookie(cookieNode.asText());

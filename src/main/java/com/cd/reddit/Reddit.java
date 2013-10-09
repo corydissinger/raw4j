@@ -235,7 +235,7 @@ public class Reddit {
 		return parser.parseJsonMessage();
 	}
 
-	public RedditJsonMessage delete(String fullname) throws RedditException{
+	public void delete(String fullname) throws RedditException{
 		final List<String> pathSegments = new ArrayList<String>(2);
 		final Map<String, String> form = new HashMap<String, String>(2);
 		
@@ -248,10 +248,6 @@ public class Reddit {
 		final RedditRequestInput requestInput = new RedditRequestInput(pathSegments, null, form);
 		
 		final RedditRequestResponse response = requestor.executePost(requestInput);
-		
-		final RedditJsonParser parser = new RedditJsonParser(response.getBody());
-		
-		return parser.parseJsonMessage();
 	}
 	
 	

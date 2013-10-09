@@ -82,6 +82,13 @@ try {
   RedditJsonMessage responseMessage = reddit.comment( "the comment raw markdown stuff", "fullname_of_parent");
 ```
 
+#### POST /api/del
+
+```java
+  //Works for Comments and Links as far as I know
+  reddit.delete( "fullname of thing to delete" );
+```
+
 #### POST /api/morechildren
 
 ```java
@@ -94,7 +101,6 @@ try {
 
 * POST /api/marknsfw
 * POST /api/unmarknsfw
-* POST /api/del
 * POST /api/editusertext
 * POST /api/hide
 * GET /api/info
