@@ -1,5 +1,7 @@
 Contribution Rules
 ==================
+Before embarking on any sort of cowboy coder conquest, *please* look at all of the existing TODOs. Many of them address serious systemic issues or concepts and may give you insights.
+
 1. Added your Javadocs?
 2. Added your TestNG tests?
 3. Added your calls to IMPLEMENTED_CALLS.md?

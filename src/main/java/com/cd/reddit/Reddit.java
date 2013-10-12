@@ -196,6 +196,7 @@ public class Reddit {
 		return parser.parseComments();
 	}	
 	
+	//TODO: Is this always a Link?
 	public List<RedditLink> infoForId(final String id) throws RedditException{
 		final List<String> pathSegments = new ArrayList<String>(2);
 		final Map<String, String> queryParams = new HashMap<String, String>(1);

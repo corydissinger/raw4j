@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" total="6" passed="6">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="132303" started-at="2013-10-12T13:12:23Z" finished-at="2013-10-12T13:14:35Z">
+    <groups>
+      <group name="readReddit">
+        <method signature="RedditTest.subredditsPopular()[pri:0, instance:com.cd.reddit.RedditTest@6335d858]" name="subredditsPopular" class="com.cd.reddit.RedditTest"/>
+        <method signature="RedditTest.listingsFor()[pri:0, instance:com.cd.reddit.RedditTest@6335d858]" name="listingsFor" class="com.cd.reddit.RedditTest"/>
+        <method signature="RedditTest.commentsForAndMore()[pri:0, instance:com.cd.reddit.RedditTest@6335d858]" name="commentsForAndMore" class="com.cd.reddit.RedditTest"/>
+      </group> <!-- readReddit -->
+    </groups>
+    <test name="Default test" duration-ms="132303" started-at="2013-10-12T13:12:23Z" finished-at="2013-10-12T13:14:35Z">
+      <class name="com.cd.reddit.RedditTest">
+        <test-method status="PASS" signature="init()[pri:0, instance:com.cd.reddit.RedditTest@6335d858]" name="init" is-config="true" duration-ms="13" started-at="2013-10-12T09:12:23Z" finished-at="2013-10-12T09:12:23Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- init -->
+        <test-method status="PASS" signature="waitForNextRequest()[pri:0, instance:com.cd.reddit.RedditTest@6335d858]" name="waitForNextRequest" is-config="true" duration-ms="4002" started-at="2013-10-12T09:12:23Z" finished-at="2013-10-12T09:12:27Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- waitForNextRequest -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.cd.reddit.RedditTest@6335d858]" name="login" duration-ms="9720" started-at="2013-10-12T09:12:27Z" finished-at="2013-10-12T09:12:36Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="waitForNextRequest()[pri:0, instance:com.cd.reddit.RedditTest@6335d858]" name="waitForNextRequest" is-config="true" duration-ms="4000" started-at="2013-10-12T09:12:36Z" finished-at="2013-10-12T09:12:40Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- waitForNextRequest -->
+        <test-method status="PASS" signature="subredditsPopular()[pri:0, instance:com.cd.reddit.RedditTest@6335d858]" name="subredditsPopular" duration-ms="14553" started-at="2013-10-12T09:12:40Z" depends-on-methods="com.cd.reddit.RedditTest.login" finished-at="2013-10-12T09:12:55Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- subredditsPopular -->
+        <test-method status="PASS" signature="waitForNextRequest()[pri:0, instance:com.cd.reddit.RedditTest@6335d858]" name="waitForNextRequest" is-config="true" duration-ms="4001" started-at="2013-10-12T09:12:55Z" finished-at="2013-10-12T09:12:59Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- waitForNextRequest -->
+        <test-method status="PASS" signature="listingsFor()[pri:0, instance:com.cd.reddit.RedditTest@6335d858]" name="listingsFor" duration-ms="5641" started-at="2013-10-12T09:12:59Z" depends-on-methods="com.cd.reddit.RedditTest.login, com.cd.reddit.RedditTest.subredditsPopular" finished-at="2013-10-12T09:13:05Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- listingsFor -->
+        <test-method status="PASS" signature="waitForNextRequest()[pri:0, instance:com.cd.reddit.RedditTest@6335d858]" name="waitForNextRequest" is-config="true" duration-ms="4000" started-at="2013-10-12T09:13:05Z" finished-at="2013-10-12T09:13:09Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- waitForNextRequest -->
+        <test-method status="PASS" signature="commentsForAndMore()[pri:0, instance:com.cd.reddit.RedditTest@6335d858]" name="commentsForAndMore" duration-ms="15212" started-at="2013-10-12T09:13:09Z" depends-on-methods="com.cd.reddit.RedditTest.login, com.cd.reddit.RedditTest.listingsFor" finished-at="2013-10-12T09:13:24Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- commentsForAndMore -->
+        <test-method status="PASS" signature="waitForNextRequest()[pri:0, instance:com.cd.reddit.RedditTest@6335d858]" name="waitForNextRequest" is-config="true" duration-ms="4001" started-at="2013-10-12T09:13:24Z" finished-at="2013-10-12T09:13:28Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- waitForNextRequest -->
+        <test-method status="PASS" signature="commentAndDelete()[pri:0, instance:com.cd.reddit.RedditTest@6335d858]" name="commentAndDelete" duration-ms="62115" depends-on-groups="readReddit" started-at="2013-10-12T09:13:28Z" depends-on-methods="com.cd.reddit.RedditTest.login, com.cd.reddit.RedditTest.listingsFor" finished-at="2013-10-12T09:14:30Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- commentAndDelete -->
+        <test-method status="PASS" signature="waitForNextRequest()[pri:0, instance:com.cd.reddit.RedditTest@6335d858]" name="waitForNextRequest" is-config="true" duration-ms="4000" started-at="2013-10-12T09:14:30Z" finished-at="2013-10-12T09:14:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- waitForNextRequest -->
+        <test-method status="PASS" signature="testMeJson()[pri:0, instance:com.cd.reddit.RedditTest@6335d858]" name="testMeJson" duration-ms="1027" depends-on-groups="readReddit" started-at="2013-10-12T09:14:34Z" depends-on-methods="com.cd.reddit.RedditTest.login" finished-at="2013-10-12T09:14:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testMeJson -->
+      </class> <!-- com.cd.reddit.RedditTest -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>
