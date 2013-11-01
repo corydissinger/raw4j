@@ -1,6 +1,6 @@
 **Travis CI Build:** [![Build Status](https://travis-ci.org/corydissinger/raw4j.png)](https://travis-ci.org/corydissinger/raw4j)
 
-### Please note: the Travis CI build can fail due to the current nature of the TestNG suite hitting the Reddit API numerous times. Need to figure out a better way to run the full test suite...
+*Please note:* the Travis CI build can fail due to the current nature of the TestNG suite hitting the Reddit API numerous times. Need to figure out a better way to run the full test suite...
 
 # raw4j Goals/Philosophy
 ______________
