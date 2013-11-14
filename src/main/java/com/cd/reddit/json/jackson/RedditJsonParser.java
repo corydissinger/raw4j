@@ -357,7 +357,8 @@ public class RedditJsonParser {
 			
 		
 		final JsonNode cookieNode 		= data.get(RedditJsonConstants.COOKIE);
-		final JsonNode modhashNode 		= data.get(RedditJsonConstants.MODHASH);		
+		final JsonNode modhashNode 		= data.get(RedditJsonConstants.MODHASH);
+        final JsonNode idenNode         = data.get(RedditJsonConstants.IDEN);
 		
 		parsedMessage.setData(data);
 		
@@ -365,7 +366,10 @@ public class RedditJsonParser {
 			parsedMessage.setCookie(cookieNode.asText());
 		
 		if(modhashNode != null)
-			parsedMessage.setModhash(modhashNode.asText());		
+			parsedMessage.setModhash(modhashNode.asText());
+
+        if(idenNode != null)
+            parsedMessage.setIden(idenNode.asText());
 		
 		return parsedMessage;
 	}

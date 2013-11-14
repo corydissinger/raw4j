@@ -85,6 +85,24 @@ public class RedditTest {
 		System.out.println(respMessage);
 	}
 
+    @Test
+    private void newCaptcha(){
+        System.out.println(nl);
+        System.out.println("----------- TESTING NEW CAPTCHA -----------");
+        System.out.println(nl);
+
+        RedditJsonMessage respMessage = null;
+
+        try {
+            respMessage = testReddit.newCaptcha();
+        } catch (RedditException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(respMessage);
+        assertEquals(true, respMessage.getIden() != null);
+    }
+
 	@Test(dependsOnGroups = { "readReddit" },
 		  dependsOnMethods = { "login" } )	
 	public void testMeJson(){

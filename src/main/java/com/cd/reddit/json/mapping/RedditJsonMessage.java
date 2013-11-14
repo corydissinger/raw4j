@@ -17,6 +17,7 @@ public class RedditJsonMessage {
 	private List<String> errors;
 	private String modhash;
 	private String cookie;
+    private String iden;
 	private JsonNode data;	
 	
 	public List<String> getErrors() {
@@ -37,6 +38,12 @@ public class RedditJsonMessage {
 	public void setCookie(String cookie) {
 		this.cookie = cookie;
 	}
+    public void setIden(String iden) {
+        this.iden = iden;
+    }
+    public String getIden() {
+        return iden;
+    }
 	
 	public JsonNode getData() {
 		return data;
@@ -53,6 +60,8 @@ public class RedditJsonMessage {
 		builder.append(modhash);
 		builder.append(", cookie=");
 		builder.append(cookie);
+        builder.append(", iden=");
+        builder.append(iden);
 		builder.append(", data=");
 		builder.append(data);		
 		builder.append("]");
