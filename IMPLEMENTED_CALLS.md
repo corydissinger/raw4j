@@ -54,6 +54,12 @@ try {
 
 # captcha
 
+#### GET /api/new_captcha
+```java
+  RedditJsonMessage captchaMessage = reddit.newCaptcha();
+  String iden = captchaMessage.getIden();
+```
+
 ### To be implemented:
 
 * GET /api/needs_captcha.json
