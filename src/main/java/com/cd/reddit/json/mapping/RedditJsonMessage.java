@@ -12,6 +12,7 @@ import org.codehaus.jackson.JsonNode;
  * 		- /api/comment
  *
  * @author <a href="https://github.com/corydissinger">Cory Dissinger</a>
+ * @author <a href="https://github.com/ifrins">Francesc Bruguera</a>
  */
 public class RedditJsonMessage {
 	private List<String> errors;

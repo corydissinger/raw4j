@@ -52,6 +52,7 @@ import com.cd.reddit.json.util.RedditJsonConstants;
  * @see <a href="https://github.com/reddit/reddit/wiki/JSON">Reddit JSON Structure Reference</a>
  * 
  * @author <a href="https://github.com/corydissinger">Cory Dissinger</a>
+ * @author <a href="https://github.com/ifrins">Francesc Bruguera</a>
  */
 public class RedditJsonParser {
 	
@@ -74,7 +75,7 @@ public class RedditJsonParser {
 	/**
 	 * It would probably be smarter to use refernces to Stream objects rather than Strings. Strings are the bane of JVM performance.
 	 * 
-	 * @param string The entire JSON object
+	 * @param startNode The entire JSON object
 	 */
 	public RedditJsonParser(JsonNode startNode){
 		rootNode 	= startNode;

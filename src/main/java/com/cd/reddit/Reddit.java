@@ -47,6 +47,7 @@ import com.cd.reddit.json.util.RedditComments;
  * @see <a href="http://www.reddit.com/dev/api">Reddit's Full, Live Built-In Documentation</a>
  * 
  * @author <a href="https://github.com/corydissinger">Cory Dissinger</a>
+ * @author <a href="https://github.com/ifrins">Francesc Bruguera</a>
  *
  */
 public class Reddit {

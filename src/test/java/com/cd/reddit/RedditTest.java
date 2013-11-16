@@ -36,6 +36,7 @@ import com.cd.reddit.json.util.RedditComments;
 
 /**
  * @author Cory
+ * @author Francesc
  *
  * Uses TestNG because JUnit is not designed for state-based tests.
  *
