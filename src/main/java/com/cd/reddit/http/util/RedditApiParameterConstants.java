@@ -53,5 +53,6 @@ public class RedditApiParameterConstants {
 	public static final String ID 					= "id";
 	public static final String LINK_ID 				= "link_id";	
 	public static final String THING_ID 			= "thing_id";
-	public static final String CHILDREN 			= "children";	
+	public static final String CHILDREN 			= "children";
+    public static final String VOTE_DIRECTION       = "dir";
 }

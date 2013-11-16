@@ -212,9 +212,32 @@ public class RedditTest {
 		
 		//Also test the 'more' and show an intuitive way of using..
 		//final String childComment = comments.get(1).getId();
-	}	
+	}
 
-	@Test(dependsOnGroups = { "readReddit" },
+    @Test(dependsOnGroups = { "readReddit" },
+            dependsOnMethods = { "login", "listingsFor"} )
+    public void vote() {
+        System.out.println(nl);
+        System.out.println("----------- TESTING VOTING AND UNVOTING -----------");
+        System.out.println(nl);
+
+        String parentThing = targetLink.getName();
+
+        try {
+            testReddit.vote(1, parentThing);
+        } catch (RedditException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            testReddit.vote(0, parentThing);
+        } catch (RedditException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test(dependsOnGroups = { "readReddit" },
 		  dependsOnMethods = { "login", "listingsFor"} )
 	public void commentAndDelete(){
         System.out.println(nl);    	

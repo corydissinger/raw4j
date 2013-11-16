@@ -288,4 +288,25 @@ public class Reddit {
         
         return parser.parseMessages();
     }
+
+    public void vote(int voteDirection, String fullname) throws RedditException{
+        final List<String> pathSegments = new ArrayList<String>(2);
+        final Map<String, String> form = new HashMap<String, String>(2);
+
+        pathSegments.add(RedditApiResourceConstants.API);
+        pathSegments.add(RedditApiResourceConstants.VOTE);
+
+        form.put(RedditApiParameterConstants.VOTE_DIRECTION, Integer.toString(voteDirection));
+        form.put(RedditApiParameterConstants.ID, fullname);
+
+        final RedditRequestInput requestInput = new RedditRequestInput(pathSegments, null, form);
+        final RedditRequestResponse response = requestor.executePost(requestInput);
+
+        final RedditJsonParser parser = new RedditJsonParser(response.getBody());
+        final RedditJsonMessage message = parser.parseJsonMessage();
+
+        if(!message.getErrors().isEmpty()){
+            throw new RedditException("Got errors while voting: " + message.toString());
+        }
+    }
 }

@@ -63,7 +63,6 @@ try {
 ### To be implemented:
 
 * GET /api/needs_captcha.json
-* POST /api/new_captcha
 * GET captcha/*iden*
 
 # flair
@@ -103,6 +102,14 @@ try {
   List<RedditComment> moreComments = testReddit.moreChildrenFor( theComments, "sort-order");
 ```
 
+#### POST /api/vote
+
+```java
+  reddit.vote("link-id", 1);    //Upvote
+  reddit.vote("link-id", 0);    //Remove vote
+  reddit.vote("link-id", -1);   //Downvote
+```
+
 ### To be implemented:
 
 * POST /api/marknsfw
@@ -114,7 +121,6 @@ try {
 * POST /api/save
 * POST /api/unhide
 * POST /api/unsave
-* POST /api/vote
 
 # listings
 
