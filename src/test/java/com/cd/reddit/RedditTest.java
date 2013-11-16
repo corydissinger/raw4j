@@ -15,6 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 package com.cd.reddit;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
@@ -120,9 +121,28 @@ public class RedditTest {
 		
 		System.out.println(account);
 		assertEquals(true, account.getModhash() != null);		
-	}	
+	}
 
-	// After logging in, we will 'read reddit' and not hard-code things to harass.
+    @Test(dependsOnGroups = { "readReddit" },
+            dependsOnMethods = { "login" } )
+    public void testUserInfoFor(){
+        System.out.println(nl);
+        System.out.println("----------- TESTING /api/{username}/about.json -----------");
+        System.out.println(nl);
+
+        RedditAccount account = null;
+
+        try {
+            account = testReddit.userInfoFor("JavaJerseyTestBot");
+        } catch (RedditException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(account);
+        assertNotNull(account);
+    }
+
+    // After logging in, we will 'read reddit' and not hard-code things to harass.
 
 	@Test(groups = { "readReddit" },
 		  dependsOnMethods = { "login" } )

@@ -205,13 +205,18 @@ try {
 
 # users
 
+#### GET /user/username/about.json
+
+```java
+  RedditAccount account = reddit.userInfoFor("JavaJerseyTestBot");
+```
+
 ### To be implemented:
 
 * GET /user/username/disliked
 * GET /user/username/hidden
 * GET /user/username/liked
 * GET user/username/submitted
-* GET /user/username/about.json
 * GET /user/username/comments
 * POST /api/friend
 * POST /api/setpermissions

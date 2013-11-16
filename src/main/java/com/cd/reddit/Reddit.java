@@ -309,4 +309,24 @@ public class Reddit {
             throw new RedditException("Got errors while voting: " + message.toString());
         }
     }
+
+    public RedditAccount userInfoFor(String username) throws RedditException{
+        final List<String> pathSegments = new ArrayList<String>(3);
+
+        pathSegments.add(RedditApiResourceConstants.USER);
+        pathSegments.add(username);
+        pathSegments.add(RedditApiResourceConstants.ABOUT);
+
+        final RedditRequestInput requestInput = new RedditRequestInput(pathSegments);
+        final RedditRequestResponse response = requestor.executeGet(requestInput);
+
+        final RedditJsonParser parser = new RedditJsonParser(response.getBody());
+        final List<RedditAccount> accounts = parser.parseAccounts();
+
+        if (accounts.size() == 1) {
+            return accounts.get(0);
+        } else {
+            throw new RedditException("Username " + username + " does not exist.");
+        }
+    }
 }
