@@ -45,7 +45,10 @@ public class RedditApiResourceConstants {
 	public static final String SET_APP_ICON			= "setappicon";
 	public static final String UPDATE_APP			= "updateapp";
 	
-	//----------> TODO: SECTION: captcha
+	//----------> SECTION: captcha
+
+    public static final String NEEDS_CAPTCHA        = "needs_captcha.json";
+    public static final String NEW_CAPTCHA          = "new_captcha";
 	
 	//----------> TODO: SECTION: flair
 	
