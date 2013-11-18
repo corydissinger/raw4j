@@ -47,6 +47,7 @@ import com.cd.reddit.json.util.RedditComments;
  * @see <a href="http://www.reddit.com/dev/api">Reddit's Full, Live Built-In Documentation</a>
  * 
  * @author <a href="https://github.com/corydissinger">Cory Dissinger</a>
+ * @author <a href="https://github.com/ifrins">Francesc Bruguera</a>
  *
  */
 public class Reddit {
@@ -103,6 +104,28 @@ public class Reddit {
         
 		return message;
 	}
+
+    public RedditJsonMessage newCaptcha() throws RedditException {
+        final List<String> path = new ArrayList<String>(2);
+        final Map<String, String> form = new HashMap<String, String>(1);
+
+        path.add(RedditApiResourceConstants.API);
+        path.add(RedditApiResourceConstants.NEW_CAPTCHA);
+
+        form.put(RedditApiParameterConstants.API_TYPE, RedditApiParameterConstants.JSON);
+
+        final RedditRequestInput requestInput = new RedditRequestInput(path, null, form);
+        final RedditRequestResponse response = requestor.executePost(requestInput);
+
+        final RedditJsonParser parser = new RedditJsonParser(response.getBody());
+        final RedditJsonMessage message = parser.parseJsonMessage();
+
+        if (!message.getErrors().isEmpty()){
+            throw new RedditException("Got errors while requesting captcha: " + message.toString());
+        }
+
+        return message;
+    }
 
 	
 	public RedditAccount meJson() throws RedditException{
@@ -265,5 +288,46 @@ public class Reddit {
         final RedditJsonParser parser = new RedditJsonParser(response.getBody());
         
         return parser.parseMessages();
+    }
+
+    public void vote(int voteDirection, String fullname) throws RedditException{
+        final List<String> pathSegments = new ArrayList<String>(2);
+        final Map<String, String> form = new HashMap<String, String>(2);
+
+        pathSegments.add(RedditApiResourceConstants.API);
+        pathSegments.add(RedditApiResourceConstants.VOTE);
+
+        form.put(RedditApiParameterConstants.VOTE_DIRECTION, Integer.toString(voteDirection));
+        form.put(RedditApiParameterConstants.ID, fullname);
+
+        final RedditRequestInput requestInput = new RedditRequestInput(pathSegments, null, form);
+        final RedditRequestResponse response = requestor.executePost(requestInput);
+
+        final RedditJsonParser parser = new RedditJsonParser(response.getBody());
+        final RedditJsonMessage message = parser.parseJsonMessage();
+
+        if(!message.getErrors().isEmpty()){
+            throw new RedditException("Got errors while voting: " + message.toString());
+        }
+    }
+
+    public RedditAccount userInfoFor(String username) throws RedditException{
+        final List<String> pathSegments = new ArrayList<String>(3);
+
+        pathSegments.add(RedditApiResourceConstants.USER);
+        pathSegments.add(username);
+        pathSegments.add(RedditApiResourceConstants.ABOUT);
+
+        final RedditRequestInput requestInput = new RedditRequestInput(pathSegments);
+        final RedditRequestResponse response = requestor.executeGet(requestInput);
+
+        final RedditJsonParser parser = new RedditJsonParser(response.getBody());
+        final List<RedditAccount> accounts = parser.parseAccounts();
+
+        if (accounts.size() == 1) {
+            return accounts.get(0);
+        } else {
+            throw new RedditException("Username " + username + " does not exist.");
+        }
     }
 }

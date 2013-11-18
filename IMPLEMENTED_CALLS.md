@@ -54,10 +54,15 @@ try {
 
 # captcha
 
+#### GET /api/new_captcha
+```java
+  RedditJsonMessage captchaMessage = reddit.newCaptcha();
+  String iden = captchaMessage.getIden();
+```
+
 ### To be implemented:
 
 * GET /api/needs_captcha.json
-* POST /api/new_captcha
 * GET captcha/*iden*
 
 # flair
@@ -97,6 +102,14 @@ try {
   List<RedditComment> moreComments = testReddit.moreChildrenFor( theComments, "sort-order");
 ```
 
+#### POST /api/vote
+
+```java
+  reddit.vote("link-id", 1);    //Upvote
+  reddit.vote("link-id", 0);    //Remove vote
+  reddit.vote("link-id", -1);   //Downvote
+```
+
 ### To be implemented:
 
 * POST /api/marknsfw
@@ -108,7 +121,6 @@ try {
 * POST /api/save
 * POST /api/unhide
 * POST /api/unsave
-* POST /api/vote
 
 # listings
 
@@ -193,13 +205,18 @@ try {
 
 # users
 
+#### GET /user/username/about.json
+
+```java
+  RedditAccount account = reddit.userInfoFor("JavaJerseyTestBot");
+```
+
 ### To be implemented:
 
 * GET /user/username/disliked
 * GET /user/username/hidden
 * GET /user/username/liked
 * GET user/username/submitted
-* GET /user/username/about.json
 * GET /user/username/comments
 * POST /api/friend
 * POST /api/setpermissions

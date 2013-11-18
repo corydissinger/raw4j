@@ -15,6 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 package com.cd.reddit;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ import com.cd.reddit.json.util.RedditComments;
 
 /**
  * @author Cory
+ * @author Francesc
  *
  * Uses TestNG because JUnit is not designed for state-based tests.
  *
@@ -85,6 +87,24 @@ public class RedditTest {
 		System.out.println(respMessage);
 	}
 
+    @Test
+    private void newCaptcha(){
+        System.out.println(nl);
+        System.out.println("----------- TESTING NEW CAPTCHA -----------");
+        System.out.println(nl);
+
+        RedditJsonMessage respMessage = null;
+
+        try {
+            respMessage = testReddit.newCaptcha();
+        } catch (RedditException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(respMessage);
+        assertEquals(true, respMessage.getIden() != null);
+    }
+
 	@Test(dependsOnGroups = { "readReddit" },
 		  dependsOnMethods = { "login" } )	
 	public void testMeJson(){
@@ -102,9 +122,28 @@ public class RedditTest {
 		
 		System.out.println(account);
 		assertEquals(true, account.getModhash() != null);		
-	}	
+	}
 
-	// After logging in, we will 'read reddit' and not hard-code things to harass.
+    @Test(dependsOnGroups = { "readReddit" },
+            dependsOnMethods = { "login" } )
+    public void testUserInfoFor(){
+        System.out.println(nl);
+        System.out.println("----------- TESTING /api/{username}/about.json -----------");
+        System.out.println(nl);
+
+        RedditAccount account = null;
+
+        try {
+            account = testReddit.userInfoFor("JavaJerseyTestBot");
+        } catch (RedditException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(account);
+        assertNotNull(account);
+    }
+
+    // After logging in, we will 'read reddit' and not hard-code things to harass.
 
 	@Test(groups = { "readReddit" },
 		  dependsOnMethods = { "login" } )
@@ -194,9 +233,32 @@ public class RedditTest {
 		
 		//Also test the 'more' and show an intuitive way of using..
 		//final String childComment = comments.get(1).getId();
-	}	
+	}
 
-	@Test(dependsOnGroups = { "readReddit" },
+    @Test(dependsOnGroups = { "readReddit" },
+            dependsOnMethods = { "login", "listingsFor"} )
+    public void vote() {
+        System.out.println(nl);
+        System.out.println("----------- TESTING VOTING AND UNVOTING -----------");
+        System.out.println(nl);
+
+        String parentThing = targetLink.getName();
+
+        try {
+            testReddit.vote(1, parentThing);
+        } catch (RedditException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            testReddit.vote(0, parentThing);
+        } catch (RedditException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test(dependsOnGroups = { "readReddit" },
 		  dependsOnMethods = { "login", "listingsFor"} )
 	public void commentAndDelete(){
         System.out.println(nl);    	

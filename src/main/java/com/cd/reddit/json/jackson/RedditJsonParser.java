@@ -52,6 +52,7 @@ import com.cd.reddit.json.util.RedditJsonConstants;
  * @see <a href="https://github.com/reddit/reddit/wiki/JSON">Reddit JSON Structure Reference</a>
  * 
  * @author <a href="https://github.com/corydissinger">Cory Dissinger</a>
+ * @author <a href="https://github.com/ifrins">Francesc Bruguera</a>
  */
 public class RedditJsonParser {
 	
@@ -74,7 +75,7 @@ public class RedditJsonParser {
 	/**
 	 * It would probably be smarter to use refernces to Stream objects rather than Strings. Strings are the bane of JVM performance.
 	 * 
-	 * @param string The entire JSON object
+	 * @param startNode The entire JSON object
 	 */
 	public RedditJsonParser(JsonNode startNode){
 		rootNode 	= startNode;
@@ -357,7 +358,8 @@ public class RedditJsonParser {
 			
 		
 		final JsonNode cookieNode 		= data.get(RedditJsonConstants.COOKIE);
-		final JsonNode modhashNode 		= data.get(RedditJsonConstants.MODHASH);		
+		final JsonNode modhashNode 		= data.get(RedditJsonConstants.MODHASH);
+        final JsonNode idenNode         = data.get(RedditJsonConstants.IDEN);
 		
 		parsedMessage.setData(data);
 		
@@ -365,7 +367,10 @@ public class RedditJsonParser {
 			parsedMessage.setCookie(cookieNode.asText());
 		
 		if(modhashNode != null)
-			parsedMessage.setModhash(modhashNode.asText());		
+			parsedMessage.setModhash(modhashNode.asText());
+
+        if(idenNode != null)
+            parsedMessage.setIden(idenNode.asText());
 		
 		return parsedMessage;
 	}

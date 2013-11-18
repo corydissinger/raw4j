@@ -25,7 +25,8 @@ public class RedditJsonConstants {
 	public static final String CHILDREN	 		= "children";
 	public static final String ERRORS		 	= "errors";
 	public static final String MODHASH		 	= "modhash";
-	public static final String COOKIE		 	= "cookie";	
+	public static final String COOKIE		 	= "cookie";
+    public static final String IDEN             = "iden";
 	
 	public static final String TYPE_COMMENT			= "t1";
 	public static final String TYPE_ACCOUNT			= "t2";
