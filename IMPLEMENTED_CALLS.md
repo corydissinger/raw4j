@@ -110,10 +110,20 @@ try {
   reddit.vote("link-id", -1);   //Downvote
 ```
 
+#### POST /api/marknsfw
+
+```java
+  reddit.markNSFW("link-id");   //Mark link "Not Safe for Work"
+```
+
+#### POST /api/unmarknsfw
+
+```java
+  reddit.unmarkNSFW("link-id");   //Unmark link "Not Safe for Work"
+```
+
 ### To be implemented:
 
-* POST /api/marknsfw
-* POST /api/unmarknsfw
 * POST /api/editusertext
 * POST /api/hide
 * GET /api/info

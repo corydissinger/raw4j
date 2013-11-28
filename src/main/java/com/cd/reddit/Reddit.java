@@ -48,6 +48,7 @@ import com.cd.reddit.json.util.RedditComments;
  * 
  * @author <a href="https://github.com/corydissinger">Cory Dissinger</a>
  * @author <a href="https://github.com/ifrins">Francesc Bruguera</a>
+ * @author <a href="https://github.com/wizang">Lucas Hill</a>
  *
  */
 public class Reddit {
@@ -309,6 +310,40 @@ public class Reddit {
         if(!message.getErrors().isEmpty()){
             throw new RedditException("Got errors while voting: " + message.toString());
         }
+    }
+
+    public int markNSFW(String linkId) throws RedditException {
+        final List<String> pathSegments = new ArrayList<String>(2);
+
+        pathSegments.add(RedditApiResourceConstants.API);
+        pathSegments.add(RedditApiResourceConstants.MARKNSFW);
+
+        final Map<String, String> formParams = new HashMap<String, String>(1);
+
+        formParams.put(RedditApiParameterConstants.ID, linkId);
+
+        final RedditRequestInput requestInput = new RedditRequestInput(pathSegments, null, formParams);
+
+        final RedditRequestResponse response = requestor.executePost(requestInput);
+
+        return response.getStatus();
+    }
+
+    public int unmarkNSFW(String linkId) throws RedditException {
+        final List<String> pathSegments = new ArrayList<String>(2);
+
+        pathSegments.add(RedditApiResourceConstants.API);
+        pathSegments.add(RedditApiResourceConstants.UNMARKNSFW);
+
+        final Map<String, String> formParams = new HashMap<String, String>(1);
+
+        formParams.put(RedditApiParameterConstants.ID, linkId);
+
+        final RedditRequestInput requestInput = new RedditRequestInput(pathSegments, null, formParams);
+
+        final RedditRequestResponse response = requestor.executePost(requestInput);
+
+        return response.getStatus();
     }
 
     public RedditAccount userInfoFor(String username) throws RedditException{

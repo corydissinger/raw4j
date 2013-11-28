@@ -37,6 +37,7 @@ import com.cd.reddit.json.util.RedditComments;
 /**
  * @author Cory
  * @author Francesc
+ * @author Wizang
  *
  * Uses TestNG because JUnit is not designed for state-based tests.
  *
@@ -311,8 +312,44 @@ public class RedditTest {
 			e.printStackTrace();
 		}
 		
-	}	
-	
+	}
+
+    @Test( dependsOnMethods = "login" )
+	public void testMarkNSFW() {
+        System.out.println(nl);
+        System.out.println("----------- TESTING Mark Link NSFW -----------");
+        System.out.println(nl);
+
+        String linkId = "t3_1roati"; //TEST POST BY JAVAJERSEYBOT
+
+
+        int response = 0;
+        try {
+            response = testReddit.markNSFW(linkId);
+        } catch (RedditException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(200, response); //Could use better assertion
+    }
+
+    @Test( dependsOnMethods = {"login", "testMarkNSFW"} )
+    public void testUnmarkNSFW() {
+        System.out.println(nl);
+        System.out.println("----------- TESTING Unmark Link NSFW -----------");
+        System.out.println(nl);
+
+        String linkId = "t3_1roati";
+
+        int response = 0;
+        try {
+            response = testReddit.unmarkNSFW(linkId);
+        } catch (RedditException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(200, response); //Could use better assertion
+    }
 	
 	//TODO: Reconcile this beast... the actual API call is more robust.
 	public void testInfoFor(){
