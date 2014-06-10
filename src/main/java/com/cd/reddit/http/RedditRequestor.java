@@ -28,6 +28,7 @@ import org.apache.commons.io.IOUtils;
 
 /**
  * Necessary implementation of HttpURLConnection and friends.
+ * Apache HTTP Client, while easier to use, is avoided to retain Android compatibility.
  * <br/> 
  * <br/>
  * Needs to have SSL/HTTPS support as well as further analysis of other needs.
