@@ -10,7 +10,7 @@ ______________
 - Java based Reddit API client
 - Compatible with as many Java platforms as possible (1.6, 1.7, Android)
 
-**raw4j** provide a light-weight, injectable dependency that allows for an intuitive but not overly opinionated Java Reddit API client. HTTP communication is accomplished using the [Apache Http Components](http://hc.apache.org/) API. JSON parsing is handled using the [Jackson](https://github.com/FasterXML/jackson) API.
+**raw4j** provide a light-weight, injectable dependency that allows for an intuitive but not overly opinionated Java Reddit API client. HTTP communication is accomplished using the default HttpURLConnection to retain Android compatibility. JSON parsing is handled using the [Jackson](https://github.com/FasterXML/jackson) API.
 
 # [Contribution Rules](https://github.com/corydissinger/raw4j/blob/master/CONTRIBUTION_RULES.md)
 
