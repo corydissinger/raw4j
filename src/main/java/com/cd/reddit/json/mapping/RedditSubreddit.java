@@ -25,11 +25,13 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 public class RedditSubreddit extends RedditType{
 	private int accountsActive;
 	private int commentScoreHideMins;	
-	private String description;	
+	private String description;	// often a really, really long String
 	private boolean over18;
 	private long subscribers;	
 	private String title;
 	private String url;
+	
+	private String nl = System.lineSeparator(); //newline
 	
 	public int getAccountsActive() {
 		return accountsActive;
@@ -79,9 +81,7 @@ public class RedditSubreddit extends RedditType{
 		builder.append("RedditSubreddit [accountsActive=");
 		builder.append(accountsActive);
 		builder.append(", commentScoreHideMins=");
-		builder.append(commentScoreHideMins);
-		builder.append(", description=");
-		builder.append(description);
+		builder.append(commentScoreHideMins);		
 		builder.append(", over18=");
 		builder.append(over18);
 		builder.append(", subscribers=");
@@ -91,6 +91,11 @@ public class RedditSubreddit extends RedditType{
 		builder.append(", url=");
 		builder.append(url);
 		builder.append("]");
+		builder.append(nl);
+		builder.append("-----------------------------Description Below------------------------------");
+		builder.append(nl);
+		builder.append(nl);
+		builder.append(description);
 		return builder.toString();
 	}	
 }

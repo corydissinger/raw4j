@@ -46,9 +46,9 @@ import com.cd.reddit.json.util.RedditComments;
 public class RedditTest {
 
 	Reddit testReddit = null;
-	final String nl = System.getProperty("line.separator");
+	final String nl = System.lineSeparator(); // newline
 	
-	//Throway account for proof-of-concept purposes
+	//Throwaway account for proof-of-concept purposes
 	final String testUserAgent = "JavaJerseyTestBot/1.0 by Cory Dissinger";		
 
 	//Dynamic values that change with each test
@@ -163,6 +163,8 @@ public class RedditTest {
 
 		for(RedditSubreddit subreddit : subreddits){
 			System.out.println(subreddit);
+			System.out.println(nl);
+			System.out.println(nl);
 		}
 		
 		assertEquals(false, subreddits.isEmpty());
@@ -373,7 +375,7 @@ public class RedditTest {
 	}	
         
 	//TODO: Currently HTTP 302's?
-	//@Test(dependsOnMethods = { "login" } )
+	@Test(dependsOnMethods = { "login" } )
     public void testInbox() {
         System.out.println(nl);    	
         System.out.println("----------- TESTING INBOX -----------");
