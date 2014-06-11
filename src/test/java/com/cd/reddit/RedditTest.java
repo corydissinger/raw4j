@@ -150,7 +150,7 @@ public class RedditTest {
 		  dependsOnMethods = { "login" } )
 	public void subredditsPopular(){
         System.out.println(nl);    	
-        System.out.println("----------- TESTING SUBREDDITS NEW -----------");
+        System.out.println("----------- TESTING SUBREDDITS POPULAR -----------");
         System.out.println(nl);		
 		
 		List<RedditSubreddit> subreddits = null;
@@ -176,7 +176,7 @@ public class RedditTest {
 		  dependsOnMethods = { "login", "subredditsPopular" } )
 	public void listingsFor(){
         System.out.println(nl);    	
-        System.out.println("----------- TESTING LISTING FOR -----------");
+        System.out.println("----------- TESTING LISTINGS FOR -----------");
         System.out.println(nl);		
 		
 		List<RedditLink> listing = null;
