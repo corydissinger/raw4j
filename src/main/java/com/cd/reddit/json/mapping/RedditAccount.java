@@ -14,23 +14,58 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 package com.cd.reddit.json.mapping;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * Implements the Java bean version of the JSON found <a href="https://github.com/reddit/reddit/wiki/JSON#account">here</a>.
+ * 
+ * This class makes use of the @JsonProperty Jackson annotation to maintain camel case.
+ * Please see <a href="http://stackoverflow.com/questions/10519265/jackson-overcoming-underscores-in-favor-of-camel-case">this StackOverflow post</a>
  * 
  * @author <a href="https://github.com/corydissinger">Cory Dissinger</a>
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RedditAccount extends RedditType{
+	
+	@JsonProperty("comment_karma")
 	private int commentKarma;
+	
 	private long created;
+	
+	@JsonProperty("created_utc")
 	private long createdUtc;
+	
+	@JsonProperty("gold_credits")
+	private int goldCredits;
+	
+	@JsonProperty("has_mail")
 	private String hasMail;	
-	private String hasModMail;
+	
+	@JsonProperty("has_mod_mail")
+	private boolean hasModMail;
+	
+	@JsonProperty("has_verified_email")
+	private boolean hasVerifiedEmail;	
+	
 	private String id;
+	
+	@JsonProperty("is_friend")
+	private boolean isFriend;
+	
+	@JsonProperty("is_gold")
+	private boolean isGold;
+	
+	@JsonProperty("is_mod")
+	private boolean isMod;
+	
+	@JsonProperty("link_karma")
 	private int linkKarma;
-	private String modhash;	
+	
+	private String modhash;
+	
 	private String name;
+	
+	@JsonProperty("over_18")
 	private boolean over18;
 	
 	public int getCommentKarma() {
@@ -51,23 +86,53 @@ public class RedditAccount extends RedditType{
 	public void setCreatedUtc(long createdUtc) {
 		this.createdUtc = createdUtc;
 	}
+	public int getGoldCredits() {
+		return goldCredits;
+	}
+	public void setGoldCredits(int goldCredits) {
+		this.goldCredits = goldCredits;
+	}
 	public String getHasMail() {
 		return hasMail;
 	}
 	public void setHasMail(String hasMail) {
 		this.hasMail = hasMail;
 	}
-	public String getHasModMail() {
+	public boolean getHasModMail() {
 		return hasModMail;
 	}
-	public void setHasModMail(String hasModMail) {
+	public void setHasModMail(boolean hasModMail) {
 		this.hasModMail = hasModMail;
+	}
+	public boolean isHasVerifiedEmail() {
+		return hasVerifiedEmail;
+	}
+	public void setHasVerifiedEmail(boolean hasVerifiedEmail) {
+		this.hasVerifiedEmail = hasVerifiedEmail;
 	}
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	public boolean isFriend() {
+		return isFriend;
+	}
+	public void setFriend(boolean isFriend) {
+		this.isFriend = isFriend;
+	}
+	public boolean isGold() {
+		return isGold;
+	}
+	public void setGold(boolean isGold) {
+		this.isGold = isGold;
+	}
+	public boolean isMod() {
+		return isMod;
+	}
+	public void setMod(boolean isMod) {
+		this.isMod = isMod;
 	}
 	public int getLinkKarma() {
 		return linkKarma;
@@ -102,19 +167,31 @@ public class RedditAccount extends RedditType{
 		builder.append(created);
 		builder.append(", createdUtc=");
 		builder.append(createdUtc);
+		builder.append(", goldCredits=");
+		builder.append(goldCredits);
 		builder.append(", hasMail=");
 		builder.append(hasMail);
 		builder.append(", hasModMail=");
 		builder.append(hasModMail);
+		builder.append(", hasVerifiedEmail=");
+		builder.append(hasVerifiedEmail);
 		builder.append(", id=");
 		builder.append(id);
+		builder.append(", isFriend=");
+		builder.append(isFriend);
+		builder.append(", isGold=");
+		builder.append(isGold);
+		builder.append(", isMod=");
+		builder.append(isMod);
 		builder.append(", linkKarma=");
 		builder.append(linkKarma);
+		builder.append(", modhash=");
+		builder.append(modhash);
 		builder.append(", name=");
 		builder.append(name);
 		builder.append(", over18=");
 		builder.append(over18);
 		builder.append("]");
 		return builder.toString();
-	}	
+	}
 }
