@@ -46,7 +46,7 @@ import com.cd.reddit.json.util.RedditComments;
 public class RedditTest {
 
 	Reddit testReddit = null;
-	final String nl = System.lineSeparator(); // newline
+	final String nl = System.getProperty("line.separator"); // newline
 	
 	//Throwaway account for proof-of-concept purposes
 	final String testUserAgent = "JavaJerseyTestBot/1.0 by Cory Dissinger";		
@@ -80,7 +80,7 @@ public class RedditTest {
 		RedditJsonMessage respMessage = null;
 		
 		try {
-			respMessage = testReddit.login("JavaJerseyTestBot", "JavaJerseyTestBot");
+			respMessage = testReddit.login("jamesgold", "since1992");
 		} catch (RedditException e) {
 			e.printStackTrace();
 		} 
@@ -135,7 +135,7 @@ public class RedditTest {
         RedditAccount account = null;
 
         try {
-            account = testReddit.userInfoFor("JavaJerseyTestBot");
+            account = testReddit.userInfoFor("Jamesgold");
         } catch (RedditException e) {
             e.printStackTrace();
         }
@@ -160,7 +160,8 @@ public class RedditTest {
 		} catch (RedditException e) {
 			e.printStackTrace();
 		}		
-
+		
+		// these prints take up a LOT of console space
 		for(RedditSubreddit subreddit : subreddits){
 			System.out.println(subreddit);
 			System.out.println(nl);

@@ -137,7 +137,7 @@ public class Reddit {
 		
 		final RedditRequestInput requestInput = new RedditRequestInput(path);
 		final RedditRequestResponse response = requestor.executeGet(requestInput);
-		
+
 		final RedditJsonParser parser = new RedditJsonParser(response.getBody());
 		final RedditAccount account = parser.parseAccounts().get(0);
 		

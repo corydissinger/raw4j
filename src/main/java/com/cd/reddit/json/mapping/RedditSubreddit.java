@@ -31,7 +31,7 @@ public class RedditSubreddit extends RedditType{
 	private String title;
 	private String url;
 	
-	private String nl = System.lineSeparator(); //newline
+	private String nl = System.getProperty("line.separator"); //newline
 	
 	public int getAccountsActive() {
 		return accountsActive;
