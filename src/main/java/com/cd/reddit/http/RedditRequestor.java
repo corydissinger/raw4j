@@ -38,8 +38,10 @@ import org.apache.commons.io.IOUtils;
  */
 public class RedditRequestor {
 	//TODO: Add ability to connect to ssl.reddit.com because credentials should not be in plain-text!
+	private static final String PROTOCOL = "HTTP";
 	private static final String HOST = "www.reddit.com";
 	
+	private static final int TIMEOUT_VALUE = 5000; // in ms
 	private final String userAgent;
 	
 	private String modhash = null;
@@ -55,6 +57,9 @@ public class RedditRequestor {
                     .openConnection();
             
             connection.setRequestProperty("User-Agent", userAgent);
+            // these timeouts are untested
+            connection.setConnectTimeout(TIMEOUT_VALUE);
+            connection.setReadTimeout(TIMEOUT_VALUE);
             
             if(session != null)
             	connection.setRequestProperty("Cookie", "reddit_session=" + session);
@@ -163,7 +168,7 @@ public class RedditRequestor {
             query = "?" + builder.build();
 		}
 		
-		return new URL("http", HOST, path+query);
+		return new URL(PROTOCOL, HOST, path+query);
 	}
 
 	public void setModhashHeader(String modhash) {

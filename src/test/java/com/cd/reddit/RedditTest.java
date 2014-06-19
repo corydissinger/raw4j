@@ -46,9 +46,9 @@ import com.cd.reddit.json.util.RedditComments;
 public class RedditTest {
 
 	Reddit testReddit = null;
-	final String nl = System.getProperty("line.separator");
+	final String nl = System.getProperty("line.separator"); // newline
 	
-	//Throway account for proof-of-concept purposes
+	//Throwaway account for proof-of-concept purposes
 	final String testUserAgent = "JavaJerseyTestBot/1.0 by Cory Dissinger";		
 
 	//Dynamic values that change with each test
@@ -80,7 +80,7 @@ public class RedditTest {
 		RedditJsonMessage respMessage = null;
 		
 		try {
-			respMessage = testReddit.login("JavaJerseyTestBot", "JavaJerseyTestBot");
+			respMessage = testReddit.login("jamesgold", "since1992");
 		} catch (RedditException e) {
 			e.printStackTrace();
 		} 
@@ -135,7 +135,7 @@ public class RedditTest {
         RedditAccount account = null;
 
         try {
-            account = testReddit.userInfoFor("JavaJerseyTestBot");
+            account = testReddit.userInfoFor("Jamesgold");
         } catch (RedditException e) {
             e.printStackTrace();
         }
@@ -150,7 +150,7 @@ public class RedditTest {
 		  dependsOnMethods = { "login" } )
 	public void subredditsPopular(){
         System.out.println(nl);    	
-        System.out.println("----------- TESTING SUBREDDITS NEW -----------");
+        System.out.println("----------- TESTING SUBREDDITS POPULAR -----------");
         System.out.println(nl);		
 		
 		List<RedditSubreddit> subreddits = null;
@@ -160,9 +160,12 @@ public class RedditTest {
 		} catch (RedditException e) {
 			e.printStackTrace();
 		}		
-
+		
+		// these prints take up a LOT of console space
 		for(RedditSubreddit subreddit : subreddits){
 			System.out.println(subreddit);
+			System.out.println(nl);
+			System.out.println(nl);
 		}
 		
 		assertEquals(false, subreddits.isEmpty());
@@ -174,7 +177,7 @@ public class RedditTest {
 		  dependsOnMethods = { "login", "subredditsPopular" } )
 	public void listingsFor(){
         System.out.println(nl);    	
-        System.out.println("----------- TESTING LISTING FOR -----------");
+        System.out.println("----------- TESTING LISTINGS FOR -----------");
         System.out.println(nl);		
 		
 		List<RedditLink> listing = null;
@@ -373,7 +376,7 @@ public class RedditTest {
 	}	
         
 	//TODO: Currently HTTP 302's?
-	//@Test(dependsOnMethods = { "login" } )
+	@Test(dependsOnMethods = { "login" } )
     public void testInbox() {
         System.out.println(nl);    	
         System.out.println("----------- TESTING INBOX -----------");
