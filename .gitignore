@@ -1,5 +1,4 @@
 target/
-test-output/
 bin/
 .project
 .classpath

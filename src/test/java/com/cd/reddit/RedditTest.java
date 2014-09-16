@@ -50,7 +50,7 @@ public class RedditTest {
 	Reddit testReddit = null;
 	
 	//For TestNG report output.
-	final String nl = "<br/>";
+	final String nl = "<br>";
 	
 	//Throway account for proof-of-concept purposes
 	final String testUserAgent = "JavaJerseyTestBot/1.0 by Cory Dissinger";		
