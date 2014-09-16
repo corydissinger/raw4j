@@ -73,6 +73,17 @@ public class RedditSubreddit extends RedditType{
 	public void setUrl(String url) {
 		this.url = url;
 	}
+	
+	/**
+	 * The 'url' JSON attribute is '/r/subreddit-name', so for the use case where we just want
+	 * to get the subreddit name we can call this helper method.
+	 * 
+	 * @return The string representing just the subreddit name
+	 */
+	public String getSubredditName(){
+		return url.substring(3, url.length() - 1);
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

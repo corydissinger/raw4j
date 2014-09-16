@@ -353,8 +353,9 @@ public class RedditJsonParser {
 		
 		final JsonNode data 			= jsonMessage.get(RedditJsonConstants.DATA);
 		
-		if(data == null)
+		if(data == null){
 			throw new RedditException("The following strange JSON was recieved:" + jsonMessage.asText());
+		}
 			
 		
 		final JsonNode cookieNode 		= data.get(RedditJsonConstants.COOKIE);
