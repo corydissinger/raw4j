@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Command line test"
+           tests="11"
+           failures="0"
+           errors="0"
+           skipped="0"
+           time="13.378">
+  <properties />
+  
+  
+            <testcase name="testUserInfoFor" time="0.325" classname="com.cd.reddit.RedditTest" />
+                <testcase name="testUnmarkNSFW" time="0.408" classname="com.cd.reddit.RedditTest" />
+                <testcase name="vote" time="1.387" classname="com.cd.reddit.RedditTest" />
+                <testcase name="subredditsPopular" time="0.460" classname="com.cd.reddit.RedditTest" />
+                <testcase name="testMarkNSFW" time="0.947" classname="com.cd.reddit.RedditTest" />
+                <testcase name="login" time="1.192" classname="com.cd.reddit.RedditTest" />
+                <testcase name="newCaptcha" time="0.037" classname="com.cd.reddit.RedditTest" />
+                <testcase name="testMeJson" time="0.082" classname="com.cd.reddit.RedditTest" />
+                <testcase name="commentsForAndMore" time="3.871" classname="com.cd.reddit.RedditTest" />
+                <testcase name="commentAndDelete" time="4.411" classname="com.cd.reddit.RedditTest" />
+                <testcase name="listingsFor" time="0.258" classname="com.cd.reddit.RedditTest" />
+      
+</testsuite>
