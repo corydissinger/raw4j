@@ -77,27 +77,21 @@ public class RedditTest {
 
 	@Test
 	private void login(){
-        Reporter.log(nl);    	
-        Reporter.log("----------- TESTING LOGIN -----------");
-        Reporter.log(nl);		
-		
 		RedditJsonMessage respMessage = null;
 		
 		try {
 			respMessage = testReddit.login("JavaJerseyTestBot", "JavaJerseyTestBot");
 		} catch (RedditException e) {
 			logRedditException(e);
-		} 
+		}
+		
+		assertNotNull(respMessage);
 		
 		Reporter.log(respMessage.toString());
 	}
 
     @Test
     private void newCaptcha(){
-        Reporter.log(nl);
-        Reporter.log("----------- TESTING NEW CAPTCHA -----------");
-        Reporter.log(nl);
-
         RedditJsonMessage respMessage = null;
 
         try {
@@ -105,6 +99,8 @@ public class RedditTest {
         } catch (RedditException e) {
             logRedditException(e);
         }
+        
+        assertNotNull(respMessage);        
 
         Reporter.log(respMessage.toString());
         assertEquals(true, respMessage.getIden() != null);
@@ -113,18 +109,15 @@ public class RedditTest {
 	@Test(dependsOnGroups = { "readReddit" },
 		  dependsOnMethods = { "login" } )	
 	public void testMeJson(){
-        Reporter.log(nl);    	
-        Reporter.log("----------- TESTING ME.JSON -----------");
-        Reporter.log(nl);		
-		
 		RedditAccount account = null;
 		
 		try {
 			account = testReddit.meJson();
 		} catch (RedditException e) {
 			logRedditException(e);
-			return;
-		} 
+		}
+		
+		assertNotNull(account);		
 		
 		Reporter.log(account.toString());
 		assertEquals(true, account.getModhash() != null);		
@@ -133,10 +126,6 @@ public class RedditTest {
     @Test(dependsOnGroups = { "readReddit" },
             dependsOnMethods = { "login" } )
     public void testUserInfoFor(){
-        Reporter.log(nl);
-        Reporter.log("----------- TESTING /api/{username}/about.json -----------");
-        Reporter.log(nl);
-
         RedditAccount account = null;
 
         try {
@@ -144,29 +133,26 @@ public class RedditTest {
         } catch (RedditException e) {
             logRedditException(e);
         }
-
-        Reporter.log(account.toString());
+        
         assertNotNull(account);
+        
+        Reporter.log(account.toString());
     }
 
     // After logging in, we will 'read reddit' and not hard-code things to harass.
-
 	@Test(groups = { "readReddit" },
 		  dependsOnMethods = { "login" } )
 	public void subredditsPopular(){
-        Reporter.log(nl);    	
-        Reporter.log("----------- TESTING SUBREDDITS NEW -----------");
-        Reporter.log(nl);		
-		
 		List<RedditSubreddit> subreddits = null;
 		
 		try {
 			subreddits = testReddit.subreddits("popular");
 		} catch (RedditException e) {
 			logRedditException(e);
-			return;
 		}		
 
+		assertNotNull(subreddits);		
+		
 		for(RedditSubreddit subreddit : subreddits){
 			Reporter.log(subreddit.toString());
 		}
@@ -179,10 +165,6 @@ public class RedditTest {
 	@Test(groups = { "readReddit" },
 		  dependsOnMethods = { "login", "subredditsPopular" } )
 	public void listingsFor(){
-        Reporter.log(nl);    	
-        Reporter.log("----------- TESTING LISTING FOR -----------");
-        Reporter.log(nl);		
-		
 		List<RedditLink> listing = null;
 		String subredditString = targetSubreddit.getSubredditName();
 		
@@ -190,8 +172,9 @@ public class RedditTest {
 			listing = testReddit.listingFor(subredditString, "top");
 		} catch (RedditException e) {
 			logRedditException(e);
-			return;
-		}		
+		}
+		
+		assertNotNull(listing);
 
 		for(RedditLink link : listing){
 			Reporter.log(link.toString());
@@ -205,10 +188,6 @@ public class RedditTest {
 	@Test(groups = { "readReddit" },
 		  dependsOnMethods = { "login", "listingsFor" } )
 	public void commentsForAndMore(){
-        Reporter.log(nl);    	
-        Reporter.log("----------- TESTING COMMENTS FOR AND MORE -----------");
-        Reporter.log(nl);		
-		
 		RedditComments comments = null;
 		String subredditString = targetSubreddit.getSubredditName();
 		
@@ -216,8 +195,9 @@ public class RedditTest {
 			comments = testReddit.commentsFor(subredditString, targetLink.getId());
 		} catch (RedditException e) {
 			logRedditException(e);
-			return;
-		}		
+		}
+		
+		assertNotNull(comments);		
 
 		Reporter.log(comments.toString());
 		
@@ -225,8 +205,9 @@ public class RedditTest {
 		assertEquals(false, comments.getComments().isEmpty());
 		assertEquals(true, comments.getMore() != null);
 		
-		if(comments.getMore().getChildren().isEmpty())
+		if(comments.getMore().getChildren().isEmpty()){
 			return;
+		}
 		
 		List<RedditComment> moreComments = null;
 		
@@ -235,6 +216,8 @@ public class RedditTest {
 		} catch (RedditException e) {
 			logRedditException(e);
 		}
+		
+		assertNotNull(moreComments);		
 		
 		Reporter.log(moreComments.toString());		
 
@@ -247,10 +230,6 @@ public class RedditTest {
     @Test(dependsOnGroups = { "readReddit" },
             dependsOnMethods = { "login", "listingsFor"} )
     public void vote() {
-        Reporter.log(nl);
-        Reporter.log("----------- TESTING VOTING AND UNVOTING -----------");
-        Reporter.log(nl);
-
         String parentThing = targetLink.getName();
 
         try {
@@ -270,10 +249,6 @@ public class RedditTest {
     @Test(dependsOnGroups = { "readReddit" },
 		  dependsOnMethods = { "login", "listingsFor"} )
 	public void commentAndDelete(){
-        Reporter.log(nl);    	
-        Reporter.log("----------- TESTING COMMENT AND DELETE -----------");
-        Reporter.log(nl);		
-		
 		String testComment = "I hope you don't mind my TEST at all! Sorry Reddit, just integration testing... deletion will occur soon enough.";
 		String parentThing = targetLink.getName();
 		RedditJsonMessage message = null;
@@ -282,11 +257,11 @@ public class RedditTest {
 			message = testReddit.comment(testComment, parentThing);
 		} catch (RedditException e) {
 			logRedditException(e);
-			return;
 		}		
 
+		assertNotNull(message);		
+		
 		Reporter.log(message.toString());
-        Reporter.log(nl);
         
 		assertEquals(true, message.getErrors().isEmpty());
 		
@@ -312,7 +287,6 @@ public class RedditTest {
         RedditComment theComment = theOneComment.get(0);
 
         Reporter.log(theComment.toString());        
-        Reporter.log(nl);        
         
 		try {
 			//It seems that the /api/delete method returns HTTP 200 ok and an empty JSON object response... don't try to parse it (yet)
@@ -325,14 +299,10 @@ public class RedditTest {
 
     @Test( dependsOnMethods = "login" )
 	public void testMarkNSFW() {
-        Reporter.log(nl);
-        Reporter.log("----------- TESTING Mark Link NSFW -----------");
-        Reporter.log(nl);
-
         String linkId = "t3_1roati"; //TEST POST BY JAVAJERSEYBOT
 
-
         int response = 0;
+        
         try {
             response = testReddit.markNSFW(linkId);
         } catch (RedditException e) {
@@ -344,10 +314,6 @@ public class RedditTest {
 
     @Test( dependsOnMethods = {"login", "testMarkNSFW"} )
     public void testUnmarkNSFW() {
-        Reporter.log(nl);
-        Reporter.log("----------- TESTING Unmark Link NSFW -----------");
-        Reporter.log(nl);
-
         String linkId = "t3_1roati";
 
         int response = 0;
@@ -362,10 +328,6 @@ public class RedditTest {
 	
 	//TODO: Reconcile this beast... the actual API call is more robust.
 	public void testInfoFor(){
-        Reporter.log(nl);    	
-        Reporter.log("----------- TESTING INFO FOR -----------");
-        Reporter.log(nl);		
-		
 		List<RedditLink> listing = null;
 		
 		try {
@@ -384,11 +346,8 @@ public class RedditTest {
 	//TODO: Currently HTTP 302's?
 	//@Test(dependsOnMethods = { "login" } )
     public void testInbox() {
-        Reporter.log(nl);    	
-        Reporter.log("----------- TESTING INBOX -----------");
-        Reporter.log(nl);
-        
         List<RedditMessage> messages = null;
+        
         try {
             messages = testReddit.messages(RedditApiResourceConstants.INBOX);
         } catch (RedditException e) {
