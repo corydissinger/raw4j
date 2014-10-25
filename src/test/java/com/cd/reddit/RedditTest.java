@@ -54,7 +54,9 @@ public class RedditTest {
 	
 	//Throway account for proof-of-concept purposes
 	final String testUserAgent = "JavaJerseyTestBot/1.0 by Cory Dissinger";		
-
+	final String testUserName = "JavaJerseyTestBot";
+	final String testPassword = "JavaJerseyTestBot";
+	
 	//Dynamic values that change with each test
 	RedditSubreddit targetSubreddit = null;
 	RedditLink	   	targetLink	   	= null;
@@ -80,7 +82,7 @@ public class RedditTest {
 		RedditJsonMessage respMessage = null;
 		
 		try {
-			respMessage = testReddit.login("JavaJerseyTestBot", "JavaJerseyTestBot");
+			respMessage = testReddit.login(testUserName, testPassword);
 		} catch (RedditException e) {
 			logRedditException(e);
 		}
@@ -361,6 +363,68 @@ public class RedditTest {
         assertEquals(false, messages.isEmpty());
     }
     
+    @Test(dependsOnMethods = { "login" } )
+  	public void testUserHistory(){
+  		List<RedditLink> listing = null;
+  		
+  		try {
+  			listing = testReddit.userHistory(testUserName, 
+  					RedditApiResourceConstants.SAVED);
+  		} catch (RedditException e) {
+  			logRedditException(e);
+  		}
+  		assertNotNull(listing);
+  		
+  		try {
+  			listing = testReddit.userHistory(testUserName, 
+  					RedditApiResourceConstants.OVERVIEW);
+  		} catch (RedditException e) {
+  			logRedditException(e);
+  		}
+  		assertNotNull(listing);
+  		
+  		try {
+  			listing = testReddit.userHistory(testUserName, 
+  					RedditApiResourceConstants.SUBMITTED);
+  		} catch (RedditException e) {
+  			logRedditException(e);
+  		}
+  		assertNotNull(listing);
+  		
+  		try {
+  			listing = testReddit.userHistory(testUserName, 
+  					RedditApiResourceConstants.COMMENTS);
+  		} catch (RedditException e) {
+  			logRedditException(e);
+  		}
+  		assertNotNull(listing);
+  		
+  		try {
+  			listing = testReddit.userHistory(testUserName, 
+  					RedditApiResourceConstants.LIKED);
+  		} catch (RedditException e) {
+  			logRedditException(e);
+  		}
+  		assertNotNull(listing);
+  		
+  		try {
+  			listing = testReddit.userHistory(testUserName, 
+  					RedditApiResourceConstants.DISLIKED);
+  		} catch (RedditException e) {
+  			logRedditException(e);
+  		}
+  		assertNotNull(listing);
+  		
+  		try {
+  			listing = testReddit.userHistory(testUserName, 
+  					RedditApiResourceConstants.HIDDEN);
+  		} catch (RedditException e) {
+  			logRedditException(e);
+  		}
+  		assertNotNull(listing);
+  		
+  	}
+    
     private void logRedditException(final Exception e){
     	final String [] stackMessages = ExceptionUtils.getRootCauseStackTrace(e);
     	
@@ -372,4 +436,6 @@ public class RedditTest {
     		Reporter.log(message);
     	}
     }
+    
+    
 }
