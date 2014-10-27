@@ -365,4 +365,22 @@ public class Reddit {
             throw new RedditException("Username " + username + " does not exist.");
         }
     }
+    
+	public List<RedditLink> userHistory(String userName, 
+			String listingType) throws RedditException{
+		final List<String> pathSegments = new ArrayList<String>(3);
+
+		pathSegments.add(RedditApiResourceConstants.USER);
+		pathSegments.add(userName);		
+		pathSegments.add(listingType + RedditApiResourceConstants.DOT_JSON);
+		
+		final RedditRequestInput requestInput 
+			= new RedditRequestInput(pathSegments);
+		
+		final RedditRequestResponse response = requestor.executeGet(requestInput);
+		
+		final RedditJsonParser parser = new RedditJsonParser(response.getBody());
+		
+		return parser.parseLinks();
+	}
 }
