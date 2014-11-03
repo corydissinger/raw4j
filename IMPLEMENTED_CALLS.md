@@ -263,12 +263,6 @@ try {
     List<RedditLink> listing = testReddit.userHistory(testUserName, RedditApiResourceConstants.HIDDEN);
 ```
 
-
-
-
-
-
-
 # wiki
 
 ### To be implemented:
