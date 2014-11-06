@@ -186,13 +186,12 @@ public class RedditTest {
 	}	
 
 	@Test(groups = { "readReddit" },
-		  dependsOnMethods = { "login", "listingsFor" } )
-	public void commentsForAndMore(){
+		  dependsOnMethods = { "login" } )
+	public void commentsForWithoutMore(){
 		RedditComments comments = null;
-		String subredditString = targetSubreddit.getSubredditName();
 		
 		try {
-			comments = testReddit.commentsFor(subredditString, targetLink.getId());
+			comments = testReddit.commentsFor("MotoG", "22mk0r");
 		} catch (RedditException e) {
 			logRedditException(e);
 		}
@@ -204,28 +203,41 @@ public class RedditTest {
 		assertEquals(true, comments.getParentLink() != null);		
 		assertEquals(false, comments.getComments().isEmpty());
 		assertEquals(true, comments.getMore() != null);
-		
-		if(comments.getMore().getChildren().isEmpty()){
-			return;
-		}
-		
-		List<RedditComment> moreComments = null;
-		
-		try {
-			moreComments = testReddit.moreChildrenFor(comments, "top");
-		} catch (RedditException e) {
-			logRedditException(e);
-		}
-		
-		assertNotNull(moreComments);		
-		
-		Reporter.log(moreComments.toString());		
-
-		assertEquals(false, moreComments.isEmpty());		
-		
-		//Also test the 'more' and show an intuitive way of using..
-		//final String childComment = comments.get(1).getId();
 	}
+	
+	@Test(groups = { "readReddit" },
+			  dependsOnMethods = { "login" } )
+		public void commentsForWithMore(){
+			RedditComments comments = null;
+			
+			try {
+				comments = testReddit.commentsFor("magicTCG", "2kwlrm");
+			} catch (RedditException e) {
+				logRedditException(e);
+			}
+			
+			assertNotNull(comments);		
+
+			Reporter.log(comments.toString());
+			
+			assertEquals(true, comments.getParentLink() != null);		
+			assertEquals(false, comments.getComments().isEmpty());
+			
+			//This particular thread should have 6 comments, which can obviously change.
+			//As long as it remains less than 10 this object should be null for the parent 'Comment' thing
+			assertEquals(false, comments.getMore() == null);
+
+			List<RedditComment> moreComments = null;
+			
+			try {
+				moreComments = testReddit.moreChildrenFor(comments, "top");
+			} catch (RedditException e) {
+				logRedditException(e);
+			}
+			
+			assertNotNull(moreComments);
+			assertEquals(false, moreComments.isEmpty());
+		}	
 
     @Test(dependsOnGroups = { "readReddit" },
             dependsOnMethods = { "login", "listingsFor"} )

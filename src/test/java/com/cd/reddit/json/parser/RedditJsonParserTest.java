@@ -82,7 +82,7 @@ public class RedditJsonParserTest {
 		testParser = new RedditJsonParser(convertStreamToString(jsonStream));
 		
 		try {
-			parsedComments = testParser.parseComments();
+			parsedComments = testParser.parseComments(10);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

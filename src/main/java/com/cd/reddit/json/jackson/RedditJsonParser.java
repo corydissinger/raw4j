@@ -101,14 +101,15 @@ public class RedditJsonParser {
 	 * {@link com.cd.reddit.Reddit#commentsFor(String, String) commentsFor} method. The structure of the json always
 	 * has a parent Link, array of comments, and a 'more' object. This explains the need for a new POJO to encapsulate
 	 * the data, as seen by {@link com.cd.reddit.json.util.RedditComments }
-	 * 
+	 *
+	 * @param limit Needed to determine if a 'more' object exists or not.
 	 * @return RedditComments Comments object.
 	 * @throws RedditException
 	 */
-	public RedditComments parseComments() throws RedditException{
+	public RedditComments parseComments(final int limit) throws RedditException{
 		init();
 		
-		return mapJsonComments();
+		return mapJsonComments(limit);
 	}
 	
 	/**
@@ -316,26 +317,33 @@ public class RedditJsonParser {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private RedditComments mapJsonComments() throws RedditException{
+	private RedditComments mapJsonComments(final int limit) throws RedditException{
 		final JsonNode parentLinkNode	= rootNode.get(0);
 		final JsonNode commentsNode		= rootNode.get(1);
 		final ArrayNode childrenNode  	= (ArrayNode)commentsNode.get(RedditJsonConstants.DATA)
 												  .get(RedditJsonConstants.CHILDREN);
-		
-		final JsonNode moreNode			= childrenNode.get(childrenNode.size() - 1).get(RedditJsonConstants.DATA);
+
+		final JsonNode moreNode			= childrenNode.get(childrenNode.size() - 1);
+		final boolean moreExists		= moreNode.get(RedditJsonConstants.KIND).asText().equals("more");
 		
 		//See the 'replies' attribute of RedditComment. It is a JsonNode
 		final List<RedditLink> theParentLink	   = (List<RedditLink>) parseSpecificType(parentLinkNode, RedditJsonConstants.TYPE_LINK);
-		final List<RedditComment> topLevelComments = (List<RedditComment>) parseSpecificType(rootNode, RedditJsonConstants.TYPE_COMMENT);
-		final RedditMore theMore;
-		
-		try {
-			theMore = mapper.readValue(moreNode, RedditMore.class);
-		} catch (Exception e) {
-			throw new RedditException(e);
+		final List<RedditComment> topLevelComments = (List<RedditComment>) parseSpecificType(rootNode, RedditJsonConstants.TYPE_COMMENT);		
+
+		if(moreExists){
+			final RedditMore theMore;
+			
+			try {
+				theMore = mapper.readValue(moreNode.get(RedditJsonConstants.DATA), RedditMore.class);
+			} catch (Exception e) {
+				throw new RedditException(e);
+			}
+			
+			return new RedditComments(theParentLink.get(0), topLevelComments, theMore);			
+		}else{
+			//Return non-null default reddit more with count of 0
+			return new RedditComments(theParentLink.get(0), topLevelComments, new RedditMore());			
 		}
-		
-		return new RedditComments(theParentLink.get(0), topLevelComments, theMore);
 	}
 	
 	//TODO: These messages are prevalent throughout the possible JSON responses from the API. There has to be a better parsing strategy than this one.

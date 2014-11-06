@@ -203,21 +203,28 @@ public class Reddit {
 	}	
 
 	public RedditComments commentsFor(final String subreddit, final String linkId) throws RedditException{
+		return commentsFor(subreddit, linkId, 10);
+	}	
+	
+	public RedditComments commentsFor(final String subreddit, final String linkId, final int limit) throws RedditException{
 		final List<String> pathSegments 		= new ArrayList<String>(2);
+		final Map<String, String> queryParams = new HashMap<String, String>(1);
 		
 		pathSegments.add(RedditApiResourceConstants.R);
 		pathSegments.add(subreddit);
 		pathSegments.add(RedditApiResourceConstants.COMMENTS);
 		pathSegments.add(linkId + RedditApiResourceConstants.DOT_JSON);		
 		
+		queryParams.put(RedditApiParameterConstants.LIMIT, Integer.toString(limit));
+		
 		final RedditRequestInput requestInput 
-			= new RedditRequestInput(pathSegments);
+			= new RedditRequestInput(pathSegments, queryParams);
 		
 		final RedditRequestResponse response = requestor.executeGet(requestInput);
 		
 		final RedditJsonParser parser = new RedditJsonParser(response.getBody());
 		
-		return parser.parseComments();
+		return parser.parseComments(limit);
 	}	
 	
 	//TODO: Is this always a Link?

@@ -9,7 +9,8 @@ import java.util.List;
  */
 
 public class RedditMore {
-	private int count;
+	
+	private int count = 0;
 	private String parent_id;
 	private String id;
 	private String name;
