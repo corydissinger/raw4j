@@ -222,19 +222,46 @@ try {
 ```
 
 ### To be implemented:
-
-* GET /user/username/disliked
-* GET /user/username/hidden
-* GET /user/username/liked
-* GET user/username/submitted
-* GET /user/username/comments
 * POST /api/friend
 * POST /api/setpermissions
 * POST /api/unfriend
 * GET /api/username_available.json
-* GET /user/username/overview
-* GET /user/username/saved
 * GET /user/username/*where*
+
+#### GET /user/username/saved
+```java
+    List<RedditLink> listing = testReddit.userHistory(testUserName, RedditApiResourceConstants.SAVED);
+```
+
+#### GET /user/username/overview
+```java
+    List<RedditLink> listing = testReddit.userHistory(testUserName, RedditApiResourceConstants.OVERVIEW);
+```
+
+#### GET user/username/submitted
+```java
+    List<RedditLink> listing = testReddit.userHistory(testUserName, RedditApiResourceConstants.SUBMITTED);
+```
+
+#### GET /user/username/comments
+```java
+    List<RedditLink> listing = testReddit.userHistory(testUserName, RedditApiResourceConstants.COMMENTS);
+```
+
+#### GET /user/username/liked
+```java
+    List<RedditLink> listing = testReddit.userHistory(testUserName, RedditApiResourceConstants.LIKED);
+```    
+
+#### GET /user/username/disliked
+```java
+    List<RedditLink> listing = testReddit.userHistory(testUserName, RedditApiResourceConstants.DISLIKED);
+```
+
+#### GET /user/username/hidden
+```java
+    List<RedditLink> listing = testReddit.userHistory(testUserName, RedditApiResourceConstants.HIDDEN);
+```
 
 # wiki
 
